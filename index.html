@@ -1,0 +1,180 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Recipe Widget</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <style>
+    :root { --bg:#0b0c0f; --card:#151922; --text:#e8ecf1; --muted:#98a2b3; --accent:#8b5cf6; --accent-2:#22d3ee; }
+    *{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Noto Sans",sans-serif;background:linear-gradient(120deg,var(--bg),#0e1117);color:var(--text);display:grid;place-items:center;min-height:100vh}
+    .wrap{width:min(880px,92vw);padding:24px}
+    .card{background:linear-gradient(180deg,var(--card),#11151d);border:1px solid #1f2937;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,.35);overflow:hidden}
+    header{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid #1f2530}
+    header h1{font-size:18px;margin:0;letter-spacing:.3px}
+    .btn{appearance:none;border:0;border-radius:12px;padding:10px 14px;font-weight:600;cursor:pointer;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#0a0a0a;transition:transform .06s ease;box-shadow:0 6px 18px rgba(72,84,243,.25)}
+    .btn:active{transform:translateY(1px)}
+    .content{display:grid;grid-template-columns:1fr 1fr;gap:18px;padding:18px}
+    .meta{display:grid;gap:10px}
+    .title{font-size:22px;line-height:1.2;margin:0}
+    .muted{color:var(--muted);font-size:13px}
+    .imgwrap{position:relative;border-radius:16px;overflow:hidden;border:1px solid #1f2530}
+    .imgwrap a{display:block}
+    .imgwrap img{width:100%;height:100%;object-fit:cover;display:block;aspect-ratio:16/10}
+    .skeleton{background:linear-gradient(90deg,#1b2230 25%,#253043 37%,#1b2230 63%);background-size:400% 100%;animation:shimmer 1.25s infinite}
+    @keyframes shimmer { 0%{background-position:100% 0} 100%{background-position:0 0} }
+    .toolbar{display:flex;gap:10px;align-items:center}
+    .small{font-size:12px}
+    .badge{padding:4px 8px;border:1px solid #243044;border-radius:999px}
+    footer{padding:0 20px 18px;color:var(--muted);font-size:12px}
+    .list{display:flex;flex-wrap:wrap;gap:8px}
+    .hidden{display:none}
+    @media (max-width:760px){ .content{grid-template-columns:1fr} }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card" id="recipe-widget">
+      <header>
+        <h1>🍳 Recipe Widget</h1>
+        <div class="toolbar">
+          <span class="small badge" title="键盘快捷键">按 R 随机</span>
+          <button id="randomBtn" class="btn">随机来一个</button>
+        </div>
+      </header>
+
+      <div class="content">
+        <div class="imgwrap skeleton" id="imgSkeleton"></div>
+        <div class="meta">
+          <h2 class="title" id="title">准备中…</h2>
+          <p class="muted" id="helper">点击图片即可在新标签打开原始 Recipe。</p>
+          <div class="list" id="issues" aria-live="polite"></div>
+        </div>
+      </div>
+      <footer>
+        <span>数据来源：<code>data/recipes.csv</code>（需放在同仓库，同域名下）。</span>
+      </footer>
+    </div>
+  </div>
+
+  <!-- PapaParse CSV 解析器（零依赖） -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js" integrity="sha384-Q0VqJqfBR4Xx2N4zJ4kC4oGTVJBu6Zp8q3/uNQ4x6LZkzA3HqW1dW3M0sHO8jN3C" crossorigin="anonymous"></script>
+  <script>
+  (function(){
+    const CSV_PATH = 'data/recipes.csv'; // 你可以改成 './recipes.csv'，但推荐放到 data/ 目录
+
+    const el = {
+      btn: document.getElementById('randomBtn'),
+      title: document.getElementById('title'),
+      helper: document.getElementById('helper'),
+      issues: document.getElementById('issues'),
+      imgSkeleton: document.getElementById('imgSkeleton')
+    };
+
+    /** 小工具 **/
+    const $ = (tag, attrs={},{text}) => {
+      const n = document.createElement(tag);
+      for (const k in attrs) n.setAttribute(k, attrs[k]);
+      if (text) n.textContent = text;
+      return n;
+    };
+
+    const state = {
+      rows: [],
+      lastIdx: -1
+    };
+
+    function showIssues(messages){
+      el.issues.innerHTML = '';
+      (messages||[]).forEach(m=> el.issues.appendChild($("span",{class:"badge"},{text:m})))
+    }
+
+    function pickRandom(){
+      if(!state.rows.length){ showIssues(["没有可用数据"]); return; }
+      let idx; // 避免连续两次同一条
+      do { idx = Math.floor(Math.random()*state.rows.length); } while(state.rows.length>1 && idx===state.lastIdx);
+      state.lastIdx = idx;
+      const r = state.rows[idx];
+      renderRecipe(r);
+    }
+
+    function validUrl(u){
+      try { new URL(u); return true; } catch { return false; }
+    }
+
+    function renderRecipe(r){
+      const { title, image_url, recipe_url } = r;
+      el.title.textContent = title || '（未命名 Recipe）';
+      showIssues([]);
+
+      // 重新构建图片区域
+      const wrap = document.createElement('div');
+      wrap.className = 'imgwrap';
+      const linkOk = validUrl(recipe_url);
+      const imgOk  = validUrl(image_url);
+
+      const img = new Image();
+      img.alt = title || 'recipe image';
+      img.decoding = 'async';
+      img.loading = 'eager';
+      img.referrerPolicy = 'no-referrer'; // 某些站点禁止热链时有帮助
+      img.src = imgOk ? image_url : '';
+
+      const content = linkOk ? $('a',{href: recipe_url, target:'_blank', rel:'noopener noreferrer'}) : document.createElement('div');
+      content.appendChild(img);
+      wrap.appendChild(content);
+
+      // skeleton -> image 替换
+      el.imgSkeleton.replaceWith(wrap);
+      el.imgSkeleton = wrap;
+
+      const warn = [];
+      if(!imgOk) warn.push('图片 URL 无效');
+      if(!linkOk) warn.push('Recipe 链接无效');
+      if(warn.length) showIssues(warn);
+    }
+
+    async function loadCsv(){
+      // 避免缓存（commit 后 GitHub Pages CDN 可能缓存一会儿）
+      const url = `${CSV_PATH}${CSV_PATH.includes('?')?'&':'?'}t=${Date.now()}`;
+      const res = await fetch(url, { cache: 'no-store' });
+      if(!res.ok) throw new Error('CSV 加载失败：'+res.status);
+      const text = await res.text();
+      const parsed = Papa.parse(text, { header: true, skipEmptyLines: true });
+      if(parsed.errors?.length){ console.warn(parsed.errors); }
+
+      // 统一字段名：title, image_url, recipe_url
+      const rows = (parsed.data||[]).map(row=>({
+        title: (row.title || row.Title || row.name || '').trim(),
+        image_url: (row.image_url || row.image || row.img || '').trim(),
+        recipe_url: (row.recipe_url || row.url || row.link || '').trim()
+      }))
+      .filter(r => r.title && (r.image_url || r.recipe_url));
+
+      if(!rows.length) throw new Error('CSV 没有解析到有效数据（至少需要 title 与一个 URL 字段）');
+      state.rows = rows;
+    }
+
+    function bindUI(){
+      el.btn.addEventListener('click', pickRandom);
+      window.addEventListener('keydown', (e)=>{ if(e.key.toLowerCase()==='r'){ pickRandom(); }});
+    }
+
+    (async function init(){
+      try{
+        bindUI();
+        el.title.textContent = '正在加载 CSV…';
+        await loadCsv();
+        el.title.textContent = '加载完成，点“随机来一个”或按 R';
+        pickRandom();
+      }catch(err){
+        console.error(err);
+        el.title.textContent = '加载失败';
+        showIssues([String(err.message||err)]);
+      }
+    })();
+  })();
+  </script>
+</body>
+</html>
