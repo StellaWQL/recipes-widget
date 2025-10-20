@@ -28,6 +28,7 @@
     .small{font-size:12px}
     .badge{padding:4px 8px;border:1px solid #243044;border-radius:999px}
     footer{padding:0 20px 18px;color:var(--muted);font-size:12px}
+    .error{color:#fca5a5}
     .list{display:flex;flex-wrap:wrap;gap:8px}
     .hidden{display:none}
     @media (max-width:760px){ .content{grid-template-columns:1fr} }
@@ -53,16 +54,30 @@
         </div>
       </div>
       <footer>
-        <span>数据来源：<code>data/atk_recipes_all.csv</code>（需放在同仓库，同域名下）。</span>
+        <span>数据来源：<code>data/recipes.csv</code>（需放在同仓库，同域名下）。</span>
       </footer>
     </div>
   </div>
 
   <!-- PapaParse CSV 解析器（零依赖） -->
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js" integrity="sha384-Q0VqJqfBR4Xx2N4zJ4kC4oGTVJBu6Zp8q3/uNQ4x6LZkzA3HqW1dW3M0sHO8jN3C" crossorigin="anonymous"></script>
+    <!-- PapaParse CSV 解析器（零依赖） -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"
+          onerror="(function(){var s=document.createElement('script');s.src='https://unpkg.com/papaparse@5.4.1/papaparse.min.js';document.head.appendChild(s);})();">
+  </script>
   <script>
   (function(){
-    const CSV_PATH = 'data/atk_recipes_all.csv'; // 你可以改成 './recipes.csv'，但推荐放到 data/ 目录
+    // 等待 PapaParse 可用（处理 CDN/SRI 等加载失败场景的兜底）
+    async function waitForPapa(timeout=4000){
+      const t0 = (typeof performance!=='undefined' && performance.now)?performance.now():Date.now();
+      while(!(window && window.Papa)){
+        await new Promise(r=>setTimeout(r,120));
+        const now = (typeof performance!=='undefined' && performance.now)?performance.now():Date.now();
+        if(now - t0 > timeout) throw new Error('PapaParse 未加载（请检查网络或外链脚本）');
+      }
+      return window.Papa;
+    }
+
+    const CSV_PATH = 'data/recipes.csv'; // 你可以改成 './recipes.csv'，但推荐放到 data/ 目录
 
     const el = {
       btn: document.getElementById('randomBtn'),
@@ -136,6 +151,7 @@
     }
 
     async function loadCsv(){
+      await waitForPapa();
       // 避免缓存（commit 后 GitHub Pages CDN 可能缓存一会儿）
       const url = `${CSV_PATH}${CSV_PATH.includes('?')?'&':'?'}t=${Date.now()}`;
       const res = await fetch(url, { cache: 'no-store' });
@@ -178,3 +194,4 @@
   </script>
 </body>
 </html>
+
