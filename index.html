@@ -1,14 +1,13 @@
-
 <!doctype html>
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Recipe Widget</title>
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
   <style>
     :root { --bg:#0b0c0f; --card:#151922; --text:#e8ecf1; --muted:#98a2b3; --accent:#8b5cf6; --accent-2:#22d3ee; }
-    *{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Noto Sans",sans-serif;background:linear-gradient(120deg,var(--bg),#0e1117);color:var(--text);display:grid;place-items:center;min-height:100vh}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Noto Sans",sans-serif;background:linear-gradient(120deg,var(--bg),#0e1117);color:var(--text);display:grid;place-items:center;min-height:100vh}
     .wrap{width:min(880px,92vw);padding:24px}
     .card{background:linear-gradient(180deg,var(--card),#11151d);border:1px solid #1f2937;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,.35);overflow:hidden}
     header{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid #1f2530}
@@ -28,9 +27,9 @@
     .small{font-size:12px}
     .badge{padding:4px 8px;border:1px solid #243044;border-radius:999px}
     footer{padding:0 20px 18px;color:var(--muted);font-size:12px}
-    .error{color:#fca5a5}
     .list{display:flex;flex-wrap:wrap;gap:8px}
     .hidden{display:none}
+    .error{color:#fca5a5}
     @media (max-width:760px){ .content{grid-template-columns:1fr} }
   </style>
 </head>
@@ -54,31 +53,55 @@
         </div>
       </div>
       <footer>
-        <span>数据来源：<code>data/recipes.csv</code>（需放在同仓库，同域名下）。</span>
+        <span>数据来源：<code>data/atk_recipes_all.csv</code>（需放在同仓库、同域名下）。</span>
       </footer>
     </div>
   </div>
 
-  <!-- PapaParse CSV 解析器（零依赖） -->
-    <!-- PapaParse CSV 解析器（零依赖） -->
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"
-          onerror="(function(){var s=document.createElement('script');s.src='https://unpkg.com/papaparse@5.4.1/papaparse.min.js';document.head.appendChild(s);})();">
-  </script>
   <script>
-  (function(){
-    // 等待 PapaParse 可用（处理 CDN/SRI 等加载失败场景的兜底）
-    async function waitForPapa(timeout=4000){
-      const t0 = (typeof performance!=='undefined' && performance.now)?performance.now():Date.now();
-      while(!(window && window.Papa)){
-        await new Promise(r=>setTimeout(r,120));
-        const now = (typeof performance!=='undefined' && performance.now)?performance.now():Date.now();
-        if(now - t0 > timeout) throw new Error('PapaParse 未加载（请检查网络或外链脚本）');
+    // ===== 0) 纯原生 CSV 解析（小型 RFC4180 兼容器） =====
+    // 支持逗号、引号、转义双引号("" -> ")，支持换行。返回 {header:true} 时给出对象数组
+    function parseCSV(text, opts={header:true, skipEmptyLines:true}){
+      const rows=[]; let cur=''; let row=[]; let inQ=false; let i=0;
+      function pushCell(){ row.push(cur); cur=''; }
+      function pushRow(){ rows.push(row); row=[]; }
+      while(i<text.length){
+        const ch=text[i];
+        if(inQ){
+          if(ch==='"'){
+            if(text[i+1]==='"'){ cur+='"'; i+=2; continue; } // escaped quote
+            inQ=false; i++; continue;
+          } else { cur+=ch; i++; continue; }
+        } else {
+          if(ch==='"'){ inQ=true; i++; continue; }
+          if(ch===','){ pushCell(); i++; continue; }
+          if(ch==='\n'){ pushCell(); pushRow(); i++; continue; }
+          if(ch==='\r'){ // handle CRLF
+            if(text[i+1]==='\n'){ i++; }
+            pushCell(); pushRow(); i++; continue;
+          }
+          cur+=ch; i++;
+        }
       }
-      return window.Papa;
+      // last cell/row
+      pushCell(); pushRow();
+      // trim trailing empty row from possible ending newline
+      if(rows.length && rows[rows.length-1].length===1 && rows[rows.length-1][0]==='') rows.pop();
+
+      // header/object mapping
+      if(opts.header){
+        const header = rows.shift().map(h=>h.trim());
+        const out = rows.map(r=>{
+          const obj={};
+          header.forEach((h,idx)=>{ obj[h]= (r[idx]??'').trim(); });
+          return obj;
+        });
+        return opts.skipEmptyLines ? out.filter(o=>Object.values(o).some(v=>v!=='')) : out;
+      }
+      return opts.skipEmptyLines ? rows.filter(r=>r.some(v=>v!=='')) : rows;
     }
 
-    const CSV_PATH = 'data/recipes.csv'; // 你可以改成 './recipes.csv'，但推荐放到 data/ 目录
-
+    // ===== 1) DOM 便捷函数与状态 =====
     const el = {
       btn: document.getElementById('randomBtn'),
       title: document.getElementById('title'),
@@ -86,61 +109,46 @@
       issues: document.getElementById('issues'),
       imgSkeleton: document.getElementById('imgSkeleton')
     };
-
-    /** 小工具 **/
-    const $ = (tag, attrs={},{text}) => {
+    const $ = (tag, attrs = {}, extra) => {
       const n = document.createElement(tag);
-      for (const k in attrs) n.setAttribute(k, attrs[k]);
-      if (text) n.textContent = text;
+      if (attrs && typeof attrs === 'object') for (const k in attrs) n.setAttribute(k, attrs[k]);
+      if (extra && typeof extra === 'object' && 'text' in extra) n.textContent = extra.text;
       return n;
     };
+    const state = { rows: [], lastIdx: -1 };
 
-    const state = {
-      rows: [],
-      lastIdx: -1
-    };
-
+    // ===== 2) 小工具 =====
     function showIssues(messages){
       el.issues.innerHTML = '';
       (messages||[]).forEach(m=> el.issues.appendChild($("span",{class:"badge"},{text:m})))
     }
-
-    function pickRandom(){
-      if(!state.rows.length){ showIssues(["没有可用数据"]); return; }
-      let idx; // 避免连续两次同一条
-      do { idx = Math.floor(Math.random()*state.rows.length); } while(state.rows.length>1 && idx===state.lastIdx);
-      state.lastIdx = idx;
-      const r = state.rows[idx];
-      renderRecipe(r);
-    }
-
-    function validUrl(u){
-      try { new URL(u); return true; } catch { return false; }
-    }
+    function validUrl(u){ try{ new URL(u); return true; }catch{ return false; } }
 
     function renderRecipe(r){
-      const { title, image_url, recipe_url } = r;
-      el.title.textContent = title || '（未命名 Recipe）';
+      const title = r.title || r.Title || r.name || '（未命名 Recipe）';
+      const image_url = r.image_url || r.image || r.img || '';
+      const recipe_url = r.recipe_url || r.url || r.link || '';
+
+      el.title.textContent = title;
       showIssues([]);
 
-      // 重新构建图片区域
       const wrap = document.createElement('div');
       wrap.className = 'imgwrap';
+
       const linkOk = validUrl(recipe_url);
       const imgOk  = validUrl(image_url);
 
       const img = new Image();
-      img.alt = title || 'recipe image';
+      img.alt = title;
       img.decoding = 'async';
       img.loading = 'eager';
-      img.referrerPolicy = 'no-referrer'; // 某些站点禁止热链时有帮助
-      img.src = imgOk ? image_url : '';
+      img.referrerPolicy = 'no-referrer';
+      if (imgOk) img.src = image_url;
 
       const content = linkOk ? $('a',{href: recipe_url, target:'_blank', rel:'noopener noreferrer'}) : document.createElement('div');
       content.appendChild(img);
       wrap.appendChild(content);
 
-      // skeleton -> image 替换
       el.imgSkeleton.replaceWith(wrap);
       el.imgSkeleton = wrap;
 
@@ -150,28 +158,32 @@
       if(warn.length) showIssues(warn);
     }
 
+    function pickRandom(){
+      if(!state.rows.length){ showIssues(["没有可用数据"]); return; }
+      let idx; do { idx = Math.floor(Math.random()*state.rows.length); } while(state.rows.length>1 && idx===state.lastIdx);
+      state.lastIdx = idx;
+      renderRecipe(state.rows[idx]);
+    }
+
+    // ===== 3) 加载 CSV（无第三方依赖） =====
     async function loadCsv(){
-      await waitForPapa();
-      // 避免缓存（commit 后 GitHub Pages CDN 可能缓存一会儿）
-      const url = `${CSV_PATH}${CSV_PATH.includes('?')?'&':'?'}t=${Date.now()}`;
+      const CSV_PATH = 'data/atk_recipes_all.csv';
+      const url = `${CSV_PATH}${CSV_PATH.includes('?')?'&':'?'}t=${Date.now()}`; // 防缓存
       const res = await fetch(url, { cache: 'no-store' });
       if(!res.ok) throw new Error('CSV 加载失败：'+res.status);
       const text = await res.text();
-      const parsed = Papa.parse(text, { header: true, skipEmptyLines: true });
-      if(parsed.errors?.length){ console.warn(parsed.errors); }
-
-      // 统一字段名：title, image_url, recipe_url
-      const rows = (parsed.data||[]).map(row=>({
-        title: (row.title || row.Title || row.name || '').trim(),
-        image_url: (row.image_url || row.image || row.img || '').trim(),
-        recipe_url: (row.recipe_url || row.url || row.link || '').trim()
-      }))
-      .filter(r => r.title && (r.image_url || r.recipe_url));
-
+      const rows = parseCSV(text, {header:true, skipEmptyLines:true})
+        .map(row=>({
+          title: (row.title || row.Title || row.name || '').trim(),
+          image_url: (row.image_url || row.image || row.img || '').trim(),
+          recipe_url: (row.recipe_url || row.url || row.link || '').trim()
+        }))
+        .filter(r => r.title && (r.image_url || r.recipe_url));
       if(!rows.length) throw new Error('CSV 没有解析到有效数据（至少需要 title 与一个 URL 字段）');
       state.rows = rows;
     }
 
+    // ===== 4) 绑定与初始化 =====
     function bindUI(){
       el.btn.addEventListener('click', pickRandom);
       window.addEventListener('keydown', (e)=>{ if(e.key.toLowerCase()==='r'){ pickRandom(); }});
@@ -190,8 +202,6 @@
         showIssues([String(err.message||err)]);
       }
     })();
-  })();
   </script>
 </body>
 </html>
-
