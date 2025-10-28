@@ -1,208 +1,400 @@
+
 <!doctype html>
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Recipe Widget</title>
-  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <title>My Widgets Board · Vintage</title>
   <style>
-    :root { --bg:#0b0c0f; --card:#151922; --text:#e8ecf1; --muted:#98a2b3; --accent:#8b5cf6; --accent-2:#22d3ee; }
+    /* =========================
+       Vintage color palette
+       ========================= */
+    :root{
+      --bg:#1b1512;            /* deep cocoa */
+      --bg-grad1:#201914;      /* vignette */
+      --panel:#2a211d;         /* dark sepia panel */
+      --panel-2:#231b17;
+      --text:#f3eee7;          /* old paper white */
+      --muted:#c6bfb3;         /* faded ink */
+      --stroke:#3b2f28;        /* brownish border */
+      --accent:#c6a969;        /* warm brass */
+      --accent2:#8b5e34;       /* aged bronze */
+      --danger:#8b1e3f;        /* burgundy */
+      --shadow:0 18px 40px rgba(0,0,0,.45);
+      --shadow-sm:0 10px 28px rgba(0,0,0,.38);
+    }
+
     *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Noto Sans",sans-serif;background:linear-gradient(120deg,var(--bg),#0e1117);color:var(--text);display:grid;place-items:center;min-height:100vh}
-    .wrap{width:min(880px,92vw);padding:24px}
-    .card{background:linear-gradient(180deg,var(--card),#11151d);border:1px solid #1f2937;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,.35);overflow:hidden}
-    header{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid #1f2530}
-    header h1{font-size:18px;margin:0;letter-spacing:.3px}
-    .btn{appearance:none;border:0;border-radius:12px;padding:10px 14px;font-weight:600;cursor:pointer;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#0a0a0a;transition:transform .06s ease;box-shadow:0 6px 18px rgba(72,84,243,.25)}
-    .btn:active{transform:translateY(1px)}
-    .content{display:grid;grid-template-columns:1fr 1fr;gap:18px;padding:18px}
-    .meta{display:grid;gap:10px}
-    .title{font-size:22px;line-height:1.2;margin:0}
-    .muted{color:var(--muted);font-size:13px}
-    .imgwrap{position:relative;border-radius:16px;overflow:hidden;border:1px solid #1f2530}
-    .imgwrap a{display:block}
-    .imgwrap img{width:100%;height:100%;object-fit:cover;display:block;aspect-ratio:16/10}
-    .skeleton{background:linear-gradient(90deg,#1b2230 25%,#253043 37%,#1b2230 63%);background-size:400% 100%;animation:shimmer 1.25s infinite}
-    @keyframes shimmer { 0%{background-position:100% 0} 100%{background-position:0 0} }
-    .toolbar{display:flex;gap:10px;align-items:center}
-    .small{font-size:12px}
-    .badge{padding:4px 8px;border:1px solid #243044;border-radius:999px}
-    footer{padding:0 20px 18px;color:var(--muted);font-size:12px}
-    .list{display:flex;flex-wrap:wrap;gap:8px}
+    html,body{height:100%}
+
+    /* Serif font stack (avoid SimSun/Songti; prefer Noto/Source Han) */
+    body{
+      margin:0;
+      background:
+        radial-gradient(1200px 800px at 20% -10%,rgba(255,232,196,0.06),#0000),
+        linear-gradient(120deg,var(--bg),var(--bg-grad1));
+      color:var(--text);
+      font-family:
+        "Iowan Old Style","Palatino Linotype","Book Antiqua",Georgia,
+        "Noto Serif","Noto Serif SC","Noto Serif TC",
+        "Source Han Serif SC","Source Han Serif TC",
+        serif;
+      overflow:hidden;
+      letter-spacing:.2px;
+    }
+
+    /* Topbar with brass buttons */
+    .topbar{
+      position:fixed;inset:12px 12px auto 12px;
+      background:linear-gradient(180deg,var(--panel),var(--panel-2));
+      border:1px solid var(--stroke);
+      border-radius:14px;display:flex;align-items:center;gap:10px;padding:8px 10px;z-index:10000;box-shadow:var(--shadow-sm)
+    }
+    .btn{appearance:none;border:0;border-radius:12px;padding:8px 12px;cursor:pointer;font-weight:700;color:#1b1512;background:linear-gradient(180deg,var(--accent),#b49254);box-shadow:0 8px 20px rgba(198,169,105,.25);transition:filter .15s ease}
+    .btn:hover{filter:brightness(1.05)}
+    .btn.secondary{background:linear-gradient(180deg,#3a3029,#2c241f);color:var(--text);box-shadow:none;border:1px solid var(--stroke)}
+    .btn.danger{background:linear-gradient(180deg,#a0274d,var(--danger));color:#fff}
+    .hint{color:var(--muted);font-size:12px;margin-left:6px}
+
+    #board{position:absolute;inset:0;padding:64px 16px 16px 16px}
+
+    /* Widget shell */
+    .widget{position:absolute;top:100px;left:100px;width:360px;min-width:260px;max-width:560px;background:linear-gradient(180deg,var(--panel),#1f1916);border:1px solid var(--stroke);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
+    .widget.resizable{resize:both}
+
+    /* Header: center title, controls right */
+    .w-header{position:relative;cursor:grab;user-select:none;background:linear-gradient(180deg,#2c241f,#221b17);padding:10px 12px;border-bottom:1px solid var(--stroke);display:flex;align-items:center}
+    .w-title{position:absolute;left:52px;right:52px;text-align:center;font-size:15px;font-weight:800;letter-spacing:.3px}
+    .w-controls{margin-left:auto;display:flex;gap:6px}
+    .iconbtn{background:#322821;border:1px solid var(--stroke);color:#f7f2ea;border-radius:9px;padding:6px 8px;cursor:pointer}
+    .iconbtn:hover{filter:brightness(1.08)}
+
+    .w-body{padding:12px;display:grid;gap:10px}
+    .w-footer{padding:10px 12px;border-top:1px solid var(--stroke);color:var(--muted);font-size:12px}
+
+    /* Figure frames with subtle patina */
+    .figure{position:relative;display:block;width:100%;border-radius:12px;border:1px solid var(--stroke);overflow:hidden;background:repeating-linear-gradient(45deg, rgba(255,245,230,.03) 0 6px, rgba(0,0,0,.02) 6px 12px), #15100e}
+    .figure.poster{aspect-ratio:2/3}
+    .figure.square{aspect-ratio:1/1}
+    .figure>img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+
+    .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    .input{background:#191310;color:var(--text);border:1px solid var(--stroke);border-radius:10px;padding:8px 10px;outline:none}
+    .badge{padding:4px 8px;border:1px solid var(--stroke);border-radius:999px;color:var(--muted);font-size:12px;background:#221b17}
+    .link{color:#e6d3a2;text-decoration:none}
+
+    .widget:focus-visible{outline:2px solid #d8b86a;outline-offset:2px}
+
+    /* Utility */
     .hidden{display:none}
-    .error{color:#fca5a5}
-    @media (max-width:760px){ .content{grid-template-columns:1fr} }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="card" id="recipe-widget">
-      <header>
-        <h1>🍳 Recipe Widget</h1>
-        <div class="toolbar">
-          <span class="small badge" title="键盘快捷键">按 R 随机</span>
-          <button id="randomBtn" class="btn">随机来一个</button>
-        </div>
-      </header>
-
-      <div class="content">
-        <div class="imgwrap skeleton" id="imgSkeleton"></div>
-        <div class="meta">
-          <h2 class="title" id="title">准备中…</h2>
-          <p class="muted" id="helper">点击图片即可在新标签打开原始 Recipe。</p>
-          <div class="list" id="issues" aria-live="polite"></div>
-        </div>
-      </div>
-      <footer>
-        <span>数据来源：<code>data/atk_recipes_all.csv</code>（需放在同仓库、同域名下）。</span>
-      </footer>
-    </div>
+  <div class="topbar">
+    <button class="btn" id="addRecipe">＋ Recipe widget</button>
+    <button class="btn" id="addMovie">＋ Movie widget</button>
+    <button class="btn" id="addDrawer">＋ Card Drawer</button>
+    <button class="btn secondary" id="saveLayout">💾 Save layout</button>
+    <button class="btn secondary" id="loadLayout">📂 Load layout</button>
+    <button class="btn danger" id="resetLayout">🗑 Reset</button>
+    <span class="hint">拖拽标题栏即可移动；双击标题栏回到顶层。位置会自动保存（localStorage）。</span>
   </div>
+  <div id="board"></div>
 
   <script>
-    // ===== 0) 纯原生 CSV 解析（小型 RFC4180 兼容器） =====
-    // 支持逗号、引号、转义双引号("" -> ")，支持换行。返回 {header:true} 时给出对象数组
-    function parseCSV(text, opts={header:true, skipEmptyLines:true}){
-      const rows=[]; let cur=''; let row=[]; let inQ=false; let i=0;
-      function pushCell(){ row.push(cur); cur=''; }
-      function pushRow(){ rows.push(row); row=[]; }
-      while(i<text.length){
-        const ch=text[i];
-        if(inQ){
-          if(ch==='"'){
-            if(text[i+1]==='"'){ cur+='"'; i+=2; continue; } // escaped quote
-            inQ=false; i++; continue;
-          } else { cur+=ch; i++; continue; }
-        } else {
-          if(ch==='"'){ inQ=true; i++; continue; }
-          if(ch===','){ pushCell(); i++; continue; }
-          if(ch==='\n'){ pushCell(); pushRow(); i++; continue; }
-          if(ch==='\r'){ // handle CRLF
-            if(text[i+1]==='\n'){ i++; }
-            pushCell(); pushRow(); i++; continue;
-          }
-          cur+=ch; i++;
-        }
-      }
-      // last cell/row
+  ;(function(){
+    const board = document.getElementById('board');
+    const zStack = { top: 10, bump(el){ this.top += 1; el.style.zIndex = this.top; }}
+    const STORAGE_KEY = 'widgets.layout.v1';
+    const uid = ()=>'w_'+Math.random().toString(36).slice(2,9);
+
+    // ========= Generic Widget factory =========
+    function createWidget({type,title,x=120,y=120,w=360,h=null,state={}}){
+      const id = uid();
+      const root = document.createElement('div');
+      root.className = 'widget resizable';
+      root.tabIndex = 0;
+      root.style.left = x+'px';
+      root.style.top  = y+'px';
+      if(w) root.style.width = w+'px';
+      if(h) root.style.height = h+'px';
+      root.dataset.id = id; root.dataset.type = type;
+      zStack.bump(root);
+
+      root.innerHTML = `
+        <div class="w-header" data-draghandle>
+          <div class="w-title">${title}</div>
+          <div class="w-controls">
+            <button class="iconbtn" data-action="minimize" title="Collapse">▾</button>
+            <button class="iconbtn" data-action="top" title="Bring to top">⬆</button>
+            <button class="iconbtn" data-action="close" title="Close">✕</button>
+          </div>
+        </div>
+        <div class="w-body"></div>
+        <div class="w-footer"></div>
+      `;
+
+      // Dragging
+      const header = root.querySelector('[data-draghandle]');
+      let drag = {on:false, dx:0, dy:0};
+      header.addEventListener('mousedown', (e)=>{ drag.on=true; header.style.cursor='grabbing'; zStack.bump(root); drag.dx=e.clientX-root.offsetLeft; drag.dy=e.clientY-root.offsetTop; e.preventDefault(); });
+      window.addEventListener('mousemove', (e)=>{ if(!drag.on) return; const nx = Math.max(0, Math.min(window.innerWidth - root.offsetWidth, e.clientX - drag.dx)); const ny = Math.max(48, Math.min(window.innerHeight - 40, e.clientY - drag.dy)); root.style.left = nx+'px'; root.style.top = ny+'px'; });
+      window.addEventListener('mouseup', ()=>{ if(drag.on){ drag.on=false; header.style.cursor='grab'; saveLayout(); }});
+      header.addEventListener('dblclick', ()=>{ zStack.bump(root); });
+
+      // Controls
+      root.addEventListener('click', (e)=>{
+        const btn = e.target.closest('[data-action]');
+        if(!btn) return;
+        const act = btn.dataset.action;
+        if(act==='close'){ root.remove(); saveLayout(); }
+        if(act==='top'){ zStack.bump(root); }
+        if(act==='minimize'){ body.classList.toggle('hidden'); saveLayout(); }
+      });
+
+      const body = root.querySelector('.w-body');
+      const foot = root.querySelector('.w-footer');
+
+      board.appendChild(root);
+      return { id, root, body, foot, state };
+    }
+
+    // ========= CSV parser =========
+    function parseCSV(text, {header=true, skipEmptyLines=true}={}){
+      const rows=[]; let cur=''; let row=[]; let q=false; let i=0;
+      const pushCell=()=>{ row.push(cur); cur=''; }
+      const pushRow=()=>{ rows.push(row); row=[]; }
+      while(i<text.length){ const ch=text[i]; if(q){ if(ch==='"'){ if(text[i+1]==='"'){ cur+='"'; i+=2; continue; } q=false; i++; } else { cur+=ch; i++; } } else { if(ch==='"'){ q=true; i++; } else if(ch===','){ pushCell(); i++; } else if(ch==='\n'){ pushCell(); pushRow(); i++; } else if(ch==='\r'){ if(text[i+1]==='\n') i++; pushCell(); pushRow(); i++; } else { cur+=ch; i++; } } }
       pushCell(); pushRow();
-      // trim trailing empty row from possible ending newline
       if(rows.length && rows[rows.length-1].length===1 && rows[rows.length-1][0]==='') rows.pop();
+      if(header){ const head=rows.shift().map(h=>h.trim()); const out=rows.map(r=>{const o={}; head.forEach((h,idx)=>o[h]= (r[idx]??'').trim()); return o;}); return skipEmptyLines?out.filter(o=>Object.values(o).some(v=>v!=='')):out; }
+      return skipEmptyLines?rows.filter(r=>r.some(v=>v!=='')):rows;
+    }
 
-      // header/object mapping
-      if(opts.header){
-        const header = rows.shift().map(h=>h.trim());
-        const out = rows.map(r=>{
-          const obj={};
-          header.forEach((h,idx)=>{ obj[h]= (r[idx]??'').trim(); });
-          return obj;
-        });
-        return opts.skipEmptyLines ? out.filter(o=>Object.values(o).some(v=>v!=='')) : out;
+    const validUrl = (u)=>{ try{ new URL(u); return true; }catch{ return false; } }
+
+    // ========= Widgets =========
+    async function RecipeWidget(opts={}){
+      const w = createWidget({type:'recipe', title:'🍳 Recipe', x:140, y:120, ...opts});
+      w.body.innerHTML = `
+        <div class="grid">
+          <div class="row">
+            <button class="btn" data-random>随机来一个</button>
+            <span class="badge">数据: <code>data/atk_recipes_all.csv</code></span>
+          </div>
+          <div class="grid">
+            <a class="figure square" data-link target="_blank" rel="noopener noreferrer">
+              <img data-img alt="recipe image" />
+            </a>
+            <div class="row">
+              <strong data-title>准备中…</strong>
+              <!-- 移除“查看原文”/打开原文按钮 -->
+            </div>
+            <div class="row" data-issues></div>
+          </div>
+        </div>`;
+
+      const el = {
+        btn: w.body.querySelector('[data-random]'),
+        title: w.body.querySelector('[data-title]'),
+        img: w.body.querySelector('[data-img]'),
+        link: w.body.querySelector('[data-link]'),
+        issues: w.body.querySelector('[data-issues]')
       }
-      return opts.skipEmptyLines ? rows.filter(r=>r.some(v=>v!=='')) : rows;
+      const showIssues = (arr=[])=>{ el.issues.innerHTML=''; arr.forEach(m=>{ const b=document.createElement('span'); b.className='badge'; b.textContent=m; el.issues.appendChild(b); }) }
+
+      async function ensureData(){
+        if(w.state.rows && w.state.rows.length) return w.state.rows;
+        const CSV_PATH = 'data/atk_recipes_all.csv';
+        const res = await fetch(`${CSV_PATH}?t=${Date.now()}`, {cache:'no-store'});
+        if(!res.ok) throw new Error('CSV 加载失败: '+res.status);
+        const text = await res.text();
+        const rows = parseCSV(text, {header:true, skipEmptyLines:true}).map(r=>({
+          title:(r.title||r.Title||r.name||'').trim(),
+          image_url:(r.image_url||r.image||r.img||'').trim(),
+          recipe_url:(r.recipe_url||r.url||r.link||'').trim()
+        })).filter(r=>r.title && (r.image_url||r.recipe_url));
+        if(!rows.length) throw new Error('CSV 没有有效行');
+        w.state.rows = rows; return rows;
+      }
+      function render(r){
+        const {title,image_url,recipe_url}=r;
+        el.title.textContent = title || '未命名';
+        const imgOk=validUrl(image_url), linkOk=validUrl(recipe_url);
+        el.img.src = imgOk?image_url:'';
+        el.link.href = linkOk?recipe_url:'#';
+        showIssues([].concat(imgOk?[]:['图片无效'], linkOk?[]:['链接无效']));
+      }
+      function pick(){ const arr=w.state.rows; if(!arr?.length) return; let i; do{ i=Math.floor(Math.random()*arr.length) }while(arr.length>1 && i===w.state.last); w.state.last=i; render(arr[i]); saveLayout(); }
+
+      el.btn.addEventListener('click', async()=>{ try{ await ensureData(); pick(); }catch(e){ showIssues([String(e.message||e)]) } });
+      // auto-load once
+      try{ await ensureData(); pick(); }catch(e){ showIssues([String(e.message||e)]) }
+      return w;
     }
 
-    // ===== 1) DOM 便捷函数与状态 =====
-    const el = {
-      btn: document.getElementById('randomBtn'),
-      title: document.getElementById('title'),
-      helper: document.getElementById('helper'),
-      issues: document.getElementById('issues'),
-      imgSkeleton: document.getElementById('imgSkeleton')
-    };
-    const $ = (tag, attrs = {}, extra) => {
-      const n = document.createElement(tag);
-      if (attrs && typeof attrs === 'object') for (const k in attrs) n.setAttribute(k, attrs[k]);
-      if (extra && typeof extra === 'object' && 'text' in extra) n.textContent = extra.text;
-      return n;
-    };
-    const state = { rows: [], lastIdx: -1 };
+    async function MovieWidget(opts={}){
+      const w = createWidget({type:'movie', title:'🎬 Movie', x:360, y:180, ...opts});
+      w.body.innerHTML = `
+        <div class="grid">
+          <div class="row">
+            <button class="btn" data-random>随机电影</button>
+            <span class="badge">数据: <code data-csvpath>（未加载）</code></span>
+          </div>
+          <div class="grid">
+            <a class="figure poster" data-link target="_blank" rel="noopener noreferrer">
+              <img data-img alt="movie poster" />
+            </a>
+            <div class="row">
+              <strong data-title>准备中…</strong>
+              <span class="badge" data-year></span>
+              <span class="badge" data-score></span>
+            </div>
+            <div class="row" data-issues></div>
+          </div>
+        </div>`;
 
-    // ===== 2) 小工具 =====
-    function showIssues(messages){
-      el.issues.innerHTML = '';
-      (messages||[]).forEach(m=> el.issues.appendChild($("span",{class:"badge"},{text:m})))
+      const el = {
+        btn:   w.body.querySelector('[data-random]'),
+        img:   w.body.querySelector('[data-img]'),
+        link:  w.body.querySelector('[data-link]'),
+        title: w.body.querySelector('[data-title]'),
+        year:  w.body.querySelector('[data-year]'),
+        score: w.body.querySelector('[data-score]'),
+        csv:   w.body.querySelector('[data-csvpath]'),
+        issues:w.body.querySelector('[data-issues]'),
+      };
+
+      const showIssues = (arr=[])=>{
+        el.issues.innerHTML='';
+        arr.forEach(m=>{ const s=document.createElement('span'); s.className='badge'; s.textContent=m; el.issues.appendChild(s); })
+      };
+
+      const parseYear = (d)=>{
+        if(!d) return '';
+        const m4 = String(d).match(/(19|20)\d{2}/);
+        if(m4) return m4[0];
+        const m2 = String(d).match(/(\d{2})(?!.*\d)/);
+        if(m2){ const yy = parseInt(m2[1],10); return String(yy >= 30 ? 1900+yy : 2000+yy); }
+        return '';
+      };
+
+      async function ensureData(){
+        if(w.state.rows?.length) return w.state.rows;
+        const candidates = w.state.candidates || ['data/movies.csv','movies.csv'];
+        let used=null, rows=null, lastErr=null;
+        for(const p of candidates){
+          try{
+            const res = await fetch(`${p}?t=${Date.now()}`, {cache:'no-store'});
+            if(!res.ok){ lastErr = new Error(p+': '+res.status); continue; }
+            const txt  = await res.text();
+            const arr  = parseCSV(txt,{header:true,skipEmptyLines:true}).map(r=>{
+              const t   = (r.title||r.name||'').trim();
+              const rd  = (r.release_date||r.date||'').trim();
+              const ms  = (r.metascore||r.score||r.metascore_w||'').toString().trim();
+              const img = (r.poster_url||r.image_url||r.poster||'').trim();
+              const url = (r.url||r.link||r.movie_url||'').trim();
+              return { title:t, release_date:rd, metascore:ms, poster_url:img, url };
+            }).filter(o=> o.title && (o.poster_url || o.url));
+            if(arr.length){ used=p; rows=arr; break; }
+          }catch(e){ lastErr=e; }
+        }
+        if(!rows){ throw new Error('找不到可用的 movies CSV（尝试了：'+candidates.join(', ')+')'); }
+        w.state.rows = rows; w.state.csvPath = used;
+        if(el.csv) el.csv.textContent = used;
+        return rows;
+      }
+
+      function render(r){
+        el.title.textContent = r.title || '未命名';
+        const y = parseYear(r.release_date); el.year.textContent = y ? y : '年份未知';
+        const sc = parseInt(r.metascore,10); el.score.textContent = Number.isFinite(sc) ? `Metascore ${sc}` : '无分数';
+        const hasImg = !!(r.poster_url && (()=>{ try{ new URL(r.poster_url); return true;}catch{return false;} })());
+        el.img.src = hasImg ? r.poster_url : '';
+        const target = r.url && r.url.trim() ? r.url.trim() : `https://www.google.com/search?q=${encodeURIComponent('site:metacritic.com '+(r.title||''))}`;
+        el.link.href = target;
+        const issues = [];
+        if(!hasImg) issues.push('图片无效或缺失');
+        if(!target) issues.push('无可用链接');
+        showIssues(issues);
+      }
+
+      function pick(){
+        const a=w.state.rows; if(!a?.length) return;
+        let i; do{ i=Math.floor(Math.random()*a.length) }while(a.length>1 && i===w.state.last);
+        w.state.last = i; render(a[i]); saveLayout();
+      }
+
+      el.btn.addEventListener('click', async()=>{ try{ await ensureData(); pick(); }catch(e){ showIssues([String(e.message||e)]) } });
+      try{ await ensureData(); pick(); }catch(e){ showIssues([String(e.message||e)]) }
+
+      return w;
     }
-    function validUrl(u){ try{ new URL(u); return true; }catch{ return false; } }
 
-    function renderRecipe(r){
-      const title = r.title || r.Title || r.name || '（未命名 Recipe）';
-      const image_url = r.image_url || r.image || r.img || '';
-      const recipe_url = r.recipe_url || r.url || r.link || '';
-
-      el.title.textContent = title;
-      showIssues([]);
-
-      const wrap = document.createElement('div');
-      wrap.className = 'imgwrap';
-
-      const linkOk = validUrl(recipe_url);
-      const imgOk  = validUrl(image_url);
-
-      const img = new Image();
-      img.alt = title;
-      img.decoding = 'async';
-      img.loading = 'eager';
-      img.referrerPolicy = 'no-referrer';
-      if (imgOk) img.src = image_url;
-
-      const content = linkOk ? $('a',{href: recipe_url, target:'_blank', rel:'noopener noreferrer'}) : document.createElement('div');
-      content.appendChild(img);
-      wrap.appendChild(content);
-
-      el.imgSkeleton.replaceWith(wrap);
-      el.imgSkeleton = wrap;
-
-      const warn = [];
-      if(!imgOk) warn.push('图片 URL 无效');
-      if(!linkOk) warn.push('Recipe 链接无效');
-      if(warn.length) showIssues(warn);
+    function CardDrawer(opts={}){
+      const w = createWidget({type:'drawer', title:'🃏 Card Drawer', x:820, y:160, ...opts});
+      w.state.deck = (opts.state && opts.state.deck) || [
+        {title:'今日惊喜', desc:'试一道从未做过的菜'},
+        {title:'健康打卡', desc:'今晚 20 分钟快步走'},
+        {title:'电影之夜', desc:'看一部 2010 年前的电影'},
+        {title:'整理时间', desc:'清理冰箱和补货清单'},
+        {title:'放松一下', desc:'泡个脚 + 播放黑胶'}
+      ];
+      w.body.innerHTML = `
+        <div class="grid">
+          <div class="row">
+            <button class="btn" data-draw>抽一张</button>
+            <button class="btn secondary" data-peek>查看卡组(${w.state.deck.length})</button>
+          </div>
+          <div class="grid" data-area>
+            <div class="badge">点“抽一张”随机出卡</div>
+          </div>
+        </div>`;
+      const area = w.body.querySelector('[data-area]');
+      const renderCard = (c)=>{ area.innerHTML=''; const card=document.createElement('div'); card.style.border='1px solid var(--stroke)'; card.style.borderRadius='12px'; card.style.padding='10px'; card.style.background='#221b17'; card.innerHTML=`<strong>${c.title}</strong><div class="muted">${c.desc||''}</div>`; area.appendChild(card); }
+      w.body.querySelector('[data-draw]').addEventListener('click',()=>{ const d=w.state.deck; const i=Math.floor(Math.random()*d.length); renderCard(d[i]); saveLayout(); });
+      w.body.querySelector('[data-peek]').addEventListener('click',()=>{ area.innerHTML=''; w.state.deck.forEach(c=>{ const row=document.createElement('div'); row.className='row'; row.innerHTML=`<span class="badge">${c.title}</span><span class="muted">${c.desc||''}</span>`; area.appendChild(row); }); });
+      return w;
     }
 
-    function pickRandom(){
-      if(!state.rows.length){ showIssues(["没有可用数据"]); return; }
-      let idx; do { idx = Math.floor(Math.random()*state.rows.length); } while(state.rows.length>1 && idx===state.lastIdx);
-      state.lastIdx = idx;
-      renderRecipe(state.rows[idx]);
+    // ========= Layout persistence =========
+    function serialize(){
+      const data=[]; document.querySelectorAll('.widget').forEach(el=>{
+        const bodyHidden = el.querySelector('.w-body')?.classList.contains('hidden');
+        data.push({ id: el.dataset.id, type: el.dataset.type, x: el.offsetLeft, y: el.offsetTop, w: el.offsetWidth, h: el.offsetHeight, minimized: !!bodyHidden, state: window.__widgetState?.[el.dataset.id] || {} });
+      });
+      return data;
+    }
+    function saveLayout(){ const data=serialize(); localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
+    async function loadLayout(){
+      const raw = localStorage.getItem(STORAGE_KEY); if(!raw) return false; const arr = JSON.parse(raw);
+      board.querySelectorAll('.widget').forEach(n=>n.remove());
+      window.__widgetState = {};
+      for(const w of arr){ let inst; if(w.type==='recipe') inst = await RecipeWidget({x:w.x,y:w.y,w:w.w,h:w.h,state:w.state}); else if(w.type==='movie') inst = await MovieWidget({x:w.x,y:w.y,w:w.w,h:w.h,state:w.state}); else if(w.type==='drawer') inst = await CardDrawer({x:w.x,y:w.y,w:w.w,h:w.h,state:w.state}); if(inst){ window.__widgetState[inst.id] = inst.state; if(w.minimized){ inst.root.querySelector('.w-body').classList.add('hidden'); } } }
+      return true;
     }
 
-    // ===== 3) 加载 CSV（无第三方依赖） =====
-    async function loadCsv(){
-      const CSV_PATH = 'data/atk_recipes_all.csv';
-      const url = `${CSV_PATH}${CSV_PATH.includes('?')?'&':'?'}t=${Date.now()}`; // 防缓存
-      const res = await fetch(url, { cache: 'no-store' });
-      if(!res.ok) throw new Error('CSV 加载失败：'+res.status);
-      const text = await res.text();
-      const rows = parseCSV(text, {header:true, skipEmptyLines:true})
-        .map(row=>({
-          title: (row.title || row.Title || row.name || '').trim(),
-          image_url: (row.image_url || row.image || row.img || '').trim(),
-          recipe_url: (row.recipe_url || row.url || row.link || '').trim()
-        }))
-        .filter(r => r.title && (r.image_url || r.recipe_url));
-      if(!rows.length) throw new Error('CSV 没有解析到有效数据（至少需要 title 与一个 URL 字段）');
-      state.rows = rows;
-    }
+    // ========= Toolbar actions =========
+    document.getElementById('addRecipe').addEventListener('click', async()=>{ const inst = await RecipeWidget(); (window.__widgetState||(window.__widgetState={}))[inst.id]=inst.state; saveLayout(); });
+    document.getElementById('addMovie').addEventListener('click', async()=>{ const inst = await MovieWidget(); (window.__widgetState||(window.__widgetState={}))[inst.id]=inst.state; saveLayout(); });
+    document.getElementById('addDrawer').addEventListener('click', ()=>{ const inst = CardDrawer(); (window.__widgetState||(window.__widgetState={}))[inst.id]=inst.state; saveLayout(); });
+    document.getElementById('saveLayout').addEventListener('click', saveLayout);
+    document.getElementById('loadLayout').addEventListener('click', ()=>{ loadLayout(); });
+    document.getElementById('resetLayout').addEventListener('click', ()=>{ localStorage.removeItem(STORAGE_KEY); location.reload(); });
 
-    // ===== 4) 绑定与初始化 =====
-    function bindUI(){
-      el.btn.addEventListener('click', pickRandom);
-      window.addEventListener('keydown', (e)=>{ if(e.key.toLowerCase()==='r'){ pickRandom(); }});
-    }
-
-    (async function init(){
-      try{
-        bindUI();
-        el.title.textContent = '正在加载 CSV…';
-        await loadCsv();
-        el.title.textContent = '加载完成，点“随机来一个”或按 R';
-        pickRandom();
-      }catch(err){
-        console.error(err);
-        el.title.textContent = '加载失败';
-        showIssues([String(err.message||err)]);
+    // ========= Boot =========
+    (async function boot(){
+      const ok = await loadLayout();
+      if(!ok){
+        const a = await RecipeWidget({x:120,y:140});
+        const b = await MovieWidget({x:520,y:120});
+        const c = CardDrawer({x:820,y:160});
+        window.__widgetState = {[a.id]:a.state,[b.id]:b.state,[c.id]:c.state};
+        saveLayout();
       }
     })();
+  })();
   </script>
 </body>
 </html>
+
