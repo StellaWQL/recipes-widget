@@ -15,11 +15,9 @@
     :root{
       --bg:#0a0a0c; --bg-grad1:#0f0e13;
       --veil1:rgba(198,169,105,.08); --veil2:rgba(122,31,61,.10);
-
       --panel:#141018; --panel-2:#0f0b13;
       --text:#eee7db; --muted:#b8b0a2; --stroke:#2b2330;
       --accent:#c6a969; --accent2:#9b7b3a; --danger:#7a1f3d; --link:#d7c08a;
-
       --shadow:0 22px 50px rgba(0,0,0,.6);
       --shadow-sm:0 12px 28px rgba(0,0,0,.45);
 
@@ -30,8 +28,7 @@
         "Source Han Serif SC","Source Han Serif TC",
         "Songti SC","STSong",
         "Hiragino Mincho ProN","Hiragino Mincho Pro","Yu Mincho",
-        "PMingLiU","MingLiU",
-        serif;
+        "PMingLiU","MingLiU",serif;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
@@ -47,23 +44,13 @@
       font-variant-ligatures:normal; font-feature-settings:"liga" 1,"kern" 1;
       text-rendering:optimizeLegibility; -webkit-font-smoothing:antialiased;
     }
-    button, input, select, textarea,
-    .btn, .badge, .w-title, .w-header, .w-body, .w-footer, code, pre, kbd, samp { font-family:inherit; }
 
-    .topbar{
-      position:fixed; inset:12px 12px auto 12px;
-      background:linear-gradient(180deg,var(--panel),var(--panel-2));
-      border:1px solid var(--stroke); border-radius:14px;
-      display:flex; align-items:center; gap:10px;
-      padding:8px 10px; z-index:10000; box-shadow:var(--shadow-sm);
-    }
-    .btn{
-      appearance:none; border:0; border-radius:12px; padding:8px 12px;
-      cursor:pointer; font-weight:800; letter-spacing:.3px;
-      color:#160e10; background:linear-gradient(180deg,var(--accent),#b28b4a);
-      box-shadow:0 10px 22px rgba(198,169,105,.28);
-      transition:filter .12s ease, transform .05s ease;
-    }
+    .topbar{position:fixed; inset:12px 12px auto 12px; background:linear-gradient(180deg,var(--panel),var(--panel-2));
+      border:1px solid var(--stroke); border-radius:14px; display:flex; align-items:center; gap:10px;
+      padding:8px 10px; z-index:10000; box-shadow:var(--shadow-sm)}
+    .btn{appearance:none; border:0; border-radius:12px; padding:8px 12px; cursor:pointer; font-weight:800; letter-spacing:.3px;
+      color:#160e10; background:linear-gradient(180deg,var(--accent),#b28b4a); box-shadow:0 10px 22px rgba(198,169,105,.28);
+      transition:filter .12s ease, transform .05s ease}
     .btn:hover{filter:brightness(1.06)}
     .btn:active{transform:translateY(1px)}
     .btn.secondary{background:linear-gradient(180deg,#1b141b,#130f15); color:var(--text); box-shadow:none; border:1px solid var(--stroke)}
@@ -72,43 +59,22 @@
 
     #board{position:absolute; inset:0; padding:64px 16px 16px 16px}
 
-    .widget{
-      position:absolute; top:100px; left:100px; width:360px; min-width:260px; max-width:560px;
-      background:linear-gradient(180deg, var(--panel), #0c0a10);
-      border:1px solid var(--stroke); border-radius:16px; box-shadow:var(--shadow); overflow:hidden;
-    }
+    .widget{position:absolute; top:100px; left:100px; width:360px; min-width:260px; max-width:560px;
+      background:linear-gradient(180deg, var(--panel), #0c0a10); border:1px solid var(--stroke); border-radius:16px; box-shadow:var(--shadow); overflow:hidden}
     .widget.resizable{resize:both}
 
     /* 极简 header：只有标题；点击标题=关闭；hover 微光 */
-    .w-header{
-      position:relative; cursor:grab; user-select:none;
-      background:linear-gradient(180deg,#1a1420,#100c14);
-      padding:10px 12px; border-bottom:1px solid var(--stroke);
-      display:flex; align-items:center; justify-content:center;
-    }
-    .w-title{
-      font-size:15px; font-weight:900; letter-spacing:.35px;
-      transition:filter .15s ease, text-shadow .15s ease, color .15s ease, transform .05s ease;
-      cursor:pointer;
-    }
-    .w-title:hover{
-      color:#f6ead0;
-      text-shadow:0 0 6px rgba(198,169,105,.45), 0 0 14px rgba(122,31,61,.35);
-      filter:brightness(1.06);
-    }
+    .w-header{position:relative; cursor:grab; user-select:none; background:linear-gradient(180deg,#1a1420,#100c14);
+      padding:10px 12px; border-bottom:1px solid var(--stroke); display:flex; align-items:center; justify-content:center}
+    .w-title{font-size:15px; font-weight:900; letter-spacing:.35px; transition:filter .15s ease, text-shadow .15s ease, color .15s ease, transform .05s ease; cursor:pointer}
+    .w-title:hover{color:#f6ead0; text-shadow:0 0 6px rgba(198,169,105,.45), 0 0 14px rgba(122,31,61,.35); filter:brightness(1.06)}
     .w-title:active{transform:translateY(1px)}
 
     .w-body{padding:12px; display:grid; gap:10px}
     .w-footer{padding:10px 12px; border-top:1px solid var(--stroke); color:var(--muted); font-size:12px}
 
-    .figure{
-      position:relative; display:block; width:100%;
-      border-radius:12px; border:1px solid var(--stroke); overflow:hidden;
-      background:
-        repeating-linear-gradient(45deg, rgba(255,245,230,.04) 0 6px, rgba(0,0,0,.02) 6px 12px),
-        radial-gradient(500px 300px at 85% 20%, rgba(122,31,61,.10), transparent 60%),
-        #0f0b12;
-    }
+    .figure{position:relative; display:block; width:100%; border-radius:12px; border:1px solid var(--stroke); overflow:hidden;
+      background:repeating-linear-gradient(45deg, rgba(255,245,230,.04) 0 6px, rgba(0,0,0,.02) 6px 12px), radial-gradient(500px 300px at 85% 20%, rgba(122,31,61,.10), transparent 60%), #0f0b12}
     .figure.poster{aspect-ratio:2/3}
     .figure.square{aspect-ratio:1/1}
     .figure>img{position:absolute; inset:0; width:100%; height:100%; object-fit:contain; display:block}
@@ -118,9 +84,16 @@
     .badge{padding:4px 8px; border:1px solid var(--stroke); border-radius:999px; color:var(--muted); font-size:12px; background:#17111a}
     .link{color:var(--link); text-decoration:none}
     .link:hover{text-decoration:underline}
-
-    .widget:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
     .hidden{display:none}
+
+    /* —— 引文咒语：默认完全融入，只有 hover 才微光 —— */
+    .incant-wrap{width:100%}
+    .incant-wrap .divider{height:1px; width:100%; background:linear-gradient(90deg, transparent, rgba(214,191,129,.65), transparent); opacity:.85; margin:2px 0 8px 0}
+    .incant-wrap .divider.bottom{margin:8px 0 2px 0}
+    .spell{line-height:1.55; color:var(--muted); user-select:none; -webkit-user-select:none; text-align:left}
+    .spell .hot{color:inherit; cursor:pointer; font-weight:inherit; text-decoration:none; padding:0 1px; border-radius:3px; transition:text-shadow .15s ease, filter .15s ease}
+    .spell .hot:hover{text-shadow:0 0 6px rgba(214,191,129,.55), 0 0 16px rgba(128,34,66,.45); filter:brightness(1.07)}
+    .spell .author{display:block; margin-top:6px; color:#cbbf9f; opacity:.9; font-size:12px; letter-spacing:.2px}
   </style>
 </head>
 <body>
@@ -166,7 +139,8 @@
       if(header){
         const head=rows.shift().map(h=>h.trim());
         const out=rows.map(r=>{const o={}; head.forEach((h,idx)=>o[h]=(r[idx]??'').trim()); return o;});
-        return skipEmptyLines ? out.filter(o=>Object.values(o).some(v=>v!=='')) : out;
+        return skipEmptyLines ? out.filter(o=>Object.values(o).some(v=>v!==''))
+                              : out;
       }
       return skipEmptyLines ? rows.filter(r=>r.some(v=>v!=='')) : rows;
     }
@@ -220,7 +194,7 @@
       const titleEl = root.querySelector('[data-title]');
       const body = root.querySelector('.w-body');
 
-      // —— 拖拽逻辑（避免误关）——
+      // 拖拽
       let drag = {on:false, dx:0, dy:0, moved:false, startX:0, startY:0};
       header.addEventListener('mousedown', (e)=>{
         drag.on=true; drag.moved=false;
@@ -239,17 +213,52 @@
       window.addEventListener('mouseup', ()=>{
         if(drag.on){ drag.on=false; header.style.cursor='grab'; saveLayout(); }
       });
-
-      // —— 点击标题关闭（仅在未拖动时）——
-      titleEl.addEventListener('click', ()=>{
-        if(drag.moved) return;
-        root.remove(); saveLayout();
-      });
-
+      // 点击标题 = 关闭（未拖动时）
+      titleEl.addEventListener('click', ()=>{ if(!drag.moved){ root.remove(); saveLayout(); } });
       root.addEventListener('dblclick', ()=>{ zStack.bump(root); });
 
       board.appendChild(root);
       return { id, root, body, state };
+    }
+
+    // ---------- 引文组件：上、下金线；parts 中 hot=true 的词可点 ----------
+    function makeIncantation(container, {parts, author}){
+      const wrap = document.createElement('div');
+      wrap.className = 'incant-wrap';
+
+      const top = document.createElement('div');
+      top.className = 'divider';
+      const bottom = document.createElement('div');
+      bottom.className = 'divider bottom';
+
+      const line = document.createElement('div');
+      line.className = 'spell';
+
+      parts.forEach((p,i)=>{
+        const span = document.createElement('span');
+        span.textContent = p.text;
+        if(p.hot){
+          span.className = 'hot';
+          if(typeof p.onClick === 'function'){
+            span.addEventListener('click', (e)=>{ e.stopPropagation(); p.onClick(); });
+          }
+        }
+        line.appendChild(span);
+        if(i !== parts.length-1) line.append(' ');
+      });
+
+      if(author){
+        const au = document.createElement('span');
+        au.className = 'author';
+        au.textContent = `— ${author}`;
+        line.appendChild(au);
+      }
+
+      wrap.appendChild(top);
+      wrap.appendChild(line);
+      wrap.appendChild(bottom);
+      container.appendChild(wrap);
+      return wrap;
     }
 
     // ---------- Recipe ----------
@@ -257,9 +266,7 @@
       const w = createWidget({type:'recipe', title:'🍳 Recipe', x:140, y:120, ...opts});
       w.body.innerHTML = `
         <div class="grid">
-          <div class="row">
-            <button class="btn" data-random>11 Moon Phase</button>
-          </div>
+          <div class="row" data-incant></div>
           <div class="grid">
             <a class="figure square" data-link target="_blank" rel="noopener noreferrer">
               <img data-img alt="recipe image" />
@@ -271,13 +278,12 @@
           </div>
         </div>`;
       const el = {
-        btn: w.body.querySelector('[data-random]'),
+        incant: w.body.querySelector('[data-incant]'),
         title: w.body.querySelector('[data-title]'),
         img: w.body.querySelector('[data-img]'),
         link: w.body.querySelector('[data-link]'),
         issues: w.body.querySelector('[data-issues]')
       };
-      const showIssues = (arr=[])=>{ el.issues.innerHTML=''; arr.forEach(m=>{ const b=document.createElement('span'); b.className='badge'; b.textContent=m; el.issues.appendChild(b); }) };
       async function ensureData(){
         if(w.state.rows?.length) return w.state.rows;
         const CSV_PATH = 'data/atk_recipes_all.csv';
@@ -294,32 +300,39 @@
       }
       function render(r){
         el.title.textContent = r.title || '未命名';
-        const imgOk=validUrl(r.image_url), linkOk=validUrl(r.recipe_url);
+        const imgOk = r.image_url && (()=>{ try{ new URL(r.image_url); return true;}catch{return false;} })();
+        const linkOk= r.recipe_url && (()=>{ try{ new URL(r.recipe_url); return true;}catch{return false;} })();
         el.img.src = imgOk? r.image_url : '';
         el.link.href = linkOk? r.recipe_url : '#';
-        const issues = [];
-        if(!imgOk) issues.push('图片无效');
-        if(!linkOk) issues.push('链接无效');
-        showIssues(issues);
+        const issues=[]; if(!imgOk) issues.push('图片无效'); if(!linkOk) issues.push('链接无效');
+        el.issues.innerHTML = issues.map(s=>`<span class="badge">${s}</span>`).join('');
       }
       function pick(){
-        const arr=w.state.rows; if(!arr?.length) return;
-        let i; do{ i=Math.floor(Math.random()*arr.length) }while(arr.length>1 && i===w.state.last);
-        w.state.last=i; render(arr[i]); saveLayout();
+        const a=w.state.rows; if(!a?.length) return;
+        let i; do{ i=Math.floor(Math.random()*a.length) }while(a.length>1 && i===w.state.last);
+        w.state.last=i; render(a[i]); saveLayout();
       }
-      el.btn.addEventListener('click', async()=>{ try{ await ensureData(); pick(); }catch(e){ showIssues([String(e.message||e)]) } });
-      try{ await ensureData(); pick(); }catch(e){ showIssues([String(e.message||e)]) }
+
+      makeIncantation(el.incant, {
+        parts:[
+          {text:'Et', hot:false},
+          {text:'luna', hot:false},
+          {text:'phase', hot:true, onClick:()=> pick()},
+          {text:'XI', hot:false}
+        ],
+        author:''
+      });
+
+      try{ await ensureData(); pick(); }catch(e){ el.issues.innerHTML=`<span class="badge">${String(e.message||e)}</span>`; }
       return w;
     }
 
-    // ---------- Movie ----------
+    // ---------- Movie（隐藏触发词 = 第一个 amavi） ----------
     async function MovieWidget(opts={}){
       const w = createWidget({type:'movie', title:'🎬 Movie', x:360, y:180, ...opts});
       w.body.innerHTML = `
         <div class="grid">
-          <div class="row">
-            <button class="btn" data-random>Ascending Flame</button>
-          </div>
+          <div class="row" data-incant></div>
           <div class="grid">
             <a class="figure poster" data-link target="_blank" rel="noopener noreferrer">
               <img data-img alt="movie poster" />
@@ -333,7 +346,7 @@
           </div>
         </div>`;
       const el = {
-        btn:w.body.querySelector('[data-random]'),
+        incant:w.body.querySelector('[data-incant]'),
         img:w.body.querySelector('[data-img]'),
         link:w.body.querySelector('[data-link]'),
         title:w.body.querySelector('[data-title]'),
@@ -341,7 +354,6 @@
         score:w.body.querySelector('[data-score]'),
         issues:w.body.querySelector('[data-issues]'),
       };
-      const showIssues=(arr=[])=>{ el.issues.innerHTML=''; arr.forEach(m=>{ const s=document.createElement('span'); s.className='badge'; s.textContent=m; el.issues.appendChild(s); }) };
       const parseYear = (d)=>{
         if(!d) return '';
         const m4 = String(d).match(/(19|20)\d{2}/); if(m4) return m4[0];
@@ -352,11 +364,11 @@
       async function ensureData(){
         if(w.state.rows?.length) return w.state.rows;
         const candidates = w.state.candidates || ['data/movies.csv','movies.csv'];
-        let used=null, rows=null, lastErr=null;
+        let rows=null;
         for(const p of candidates){
           try{
             const res = await fetch(`${p}?t=${Date.now()}`, {cache:'no-store'});
-            if(!res.ok){ lastErr = new Error(p+': '+res.status); continue; }
+            if(!res.ok) continue;
             const txt  = await res.text();
             const arr  = parseCSV(txt,{header:true,skipEmptyLines:true}).map(r=>{
               const t   = (r.title||r.name||'').trim();
@@ -366,11 +378,11 @@
               const url = (r.url||r.link||r.movie_url||'').trim();
               return { title:t, release_date:rd, metascore:ms, poster_url:img, url };
             }).filter(o=> o.title && (o.poster_url || o.url));
-            if(arr.length){ used=p; rows=arr; break; }
-          }catch(e){ lastErr=e; }
+            if(arr.length){ rows=arr; break; }
+          }catch{}
         }
-        if(!rows){ throw new Error('找不到可用的 movies CSV（尝试了：'+candidates.join(', ')+')'); }
-        w.state.rows = rows; w.state.csvPath = used;
+        if(!rows){ throw new Error('找不到可用的 movies CSV'); }
+        w.state.rows = rows;
         return rows;
       }
       function render(r){
@@ -381,46 +393,60 @@
         el.img.src = hasImg ? r.poster_url : '';
         const target = r.url && r.url.trim() ? r.url.trim() : `https://www.google.com/search?q=${encodeURIComponent('site:metacritic.com '+(r.title||''))}`;
         el.link.href = target;
-        const issues=[]; if(!hasImg) issues.push('图片无效或缺失'); if(!target) issues.push('无可用链接'); showIssues(issues);
+        const issues=[]; if(!hasImg) issues.push('图片无效或缺失'); if(!target) issues.push('无可用链接');
+        el.issues.innerHTML = issues.map(s=>`<span class="badge">${s}</span>`).join('');
       }
       function pick(){
         const a=w.state.rows; if(!a?.length) return;
         let i; do{i=Math.floor(Math.random()*a.length)}while(a.length>1 && i===w.state.last);
         w.state.last = i; render(a[i]); saveLayout();
       }
-      el.btn.addEventListener('click', async()=>{ try{ await ensureData(); pick(); }catch(e){ showIssues([String(e.message||e)]) } });
-      try{ await ensureData(); pick(); }catch(e){ showIssues([String(e.message||e)]) }
+
+      makeIncantation(el.incant, {
+        parts:[
+          {text:'Sero', hot:false},
+          {text:'te', hot:false},
+          {text:'amavi,', hot:true, onClick:()=> pick()},   // 只有这个可点
+          {text:'Pulchritudo', hot:false},
+          {text:'tam', hot:false},
+          {text:'antiqua', hot:false},
+          {text:'et', hot:false},
+          {text:'tam', hot:false},
+          {text:'nova!', hot:false},
+          {text:'Sero', hot:false},
+          {text:'te', hot:false},
+          {text:'amavi.', hot:false}
+        ],
+        author:'S. Augustine.'
+      });
+
+      try{ await ensureData(); pick(); }catch(e){ el.issues.innerHTML=`<span class="badge">${String(e.message||e)}</span>`; }
       return w;
     }
 
-    // ---------- Read (EPUB from GitHub/practice) ----------
+    // ---------- Read（隐藏触发词 = stars；去掉 .epub；封面点击打开 reader.html） ----------
     async function ReadWidget(opts={}){
       const w = createWidget({type:'read', title:'📚 Read', x:720, y:140, ...opts});
       w.body.innerHTML = `
         <div class="grid">
-          <div class="row">
-            <button class="btn" data-random>🐚</button>
-          </div>
+          <div class="row" data-incant></div>
           <div class="grid">
             <a class="figure poster" data-link target="_blank" rel="noopener noreferrer">
               <img data-img alt="book cover" />
             </a>
             <div class="row">
               <strong data-title>准备中…</strong>
-              <a class="link" data-open target="_blank" rel="noopener">在阅读器打开</a>
             </div>
             <div class="row" data-issues></div>
           </div>
         </div>`;
       const el = {
-        btn:   w.body.querySelector('[data-random]'),
+        incant: w.body.querySelector('[data-incant]'),
         img:   w.body.querySelector('[data-img]'),
         link:  w.body.querySelector('[data-link]'),
-        open:  w.body.querySelector('[data-open]'),
         title: w.body.querySelector('[data-title]'),
         issues:w.body.querySelector('[data-issues]')
       };
-      const showIssues=(arr=[])=>{ el.issues.innerHTML=''; arr.forEach(m=>{ const s=document.createElement('span'); s.className='badge'; s.textContent=m; el.issues.appendChild(s); }) };
 
       const CACHE_KEY = `reads.list.${GH.user}.${GH.repo}.${GH.branch}.${GH.path}`;
       const CACHE_MS  = 10*60*1000;
@@ -471,9 +497,9 @@
 
       async function render(item){
         const {name, url} = item;
-        el.title.textContent = name || '未命名';
+        const display = (name||'未命名').replace(/\.epub$/i,'');
+        el.title.textContent = display;
         el.link.href = readerUrlFor(url);
-        el.open.href = el.link.href;
 
         if(!w.state.covers) w.state.covers = {};
         if(w.state.covers[url]){ el.img.src = w.state.covers[url]; return; }
@@ -482,9 +508,9 @@
         try{
           const cover = await extractCoverUrl(url);
           if(cover){ w.state.covers[url] = cover; el.img.src = cover; }
-          else { showIssues(['未找到封面（可能书里未标 cover）']); }
+          else { el.issues.innerHTML=`<span class="badge">未找到封面</span>`; }
         }catch(e){
-          showIssues(['封面解析失败（检查 JSZip/epub.js 与 CORS）']);
+          el.issues.innerHTML=`<span class="badge">封面解析失败（检查 JSZip/epub.js 与 CORS）</span>`;
           console.error(e);
         }
       }
@@ -493,8 +519,26 @@
         let i; do{ i = Math.floor(Math.random()*a.length); }while(a.length>1 && i===w.state.last);
         w.state.last = i; render(a[i]); saveLayout();
       }
-      el.btn.addEventListener('click', async()=>{ try{ await ensureList(); pick(); }catch(e){ showIssues([String(e.message||e)]) } });
-      try{ await ensureList(); pick(); }catch(e){ showIssues([String(e.message||e)]) }
+
+      makeIncantation(el.incant, {
+        parts:[
+          {text:'The', hot:false},
+          {text:'stars', hot:true, onClick:()=> pick()},
+          {text:'are', hot:false},
+          {text:'threshed,', hot:false},
+          {text:'and', hot:false},
+          {text:'the', hot:false},
+          {text:'souls', hot:false},
+          {text:'are', hot:false},
+          {text:'threshed', hot:false},
+          {text:'from', hot:false},
+          {text:'their', hot:false},
+          {text:'husks.', hot:false}
+        ],
+        author:'William Blake.'
+      });
+
+      try{ await ensureList(); pick(); }catch(e){ el.issues.innerHTML=`<span class="badge">${String(e.message||e)}</span>`; }
       return w;
     }
 
@@ -569,7 +613,8 @@
         const a = await RecipeWidget({x:120,y:140});
         const b = await MovieWidget({x:520,y:120});
         const c = CardDrawer({x:820,y:160});
-        window.__widgetState = {[a.id]:a.state,[b.id]:b.state,[c.id]:c.state};
+        const d = await ReadWidget({x:920,y:140});
+        window.__widgetState = {[a.id]:a.state,[b.id]:b.state,[c.id]:c.state,[d.id]:d.state};
         saveLayout();
       }
     })();
