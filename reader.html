@@ -4,57 +4,231 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>EPUB Reader</title>
+  <title>EPUB Reader · Occult</title>
   <style>
-    html,body{height:100%;margin:0;background:#0b0c0f;color:#e5e7eb;font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial}
-    .top{display:flex;gap:8px;align-items:center;padding:8px 12px;background:#111827;border-bottom:1px solid #1f2937}
-    .btn{appearance:none;border:0;border-radius:10px;padding:8px 12px;background:#1f2937;color:#e5e7eb;cursor:pointer}
-    .btn:hover{filter:brightness(1.1)}
-    .title{margin-left:8px;color:#9ca3af;font-size:14px}
-    #viewer{position:absolute;inset:48px 0 0 0}
+    :root{
+      /* Occult palette: 深黑+铜金+暗红点缀，正文高对比米白 */
+      --bg:#0a0a0c;             /* 夜色 */
+      --bg-2:#0e0e12;           /* 次级背景 */
+      --ink:#eee7db;            /* 正文浅米白 */
+      --muted:#b8b0a2;          /* 次要文字 */
+      --brass:#c6a969;          /* 黄铜 */
+      --brass-2:#9b7b3a;        /* 暗黄铜 */
+      --crimson:#7a1f3d;        /* 暗红点缀 */
+      --stroke:#1c1a20;
+      --shadow:0 18px 40px rgba(0,0,0,.6);
+      --ui-serif:
+        "Iowan Old Style","Palatino Linotype","Book Antiqua",Georgia,
+        "Noto Serif","Noto Serif SC","Noto Serif TC","Source Han Serif SC","Source Han Serif TC",
+        serif;
+      --content-sans:
+        ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial,
+        "Noto Sans", "Noto Sans SC","Noto Sans TC", "Source Han Sans SC","Source Han Sans TC",
+        "PingFang SC","Hiragino Sans GB","Microsoft YaHei",
+        sans-serif;
+    }
+
+    html,body{height:100%;margin:0;background:radial-gradient(1000px 700px at 10% -15%, rgba(198,169,105,.08), transparent 50%), var(--bg); color:var(--ink)}
+    /* 顶部控制条使用衬线 */
+    .top{
+      position:fixed; inset:0 0 auto 0; height:52px;
+      display:flex; gap:10px; align-items:center;
+      padding:8px 12px;
+      background:linear-gradient(180deg, #0e0e12, #0a0a0c);
+      border-bottom:1px solid var(--stroke);
+      box-shadow: var(--shadow);
+      font-family: var(--ui-serif);
+      z-index:10;
+    }
+    .btn{
+      appearance:none; border:1px solid #2b2330; border-radius:12px;
+      padding:8px 12px; cursor:pointer; font-weight:800; letter-spacing:.3px;
+      color:#160e10; background:linear-gradient(180deg,var(--brass),#b28b4a);
+      box-shadow:0 8px 22px rgba(198,169,105,.25);
+      transition:filter .12s ease, transform .05s ease;
+      user-select:none;
+    }
+    .btn:hover{ filter:brightness(1.06) }
+    .btn:active{ transform:translateY(1px) }
+    .btn.ghost{
+      background:linear-gradient(180deg,#1a1418,#120f13);
+      border-color:#33283a; color:var(--ink);
+      box-shadow:none;
+    }
+
+    .title{
+      margin-left:6px; color:var(--muted); font-size:14px; letter-spacing:.2px;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      max-width:40vw;
+    }
+    .spacer{flex:1}
+
+    /* 阅读区域容器 */
+    #viewer{
+      position:absolute; inset:52px 0 0 0;
+      background:
+        radial-gradient(800px 600px at 110% 10%, rgba(122,31,61,.12), transparent 60%),
+        linear-gradient(180deg, var(--bg-2), var(--bg));
+    }
+
+    /* 浅边框 & 渐隐滚动条（若iframe内部可用其自身样式）*/
+    ::selection { background:#2b2131; color:#f6efe2; }
   </style>
 </head>
 <body>
   <div class="top">
-    <button class="btn" id="prev">◀︎ 上一章</button>
-    <button class="btn" id="next">下一章 ▶︎</button>
+    <button class="btn ghost" id="prev">◀︎ 上一章</button>
+    <button class="btn ghost" id="next">下一章 ▶︎</button>
+    <div class="spacer"></div>
+    <button class="btn" id="minus">A−</button>
+    <button class="btn" id="plus">A+</button>
     <span class="title" id="name">加载中…</span>
   </div>
-  <div id="viewer"></div>
+  <div id="viewer" aria-label="EPUB content"></div>
 
-  <!-- 必须先加载 JSZip 再加载 epub.js -->
+  <!-- 先 JSZip 再 epub.js（必要顺序） -->
   <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
   <script src="https://unpkg.com/epubjs/dist/epub.min.js"></script>
 
   <script>
-    (async function(){
-      const qs = new URLSearchParams(location.search);
+    (function(){
+      const qs   = new URLSearchParams(location.search);
       const bookUrl = qs.get('book');
-      const nameEl = document.getElementById('name');
+      const nameEl  = document.getElementById('name');
+      const btnPrev = document.getElementById('prev');
+      const btnNext = document.getElementById('next');
+      const btnPlus = document.getElementById('plus');
+      const btnMinus= document.getElementById('minus');
+      const viewer  = document.getElementById('viewer');
+
       if(!bookUrl){
         nameEl.textContent = '没有提供 book 参数';
         return;
       }
       nameEl.textContent = decodeURIComponent(bookUrl.split('/').pop());
 
-      // 创建 Book & Rendition
-      try{
-        const book = ePub(bookUrl);
-        const rendition = book.renderTo("viewer", { width: "100%", height: "100%" });
-        await rendition.display();
+      // === 建立 Book & Rendition ===
+      // flow: paginated => 适合键盘/滚轮“页”翻；spread:none 保持单页；manager默认
+      const book = ePub(bookUrl);
+      const fontSizes = ["90%","100%","110%","120%","130%","140%"];
+      let fontIndex = parseInt(localStorage.getItem('epub_font_idx')||"1",10);
+      fontIndex = Math.max(0, Math.min(fontSizes.length-1, fontIndex));
 
-        document.getElementById('prev').addEventListener('click', ()=> rendition.prev());
-        document.getElementById('next').addEventListener('click', ()=> rendition.next());
+      const rendition = book.renderTo("viewer", {
+        width: "100%", height: "100%",
+        flow: "paginated",
+        spread: "none",
+        allowScriptedContent: true
+      });
 
-        // 键盘左右键翻页
-        document.addEventListener('keydown', (e)=>{
-          if(e.key==='ArrowLeft')  rendition.prev();
-          if(e.key==='ArrowRight') rendition.next();
-        });
-      }catch(e){
-        console.error(e);
-        nameEl.textContent = '打开失败（请检查 CORS / 链接是否可访问）';
+      // ---- 主题：正文无衬线，高对比易读；链接铜金，段落舒展 ----
+      const baseCSS = `
+        :root{ color-scheme: dark; }
+        html, body{
+          background: transparent !important;
+          color: ${getComputedStyle(document.documentElement).getPropertyValue('--ink').trim()};
+        }
+        body{
+          font-family: ${getComputedStyle(document.documentElement).getPropertyValue('--content-sans').trim()};
+          -webkit-font-smoothing: antialiased;
+          text-rendering: optimizeLegibility;
+          line-height: 1.68;
+          word-wrap: break-word;
+          overflow-wrap: anywhere;
+          letter-spacing: .1px;
+        }
+        p{ margin: .6em 0 1em; }
+        h1,h2,h3,h4,h5,h6{
+          font-family: ${getComputedStyle(document.documentElement).getPropertyValue('--content-sans').trim()};
+          font-weight: 800; letter-spacing:.2px; margin: 1.2em 0 .6em;
+        }
+        a{ color: ${getComputedStyle(document.documentElement).getPropertyValue('--brass').trim()}; text-decoration: none; }
+        a:hover{ text-decoration: underline; }
+        img, svg, figure{ max-width:100%; height:auto; }
+        blockquote{
+          border-inline-start: 3px solid ${getComputedStyle(document.documentElement).getPropertyValue('--brass-2').trim()};
+          padding: .1em 1em; opacity:.95;
+        }
+        *{ hyphens: auto; }
+        ::selection{ background:#2b2131; color:#f6efe2; }
+      `;
+
+      rendition.themes.register("occult", {
+        "body": { "background": "transparent" } // 容器背景透明，使用外层暗色
+      });
+      rendition.themes.registerRules("occult", baseCSS);
+      rendition.themes.select("occult");
+      rendition.themes.fontSize(fontSizes[fontIndex]);
+
+      rendition.display();
+
+      // === 控件 ===
+      btnPrev.addEventListener('click', ()=> rendition.prev());
+      btnNext.addEventListener('click', ()=> rendition.next());
+      btnPlus.addEventListener('click', ()=>{
+        if(fontIndex < fontSizes.length-1){ fontIndex++; applyFont(); }
+      });
+      btnMinus.addEventListener('click', ()=>{
+        if(fontIndex > 0){ fontIndex--; applyFont(); }
+      });
+      function applyFont(){
+        rendition.themes.fontSize(fontSizes[fontIndex]);
+        localStorage.setItem('epub_font_idx', String(fontIndex));
       }
+
+      // 键盘：左右、空格/Shift+空格
+      document.addEventListener('keydown', (e)=>{
+        if(e.key === 'ArrowLeft'){ e.preventDefault(); rendition.prev(); }
+        if(e.key === 'ArrowRight'){ e.preventDefault(); rendition.next(); }
+        if(e.code === 'Space'){
+          e.preventDefault();
+          if(e.shiftKey) rendition.prev(); else rendition.next();
+        }
+        if(e.key === 'PageDown'){ e.preventDefault(); rendition.next(); }
+        if(e.key === 'PageUp'){ e.preventDefault(); rendition.prev(); }
+      });
+
+      // 鼠标滚轮“上下翻页”（带节流：避免一次滚轮触发多次）
+      let wheelLock = false;
+      const WHEEL_COOLDOWN = 320; // ms
+      viewer.addEventListener('wheel', (e)=>{
+        // 忽略触控板极小抖动
+        if(wheelLock) return;
+        if(Math.abs(e.deltaY) < 8) return;
+        e.preventDefault();
+        wheelLock = true;
+        if(e.deltaY > 0) rendition.next(); else rendition.prev();
+        setTimeout(()=> wheelLock=false, WHEEL_COOLDOWN);
+      }, { passive:false });
+
+      // 加载错误显示
+      book.ready.catch(err=>{
+        console.error(err);
+        nameEl.textContent = '打开失败（请检查 CORS / 链接是否可访问）';
+      });
+
+      // 更新标题（若有 metadata）
+      book.loaded.metadata.then(meta=>{
+        if(meta && (meta.title || meta.creator)){
+          const t = [meta.title, meta.creator].filter(Boolean).join(' — ');
+          if(t) nameEl.textContent = t;
+        }
+      }).catch(()=>{ /* 忽略 */ });
+
+      // 在每章渲染后，也给内部文档打上一些可读性 CSS（章节内嵌样式可能覆盖，这里再次增强）
+      rendition.hooks.content.register((contents)=>{
+        // 章节 iframe 内追加 CSS
+        const doc = contents.document;
+        const style = doc.createElement('style');
+        style.textContent = baseCSS;
+        doc.head.appendChild(style);
+
+        // 章节内滚轮不要滚动自身（避免分页与内部滚冲突）
+        contents.document.addEventListener('wheel', (e)=>{
+          e.preventDefault();
+        }, { passive:false });
+      });
+
     })();
   </script>
 </body>
