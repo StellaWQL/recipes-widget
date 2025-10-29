@@ -1,0 +1,62 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EPUB Reader</title>
+  <style>
+    html,body{height:100%;margin:0;background:#0b0c0f;color:#e5e7eb;font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial}
+    .top{display:flex;gap:8px;align-items:center;padding:8px 12px;background:#111827;border-bottom:1px solid #1f2937}
+    .btn{appearance:none;border:0;border-radius:10px;padding:8px 12px;background:#1f2937;color:#e5e7eb;cursor:pointer}
+    .btn:hover{filter:brightness(1.1)}
+    .title{margin-left:8px;color:#9ca3af;font-size:14px}
+    #viewer{position:absolute;inset:48px 0 0 0}
+  </style>
+</head>
+<body>
+  <div class="top">
+    <button class="btn" id="prev">◀︎ 上一章</button>
+    <button class="btn" id="next">下一章 ▶︎</button>
+    <span class="title" id="name">加载中…</span>
+  </div>
+  <div id="viewer"></div>
+
+  <!-- 必须先加载 JSZip 再加载 epub.js -->
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+  <script src="https://unpkg.com/epubjs/dist/epub.min.js"></script>
+
+  <script>
+    (async function(){
+      const qs = new URLSearchParams(location.search);
+      const bookUrl = qs.get('book');
+      const nameEl = document.getElementById('name');
+      if(!bookUrl){
+        nameEl.textContent = '没有提供 book 参数';
+        return;
+      }
+      nameEl.textContent = decodeURIComponent(bookUrl.split('/').pop());
+
+      // 创建 Book & Rendition
+      try{
+        const book = ePub(bookUrl);
+        const rendition = book.renderTo("viewer", { width: "100%", height: "100%" });
+        await rendition.display();
+
+        document.getElementById('prev').addEventListener('click', ()=> rendition.prev());
+        document.getElementById('next').addEventListener('click', ()=> rendition.next());
+
+        // 键盘左右键翻页
+        document.addEventListener('keydown', (e)=>{
+          if(e.key==='ArrowLeft')  rendition.prev();
+          if(e.key==='ArrowRight') rendition.next();
+        });
+      }catch(e){
+        console.error(e);
+        nameEl.textContent = '打开失败（请检查 CORS / 链接是否可访问）';
+      }
+    })();
+  </script>
+</body>
+</html>
+

@@ -5,99 +5,81 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" type="image/svg+xml" href="./favicon.svg">
-  <title>My Widgets Board · Vintage</title>
+  <title>THE RAVEN.</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+  <script src="https://unpkg.com/epubjs/dist/epub.min.js"></script>
+
   <style>
-    /* =========================
-       Vintage color palette
-       ========================= */
     :root{
-      --bg:#1b1512;            /* deep cocoa */
-      --bg-grad1:#201914;      /* vignette */
-      --panel:#2a211d;         /* dark sepia panel */
-      --panel-2:#231b17;
-      --text:#f3eee7;          /* old paper white */
-      --muted:#c6bfb3;         /* faded ink */
-      --stroke:#3b2f28;        /* brownish border */
-      --accent:#c6a969;        /* warm brass */
-      --accent2:#8b5e34;       /* aged bronze */
-      --danger:#8b1e3f;        /* burgundy */
-      --shadow:0 18px 40px rgba(0,0,0,.45);
-      --shadow-sm:0 10px 28px rgba(0,0,0,.38);
-    }
+      --bg:#1b1512; --bg-grad1:#201914; --panel:#2a211d; --panel-2:#231b17;
+      --text:#f3eee7; --muted:#c6bfb3; --stroke:#3b2f28;
+      --accent:#c6a969; --accent2:#8b5e34; --danger:#8b1e3f;
+      --shadow:0 18px 40px rgba(0,0,0,.45); --shadow-sm:0 10px 28px rgba(0,0,0,.38);
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
-
-    /* Serif font stack (avoid SimSun/Songti; prefer Noto/Source Han) */
-    body{
-      margin:0;
-      background:
-        radial-gradient(1200px 800px at 20% -10%,rgba(255,232,196,0.06),#0000),
-        linear-gradient(120deg,var(--bg),var(--bg-grad1));
-      color:var(--text);
-      font-family:
+      --serif:
         "Iowan Old Style","Palatino Linotype","Book Antiqua",Georgia,
+        "Times New Roman","Times",
         "Noto Serif","Noto Serif SC","Noto Serif TC",
         "Source Han Serif SC","Source Han Serif TC",
+        "Songti SC","STSong",
+        "Hiragino Mincho ProN","Hiragino Mincho Pro","Yu Mincho",
+        "PMingLiU","MingLiU",
         serif;
-      overflow:hidden;
-      letter-spacing:.2px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:radial-gradient(1200px 800px at 20% -10%,rgba(255,232,196,0.06),#0000),
+                 linear-gradient(120deg,var(--bg),var(--bg-grad1));
+      color:var(--text);
+      font-family:var(--serif);
+      overflow:hidden; letter-spacing:.2px;
+      font-variant-ligatures:normal; font-feature-settings:"liga" 1,"kern" 1;
+    }
+    button, input, select, textarea,
+    .btn, .iconbtn, .badge, .w-title, .w-header, .w-body, .w-footer, code, pre, kbd, samp {
+      font-family:inherit;
     }
 
-    /* Topbar with brass buttons */
-    .topbar{
-      position:fixed;inset:12px 12px auto 12px;
-      background:linear-gradient(180deg,var(--panel),var(--panel-2));
-      border:1px solid var(--stroke);
-      border-radius:14px;display:flex;align-items:center;gap:10px;padding:8px 10px;z-index:10000;box-shadow:var(--shadow-sm)
-    }
+    .topbar{position:fixed;inset:12px 12px auto 12px;background:linear-gradient(180deg,var(--panel),var(--panel-2));border:1px solid var(--stroke);border-radius:14px;display:flex;align-items:center;gap:10px;padding:8px 10px;z-index:10000;box-shadow:var(--shadow-sm)}
     .btn{appearance:none;border:0;border-radius:12px;padding:8px 12px;cursor:pointer;font-weight:700;color:#1b1512;background:linear-gradient(180deg,var(--accent),#b49254);box-shadow:0 8px 20px rgba(198,169,105,.25);transition:filter .15s ease}
     .btn:hover{filter:brightness(1.05)}
     .btn.secondary{background:linear-gradient(180deg,#3a3029,#2c241f);color:var(--text);box-shadow:none;border:1px solid var(--stroke)}
     .btn.danger{background:linear-gradient(180deg,#a0274d,var(--danger));color:#fff}
     .hint{color:var(--muted);font-size:12px;margin-left:6px}
-
     #board{position:absolute;inset:0;padding:64px 16px 16px 16px}
-
-    /* Widget shell */
     .widget{position:absolute;top:100px;left:100px;width:360px;min-width:260px;max-width:560px;background:linear-gradient(180deg,var(--panel),#1f1916);border:1px solid var(--stroke);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
     .widget.resizable{resize:both}
-
-    /* Header: center title, controls right */
     .w-header{position:relative;cursor:grab;user-select:none;background:linear-gradient(180deg,#2c241f,#221b17);padding:10px 12px;border-bottom:1px solid var(--stroke);display:flex;align-items:center}
     .w-title{position:absolute;left:52px;right:52px;text-align:center;font-size:15px;font-weight:800;letter-spacing:.3px}
     .w-controls{margin-left:auto;display:flex;gap:6px}
     .iconbtn{background:#322821;border:1px solid var(--stroke);color:#f7f2ea;border-radius:9px;padding:6px 8px;cursor:pointer}
     .iconbtn:hover{filter:brightness(1.08)}
-
     .w-body{padding:12px;display:grid;gap:10px}
     .w-footer{padding:10px 12px;border-top:1px solid var(--stroke);color:var(--muted);font-size:12px}
-
-    /* Figure frames with subtle patina */
     .figure{position:relative;display:block;width:100%;border-radius:12px;border:1px solid var(--stroke);overflow:hidden;background:repeating-linear-gradient(45deg, rgba(255,245,230,.03) 0 6px, rgba(0,0,0,.02) 6px 12px), #15100e}
-    .figure.poster{aspect-ratio:2/3}
-    .figure.square{aspect-ratio:1/1}
+    .figure.poster{aspect-ratio:2/3}   /* 电影/书封面常见比例 */
+    .figure.square{aspect-ratio:1/1}   /* Recipe 方图 */
     .figure>img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
-
     .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
     .input{background:#191310;color:var(--text);border:1px solid var(--stroke);border-radius:10px;padding:8px 10px;outline:none}
     .badge{padding:4px 8px;border:1px solid var(--stroke);border-radius:999px;color:var(--muted);font-size:12px;background:#221b17}
     .link{color:#e6d3a2;text-decoration:none}
-
     .widget:focus-visible{outline:2px solid #d8b86a;outline-offset:2px}
-
-    /* Utility */
     .hidden{display:none}
   </style>
 </head>
 <body>
   <div class="topbar">
-    <button class="btn" id="addRecipe">＋ Recipe widget</button>
-    <button class="btn" id="addMovie">＋ Movie widget</button>
-    <button class="btn" id="addDrawer">＋ Card Drawer</button>
+    <button class="btn" id="addRecipe">＋ Fooooooood</button>
+    <button class="btn" id="addMovie">＋ Go Theatre!</button>
+    <button class="btn" id="addDrawer">＋ Wonderer</button>
+    <button class="btn" id="addRead">＋ More read?</button>
     <button class="btn secondary" id="saveLayout">💾 Save layout</button>
     <button class="btn secondary" id="loadLayout">📂 Load layout</button>
-    <button class="btn danger" id="resetLayout">🗑 Reset</button>
+    <button class="btn danger" id="resetLayout">Back2?</button>
     <span class="hint">驼背，圣者，和愚人是下弦月。</span>
   </div>
   <div id="board"></div>
@@ -105,11 +87,63 @@
   <script>
   ;(function(){
     const board = document.getElementById('board');
-    const zStack = { top: 10, bump(el){ this.top += 1; el.style.zIndex = this.top; }}
+    const zStack = { top: 10, bump(el){ this.top += 1; el.style.zIndex = this.top; }};
     const STORAGE_KEY = 'widgets.layout.v1';
     const uid = ()=>'w_'+Math.random().toString(36).slice(2,9);
 
-    // ========= Generic Widget factory =========
+    // ---------- utils ----------
+    function parseCSV(text, {header=true, skipEmptyLines=true}={}){
+      const rows=[]; let cur=''; let row=[]; let q=false; let i=0;
+      const pushCell=()=>{ row.push(cur); cur=''; };
+      const pushRow=()=>{ rows.push(row); row=[]; };
+      while(i<text.length){
+        const ch=text[i];
+        if(q){
+          if(ch==='"'){ if(text[i+1]==='"'){ cur+='"'; i+=2; continue; } q=false; i++; }
+          else { cur+=ch; i++; }
+        }else{
+          if(ch==='"'){ q=true; i++; }
+          else if(ch===','){ pushCell(); i++; }
+          else if(ch==='\n'){ pushCell(); pushRow(); i++; }
+          else if(ch==='\r'){ if(text[i+1]==='\n') i++; pushCell(); pushRow(); i++; }
+          else { cur+=ch; i++; }
+        }
+      }
+      pushCell(); pushRow();
+      if(rows.length && rows[rows.length-1].length===1 && rows[rows.length-1][0]==='') rows.pop();
+      if(header){
+        const head=rows.shift().map(h=>h.trim());
+        const out=rows.map(r=>{const o={}; head.forEach((h,idx)=>o[h]=(r[idx]??'').trim()); return o;});
+        return skipEmptyLines?out.filter(o=>Object.values(o).some(v=>v!=='')):out;
+      }
+      return skipEmptyLines?rows.filter(r=>r.some(v=>v!=='')):rows;
+    }
+    const validUrl = (u)=>{ try{ new URL(u); return true; }catch{ return false; } };
+
+    // ---------- repo detection & GH config（Read 用） ----------
+    function detectRepo(){
+      const host = location.hostname;
+      const path = location.pathname.replace(/^\/+/, '');
+      if(/github\.io$/i.test(host)){
+        const user = host.split('.')[0];
+        const repo = path.split('/')[0] || '';
+        if(user && repo) return {user, repo};
+      }
+      return null;
+    }
+    function qs(key, fallback=null){
+      const v = new URLSearchParams(location.search).get(key);
+      return v ? decodeURIComponent(v) : fallback;
+    }
+    const auto = detectRepo();
+    const GH = {
+      user:   qs('gh_user',   auto?.user || 'StellaWQL'),
+      repo:   qs('gh_repo',   auto?.repo || 'recipes-widget'),
+      branch: qs('gh_branch', 'practice'),     // 你现在开发在 practice 分支
+      path:   qs('gh_path',   'data/books'),   // EPUB 目录
+    };
+
+    // ---------- Widget shell ----------
     function createWidget({type,title,x=120,y=120,w=360,h=null,state={}}){
       const id = uid();
       const root = document.createElement('div');
@@ -134,8 +168,6 @@
         <div class="w-body"></div>
         <div class="w-footer"></div>
       `;
-
-      // Dragging
       const header = root.querySelector('[data-draghandle]');
       let drag = {on:false, dx:0, dy:0};
       header.addEventListener('mousedown', (e)=>{ drag.on=true; header.style.cursor='grabbing'; zStack.bump(root); drag.dx=e.clientX-root.offsetLeft; drag.dy=e.clientY-root.offsetTop; e.preventDefault(); });
@@ -143,11 +175,11 @@
       window.addEventListener('mouseup', ()=>{ if(drag.on){ drag.on=false; header.style.cursor='grab'; saveLayout(); }});
       header.addEventListener('dblclick', ()=>{ zStack.bump(root); });
 
-      // Controls
       root.addEventListener('click', (e)=>{
         const btn = e.target.closest('[data-action]');
         if(!btn) return;
         const act = btn.dataset.action;
+        const body = root.querySelector('.w-body');
         if(act==='close'){ root.remove(); saveLayout(); }
         if(act==='top'){ zStack.bump(root); }
         if(act==='minimize'){ body.classList.toggle('hidden'); saveLayout(); }
@@ -155,26 +187,11 @@
 
       const body = root.querySelector('.w-body');
       const foot = root.querySelector('.w-footer');
-
       board.appendChild(root);
       return { id, root, body, foot, state };
     }
 
-    // ========= CSV parser =========
-    function parseCSV(text, {header=true, skipEmptyLines=true}={}){
-      const rows=[]; let cur=''; let row=[]; let q=false; let i=0;
-      const pushCell=()=>{ row.push(cur); cur=''; }
-      const pushRow=()=>{ rows.push(row); row=[]; }
-      while(i<text.length){ const ch=text[i]; if(q){ if(ch==='"'){ if(text[i+1]==='"'){ cur+='"'; i+=2; continue; } q=false; i++; } else { cur+=ch; i++; } } else { if(ch==='"'){ q=true; i++; } else if(ch===','){ pushCell(); i++; } else if(ch==='\n'){ pushCell(); pushRow(); i++; } else if(ch==='\r'){ if(text[i+1]==='\n') i++; pushCell(); pushRow(); i++; } else { cur+=ch; i++; } } }
-      pushCell(); pushRow();
-      if(rows.length && rows[rows.length-1].length===1 && rows[rows.length-1][0]==='') rows.pop();
-      if(header){ const head=rows.shift().map(h=>h.trim()); const out=rows.map(r=>{const o={}; head.forEach((h,idx)=>o[h]= (r[idx]??'').trim()); return o;}); return skipEmptyLines?out.filter(o=>Object.values(o).some(v=>v!=='')):out; }
-      return skipEmptyLines?rows.filter(r=>r.some(v=>v!=='')):rows;
-    }
-
-    const validUrl = (u)=>{ try{ new URL(u); return true; }catch{ return false; } }
-
-    // ========= Widgets =========
+    // ---------- Recipe ----------
     async function RecipeWidget(opts={}){
       const w = createWidget({type:'recipe', title:'🍳 Recipe', x:140, y:120, ...opts});
       w.body.innerHTML = `
@@ -189,23 +206,20 @@
             </a>
             <div class="row">
               <strong data-title>准备中…</strong>
-              <!-- 移除“查看原文”/打开原文按钮 -->
             </div>
             <div class="row" data-issues></div>
           </div>
         </div>`;
-
       const el = {
         btn: w.body.querySelector('[data-random]'),
         title: w.body.querySelector('[data-title]'),
         img: w.body.querySelector('[data-img]'),
         link: w.body.querySelector('[data-link]'),
         issues: w.body.querySelector('[data-issues]')
-      }
-      const showIssues = (arr=[])=>{ el.issues.innerHTML=''; arr.forEach(m=>{ const b=document.createElement('span'); b.className='badge'; b.textContent=m; el.issues.appendChild(b); }) }
-
+      };
+      const showIssues = (arr=[])=>{ el.issues.innerHTML=''; arr.forEach(m=>{ const b=document.createElement('span'); b.className='badge'; b.textContent=m; el.issues.appendChild(b); }) };
       async function ensureData(){
-        if(w.state.rows && w.state.rows.length) return w.state.rows;
+        if(w.state.rows?.length) return w.state.rows;
         const CSV_PATH = 'data/atk_recipes_all.csv';
         const res = await fetch(`${CSV_PATH}?t=${Date.now()}`, {cache:'no-store'});
         if(!res.ok) throw new Error('CSV 加载失败: '+res.status);
@@ -219,21 +233,26 @@
         w.state.rows = rows; return rows;
       }
       function render(r){
-        const {title,image_url,recipe_url}=r;
-        el.title.textContent = title || '未命名';
-        const imgOk=validUrl(image_url), linkOk=validUrl(recipe_url);
-        el.img.src = imgOk?image_url:'';
-        el.link.href = linkOk?recipe_url:'#';
-        showIssues([].concat(imgOk?[]:['图片无效'], linkOk?[]:['链接无效']));
+        el.title.textContent = r.title || '未命名';
+        const imgOk=validUrl(r.image_url), linkOk=validUrl(r.recipe_url);
+        el.img.src = imgOk? r.image_url : '';
+        el.link.href = linkOk? r.recipe_url : '#';
+        const issues = [];
+        if(!imgOk) issues.push('图片无效');
+        if(!linkOk) issues.push('链接无效');
+        showIssues(issues);
       }
-      function pick(){ const arr=w.state.rows; if(!arr?.length) return; let i; do{ i=Math.floor(Math.random()*arr.length) }while(arr.length>1 && i===w.state.last); w.state.last=i; render(arr[i]); saveLayout(); }
-
+      function pick(){
+        const arr=w.state.rows; if(!arr?.length) return;
+        let i; do{ i=Math.floor(Math.random()*arr.length) }while(arr.length>1 && i===w.state.last);
+        w.state.last=i; render(arr[i]); saveLayout();
+      }
       el.btn.addEventListener('click', async()=>{ try{ await ensureData(); pick(); }catch(e){ showIssues([String(e.message||e)]) } });
-      // auto-load once
       try{ await ensureData(); pick(); }catch(e){ showIssues([String(e.message||e)]) }
       return w;
     }
 
+    // ---------- Movie ----------
     async function MovieWidget(opts={}){
       const w = createWidget({type:'movie', title:'🎬 Movie', x:360, y:180, ...opts});
       w.body.innerHTML = `
@@ -254,32 +273,24 @@
             <div class="row" data-issues></div>
           </div>
         </div>`;
-
       const el = {
-        btn:   w.body.querySelector('[data-random]'),
-        img:   w.body.querySelector('[data-img]'),
-        link:  w.body.querySelector('[data-link]'),
-        title: w.body.querySelector('[data-title]'),
-        year:  w.body.querySelector('[data-year]'),
-        score: w.body.querySelector('[data-score]'),
-        csv:   w.body.querySelector('[data-csvpath]'),
+        btn:w.body.querySelector('[data-random]'),
+        img:w.body.querySelector('[data-img]'),
+        link:w.body.querySelector('[data-link]'),
+        title:w.body.querySelector('[data-title]'),
+        year:w.body.querySelector('[data-year]'),
+        score:w.body.querySelector('[data-score]'),
+        csv:w.body.querySelector('[data-csvpath]'),
         issues:w.body.querySelector('[data-issues]'),
       };
-
-      const showIssues = (arr=[])=>{
-        el.issues.innerHTML='';
-        arr.forEach(m=>{ const s=document.createElement('span'); s.className='badge'; s.textContent=m; el.issues.appendChild(s); })
-      };
-
+      const showIssues=(arr=[])=>{ el.issues.innerHTML=''; arr.forEach(m=>{ const s=document.createElement('span'); s.className='badge'; s.textContent=m; el.issues.appendChild(s); }) };
       const parseYear = (d)=>{
         if(!d) return '';
-        const m4 = String(d).match(/(19|20)\d{2}/);
-        if(m4) return m4[0];
+        const m4 = String(d).match(/(19|20)\d{2}/); if(m4) return m4[0];
         const m2 = String(d).match(/(\d{2})(?!.*\d)/);
         if(m2){ const yy = parseInt(m2[1],10); return String(yy >= 30 ? 1900+yy : 2000+yy); }
         return '';
       };
-
       async function ensureData(){
         if(w.state.rows?.length) return w.state.rows;
         const candidates = w.state.candidates || ['data/movies.csv','movies.csv'];
@@ -301,11 +312,9 @@
           }catch(e){ lastErr=e; }
         }
         if(!rows){ throw new Error('找不到可用的 movies CSV（尝试了：'+candidates.join(', ')+')'); }
-        w.state.rows = rows; w.state.csvPath = used;
-        if(el.csv) el.csv.textContent = used;
+        w.state.rows = rows; w.state.csvPath = used; if(el.csv) el.csv.textContent = used;
         return rows;
       }
-
       function render(r){
         el.title.textContent = r.title || '未命名';
         const y = parseYear(r.release_date); el.year.textContent = y ? y : '年份未知';
@@ -314,32 +323,136 @@
         el.img.src = hasImg ? r.poster_url : '';
         const target = r.url && r.url.trim() ? r.url.trim() : `https://www.google.com/search?q=${encodeURIComponent('site:metacritic.com '+(r.title||''))}`;
         el.link.href = target;
-        const issues = [];
-        if(!hasImg) issues.push('图片无效或缺失');
-        if(!target) issues.push('无可用链接');
-        showIssues(issues);
+        const issues=[]; if(!hasImg) issues.push('图片无效或缺失'); if(!target) issues.push('无可用链接'); showIssues(issues);
       }
-
       function pick(){
         const a=w.state.rows; if(!a?.length) return;
-        let i; do{ i=Math.floor(Math.random()*a.length) }while(a.length>1 && i===w.state.last);
+        let i; do{i=Math.floor(Math.random()*a.length)}while(a.length>1 && i===w.state.last);
         w.state.last = i; render(a[i]); saveLayout();
       }
-
       el.btn.addEventListener('click', async()=>{ try{ await ensureData(); pick(); }catch(e){ showIssues([String(e.message||e)]) } });
       try{ await ensureData(); pick(); }catch(e){ showIssues([String(e.message||e)]) }
-
       return w;
     }
 
+    // ---------- Read (EPUB from GitHub/practice) ----------
+    async function ReadWidget(opts={}){
+      const w = createWidget({type:'read', title:'📚 Read', x:720, y:140, ...opts});
+      w.body.innerHTML = `
+        <div class="grid">
+          <div class="row">
+            <button class="btn" data-random>🐚</button>
+            <span class="badge">来源: <code data-src>（未加载）</code></span>
+          </div>
+          <div class="grid">
+            <a class="figure poster" data-link target="_blank" rel="noopener noreferrer">
+              <img data-img alt="book cover" />
+            </a>
+            <div class="row">
+              <strong data-title>准备中…</strong>
+              <a class="link" data-open target="_blank" rel="noopener">在阅读器打开</a>
+            </div>
+            <div class="row" data-issues></div>
+          </div>
+        </div>`;
+      const el = {
+        btn:   w.body.querySelector('[data-random]'),
+        img:   w.body.querySelector('[data-img]'),
+        link:  w.body.querySelector('[data-link]'),
+        open:  w.body.querySelector('[data-open]'),
+        title: w.body.querySelector('[data-title]'),
+        src:   w.body.querySelector('[data-src]'),
+        issues:w.body.querySelector('[data-issues]')
+      };
+      const showIssues=(arr=[])=>{ el.issues.innerHTML=''; arr.forEach(m=>{ const s=document.createElement('span'); s.className='badge'; s.textContent=m; el.issues.appendChild(s); }) };
+
+      const CACHE_KEY = `reads.list.${GH.user}.${GH.repo}.${GH.branch}.${GH.path}`;
+      const CACHE_MS  = 10*60*1000;
+
+      async function listFromGitHub(){
+        const now = Date.now();
+        try{
+          const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
+          if(cached && (now - cached.t < CACHE_MS)) return cached.list;
+        }catch{}
+        const apiUrl = `https://api.github.com/repos/${GH.user}/${GH.repo}/contents/${GH.path}?ref=${GH.branch}`;
+        if (el.src) el.src.textContent = apiUrl;
+        const res = await fetch(apiUrl, {cache:'no-store'});
+        if(!res.ok){
+          const txt = await res.text().catch(()=> '');
+          throw new Error(`GitHub API ${res.status}: ${apiUrl}\n${txt.slice(0,200)}`);
+        }
+        const arr = await res.json();
+        const files = arr.filter(it => it.type==='file' && /\.epub$/i.test(it.name));
+        const list = files.map(it => ({ name: it.name, url: it.download_url }));
+        localStorage.setItem(CACHE_KEY, JSON.stringify({t: now, list}));
+        return list;
+      }
+      async function ensureList(){
+        if(w.state.list?.length) return w.state.list;
+        const list = await listFromGitHub();
+        if(!list.length) throw new Error('没有发现任何 EPUB');
+        w.state.list = list;
+        return list;
+      }
+
+      // —— 用 epub.js 解析封面（需要 JSZip + epub.js，已在 <head> 引入）—
+      async function extractCoverUrl(epubUrl){
+        if(!window.ePub){ throw new Error('epub.js 未加载'); }
+        const book = ePub(epubUrl);
+        await book.ready;
+        let coverHref = await book.loaded.cover.catch(()=>null);
+        if(!coverHref){
+          const manifest = await book.loaded.manifest;
+          const item = Object.values(manifest)
+            .find(it => /cover/i.test(it.id||'') || /cover/i.test(it.href||'') || (it.properties||'').includes('cover-image'));
+          coverHref = item ? item.href : null;
+        }
+        if(!coverHref) return null;
+        const url = book.resources.get(coverHref) || (await book.archive.createUrl(coverHref, { base64:false }));
+        return url || null;
+      }
+
+      const readerUrlFor = (epubUrl)=> `reader.html?${new URLSearchParams({ book: epubUrl }).toString()}`;
+
+      async function render(item){
+        const {name, url} = item;
+        el.title.textContent = name || '未命名';
+        el.link.href = readerUrlFor(url);
+        el.open.href = el.link.href;
+
+        if(!w.state.covers) w.state.covers = {};
+        if(w.state.covers[url]){ el.img.src = w.state.covers[url]; return; }
+
+        el.img.removeAttribute('src');
+        try{
+          const cover = await extractCoverUrl(url);
+          if(cover){ w.state.covers[url] = cover; el.img.src = cover; }
+          else { showIssues(['未找到封面（可能书里未标 cover）']); }
+        }catch(e){
+          showIssues(['封面解析失败（检查 JSZip/epub.js 与 CORS）']);
+          console.error(e);
+        }
+      }
+      function pick(){
+        const a = w.state.list; if(!a?.length) return;
+        let i; do{ i = Math.floor(Math.random()*a.length); }while(a.length>1 && i===w.state.last);
+        w.state.last = i; render(a[i]); saveLayout();
+      }
+      el.btn.addEventListener('click', async()=>{ try{ await ensureList(); pick(); }catch(e){ showIssues([String(e.message||e)]) } });
+      try{ await ensureList(); pick(); }catch(e){ showIssues([String(e.message||e)]) }
+      return w;
+    }
+
+    // ---------- Card Drawer ----------
     function CardDrawer(opts={}){
       const w = createWidget({type:'drawer', title:'🃏 Card Drawer', x:820, y:160, ...opts});
       w.state.deck = (opts.state && opts.state.deck) || [
-        {title:'今日惊喜', desc:'试一道从未做过的菜'},
-        {title:'健康打卡', desc:'今晚 20 分钟快步走'},
-        {title:'电影之夜', desc:'看一部 2010 年前的电影'},
-        {title:'整理时间', desc:'清理冰箱和补货清单'},
-        {title:'放松一下', desc:'泡个脚 + 播放黑胶'}
+        {title:'今日惊喜', desc:'TBD'},
+        {title:'健康打卡', desc:'TBD'},
+        {title:'电影之夜', desc:'TBD'},
+        {title:'整理时间', desc:'TBD'},
+        {title:'放松一下', desc:'TBD'}
       ];
       w.body.innerHTML = `
         <div class="grid">
@@ -352,13 +465,13 @@
           </div>
         </div>`;
       const area = w.body.querySelector('[data-area]');
-      const renderCard = (c)=>{ area.innerHTML=''; const card=document.createElement('div'); card.style.border='1px solid var(--stroke)'; card.style.borderRadius='12px'; card.style.padding='10px'; card.style.background='#221b17'; card.innerHTML=`<strong>${c.title}</strong><div class="muted">${c.desc||''}</div>`; area.appendChild(card); }
+      const renderCard = (c)=>{ area.innerHTML=''; const card=document.createElement('div'); card.style.border='1px solid var(--stroke)'; card.style.borderRadius='12px'; card.style.padding='10px'; card.style.background='#221b17'; card.innerHTML=`<strong>${c.title}</strong><div class="muted">${c.desc||''}</div>`; area.appendChild(card); };
       w.body.querySelector('[data-draw]').addEventListener('click',()=>{ const d=w.state.deck; const i=Math.floor(Math.random()*d.length); renderCard(d[i]); saveLayout(); });
       w.body.querySelector('[data-peek]').addEventListener('click',()=>{ area.innerHTML=''; w.state.deck.forEach(c=>{ const row=document.createElement('div'); row.className='row'; row.innerHTML=`<span class="badge">${c.title}</span><span class="muted">${c.desc||''}</span>`; area.appendChild(row); }); });
       return w;
     }
 
-    // ========= Layout persistence =========
+    // ---------- Layout persistence ----------
     function serialize(){
       const data=[]; document.querySelectorAll('.widget').forEach(el=>{
         const bodyHidden = el.querySelector('.w-body')?.classList.contains('hidden');
@@ -368,22 +481,34 @@
     }
     function saveLayout(){ const data=serialize(); localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
     async function loadLayout(){
-      const raw = localStorage.getItem(STORAGE_KEY); if(!raw) return false; const arr = JSON.parse(raw);
+      const raw = localStorage.getItem(STORAGE_KEY); if(!raw) return false;
+      const arr = JSON.parse(raw);
       board.querySelectorAll('.widget').forEach(n=>n.remove());
       window.__widgetState = {};
-      for(const w of arr){ let inst; if(w.type==='recipe') inst = await RecipeWidget({x:w.x,y:w.y,w:w.w,h:w.h,state:w.state}); else if(w.type==='movie') inst = await MovieWidget({x:w.x,y:w.y,w:w.w,h:w.h,state:w.state}); else if(w.type==='drawer') inst = await CardDrawer({x:w.x,y:w.y,w:w.w,h:w.h,state:w.state}); if(inst){ window.__widgetState[inst.id] = inst.state; if(w.minimized){ inst.root.querySelector('.w-body').classList.add('hidden'); } } }
+      for(const w of arr){
+        let inst;
+        if(w.type==='recipe')      inst = await RecipeWidget({x:w.x,y:w.y,w:w.w,h:w.h,state:w.state});
+        else if(w.type==='movie')  inst = await MovieWidget({x:w.x,y:w.y,w:w.w,h:w.h,state:w.state});
+        else if(w.type==='drawer') inst = await CardDrawer({x:w.x,y:w.y,w:w.w,h:w.h,state:w.state});
+        else if(w.type==='read')   inst = await ReadWidget({x:w.x,y:w.y,w:w.w,h:w.h,state:w.state});
+        if(inst){
+          window.__widgetState[inst.id] = inst.state;
+          if(w.minimized){ inst.root.querySelector('.w-body').classList.add('hidden'); }
+        }
+      }
       return true;
     }
 
-    // ========= Toolbar actions =========
+    // ---------- Toolbar ----------
     document.getElementById('addRecipe').addEventListener('click', async()=>{ const inst = await RecipeWidget(); (window.__widgetState||(window.__widgetState={}))[inst.id]=inst.state; saveLayout(); });
-    document.getElementById('addMovie').addEventListener('click', async()=>{ const inst = await MovieWidget(); (window.__widgetState||(window.__widgetState={}))[inst.id]=inst.state; saveLayout(); });
-    document.getElementById('addDrawer').addEventListener('click', ()=>{ const inst = CardDrawer(); (window.__widgetState||(window.__widgetState={}))[inst.id]=inst.state; saveLayout(); });
+    document.getElementById('addMovie').addEventListener('click',  async()=>{ const inst = await MovieWidget();  (window.__widgetState||(window.__widgetState={}))[inst.id]=inst.state; saveLayout(); });
+    document.getElementById('addDrawer').addEventListener('click', ()=>{ const inst = CardDrawer();              (window.__widgetState||(window.__widgetState={}))[inst.id]=inst.state; saveLayout(); });
+    document.getElementById('addRead').addEventListener('click',   async()=>{ const inst = await ReadWidget();   (window.__widgetState||(window.__widgetState={}))[inst.id]=inst.state; saveLayout(); });
     document.getElementById('saveLayout').addEventListener('click', saveLayout);
     document.getElementById('loadLayout').addEventListener('click', ()=>{ loadLayout(); });
     document.getElementById('resetLayout').addEventListener('click', ()=>{ localStorage.removeItem(STORAGE_KEY); location.reload(); });
 
-    // ========= Boot =========
+    // ---------- Boot ----------
     (async function boot(){
       const ok = await loadLayout();
       if(!ok){
