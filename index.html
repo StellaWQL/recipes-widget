@@ -7,15 +7,21 @@
   <link rel="icon" type="image/svg+xml" href="./favicon.svg">
   <title>THE RAVEN.</title>
 
+  <!-- ReadWidget 依赖：先 JSZip 后 epub.js -->
   <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
   <script src="https://unpkg.com/epubjs/dist/epub.min.js"></script>
 
   <style>
     :root{
-      --bg:#1b1512; --bg-grad1:#201914; --panel:#2a211d; --panel-2:#231b17;
-      --text:#f3eee7; --muted:#c6bfb3; --stroke:#3b2f28;
-      --accent:#c6a969; --accent2:#8b5e34; --danger:#8b1e3f;
-      --shadow:0 18px 40px rgba(0,0,0,.45); --shadow-sm:0 10px 28px rgba(0,0,0,.38);
+      --bg:#0a0a0c; --bg-grad1:#0f0e13;
+      --veil1:rgba(198,169,105,.08); --veil2:rgba(122,31,61,.10);
+
+      --panel:#141018; --panel-2:#0f0b13;
+      --text:#eee7db; --muted:#b8b0a2; --stroke:#2b2330;
+      --accent:#c6a969; --accent2:#9b7b3a; --danger:#7a1f3d; --link:#d7c08a;
+
+      --shadow:0 22px 50px rgba(0,0,0,.6);
+      --shadow-sm:0 12px 28px rgba(0,0,0,.45);
 
       --serif:
         "Iowan Old Style","Palatino Linotype","Book Antiqua",Georgia,
@@ -31,43 +37,89 @@
     html,body{height:100%}
     body{
       margin:0;
-      background:radial-gradient(1200px 800px at 20% -10%,rgba(255,232,196,0.06),#0000),
-                 linear-gradient(120deg,var(--bg),var(--bg-grad1));
+      background:
+        radial-gradient(1000px 700px at 12% -10%, var(--veil1), transparent 55%),
+        radial-gradient(900px 600px at 110% 8%,  var(--veil2), transparent 60%),
+        linear-gradient(120deg, var(--bg), var(--bg-grad1));
       color:var(--text);
       font-family:var(--serif);
       overflow:hidden; letter-spacing:.2px;
       font-variant-ligatures:normal; font-feature-settings:"liga" 1,"kern" 1;
+      text-rendering:optimizeLegibility; -webkit-font-smoothing:antialiased;
     }
     button, input, select, textarea,
-    .btn, .iconbtn, .badge, .w-title, .w-header, .w-body, .w-footer, code, pre, kbd, samp {
-      font-family:inherit;
-    }
+    .btn, .badge, .w-title, .w-header, .w-body, .w-footer, code, pre, kbd, samp { font-family:inherit; }
 
-    .topbar{position:fixed;inset:12px 12px auto 12px;background:linear-gradient(180deg,var(--panel),var(--panel-2));border:1px solid var(--stroke);border-radius:14px;display:flex;align-items:center;gap:10px;padding:8px 10px;z-index:10000;box-shadow:var(--shadow-sm)}
-    .btn{appearance:none;border:0;border-radius:12px;padding:8px 12px;cursor:pointer;font-weight:700;color:#1b1512;background:linear-gradient(180deg,var(--accent),#b49254);box-shadow:0 8px 20px rgba(198,169,105,.25);transition:filter .15s ease}
-    .btn:hover{filter:brightness(1.05)}
-    .btn.secondary{background:linear-gradient(180deg,#3a3029,#2c241f);color:var(--text);box-shadow:none;border:1px solid var(--stroke)}
-    .btn.danger{background:linear-gradient(180deg,#a0274d,var(--danger));color:#fff}
-    .hint{color:var(--muted);font-size:12px;margin-left:6px}
-    #board{position:absolute;inset:0;padding:64px 16px 16px 16px}
-    .widget{position:absolute;top:100px;left:100px;width:360px;min-width:260px;max-width:560px;background:linear-gradient(180deg,var(--panel),#1f1916);border:1px solid var(--stroke);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
+    .topbar{
+      position:fixed; inset:12px 12px auto 12px;
+      background:linear-gradient(180deg,var(--panel),var(--panel-2));
+      border:1px solid var(--stroke); border-radius:14px;
+      display:flex; align-items:center; gap:10px;
+      padding:8px 10px; z-index:10000; box-shadow:var(--shadow-sm);
+    }
+    .btn{
+      appearance:none; border:0; border-radius:12px; padding:8px 12px;
+      cursor:pointer; font-weight:800; letter-spacing:.3px;
+      color:#160e10; background:linear-gradient(180deg,var(--accent),#b28b4a);
+      box-shadow:0 10px 22px rgba(198,169,105,.28);
+      transition:filter .12s ease, transform .05s ease;
+    }
+    .btn:hover{filter:brightness(1.06)}
+    .btn:active{transform:translateY(1px)}
+    .btn.secondary{background:linear-gradient(180deg,#1b141b,#130f15); color:var(--text); box-shadow:none; border:1px solid var(--stroke)}
+    .btn.danger{background:linear-gradient(180deg,#8d2647,var(--danger)); color:#f8eaea}
+    .hint{color:var(--muted); font-size:12px; margin-left:6px}
+
+    #board{position:absolute; inset:0; padding:64px 16px 16px 16px}
+
+    .widget{
+      position:absolute; top:100px; left:100px; width:360px; min-width:260px; max-width:560px;
+      background:linear-gradient(180deg, var(--panel), #0c0a10);
+      border:1px solid var(--stroke); border-radius:16px; box-shadow:var(--shadow); overflow:hidden;
+    }
     .widget.resizable{resize:both}
-    .w-header{position:relative;cursor:grab;user-select:none;background:linear-gradient(180deg,#2c241f,#221b17);padding:10px 12px;border-bottom:1px solid var(--stroke);display:flex;align-items:center}
-    .w-title{position:absolute;left:52px;right:52px;text-align:center;font-size:15px;font-weight:800;letter-spacing:.3px}
-    .w-controls{margin-left:auto;display:flex;gap:6px}
-    .iconbtn{background:#322821;border:1px solid var(--stroke);color:#f7f2ea;border-radius:9px;padding:6px 8px;cursor:pointer}
-    .iconbtn:hover{filter:brightness(1.08)}
-    .w-body{padding:12px;display:grid;gap:10px}
-    .w-footer{padding:10px 12px;border-top:1px solid var(--stroke);color:var(--muted);font-size:12px}
-    .figure{position:relative;display:block;width:100%;border-radius:12px;border:1px solid var(--stroke);overflow:hidden;background:repeating-linear-gradient(45deg, rgba(255,245,230,.03) 0 6px, rgba(0,0,0,.02) 6px 12px), #15100e}
-    .figure.poster{aspect-ratio:2/3}   /* 电影/书封面常见比例 */
-    .figure.square{aspect-ratio:1/1}   /* Recipe 方图 */
-    .figure>img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
-    .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-    .input{background:#191310;color:var(--text);border:1px solid var(--stroke);border-radius:10px;padding:8px 10px;outline:none}
-    .badge{padding:4px 8px;border:1px solid var(--stroke);border-radius:999px;color:var(--muted);font-size:12px;background:#221b17}
-    .link{color:#e6d3a2;text-decoration:none}
-    .widget:focus-visible{outline:2px solid #d8b86a;outline-offset:2px}
+
+    /* 极简 header：只有标题；点击标题=关闭；hover 微光 */
+    .w-header{
+      position:relative; cursor:grab; user-select:none;
+      background:linear-gradient(180deg,#1a1420,#100c14);
+      padding:10px 12px; border-bottom:1px solid var(--stroke);
+      display:flex; align-items:center; justify-content:center;
+    }
+    .w-title{
+      font-size:15px; font-weight:900; letter-spacing:.35px;
+      transition:filter .15s ease, text-shadow .15s ease, color .15s ease, transform .05s ease;
+      cursor:pointer;
+    }
+    .w-title:hover{
+      color:#f6ead0;
+      text-shadow:0 0 6px rgba(198,169,105,.45), 0 0 14px rgba(122,31,61,.35);
+      filter:brightness(1.06);
+    }
+    .w-title:active{transform:translateY(1px)}
+
+    .w-body{padding:12px; display:grid; gap:10px}
+    .w-footer{padding:10px 12px; border-top:1px solid var(--stroke); color:var(--muted); font-size:12px}
+
+    .figure{
+      position:relative; display:block; width:100%;
+      border-radius:12px; border:1px solid var(--stroke); overflow:hidden;
+      background:
+        repeating-linear-gradient(45deg, rgba(255,245,230,.04) 0 6px, rgba(0,0,0,.02) 6px 12px),
+        radial-gradient(500px 300px at 85% 20%, rgba(122,31,61,.10), transparent 60%),
+        #0f0b12;
+    }
+    .figure.poster{aspect-ratio:2/3}
+    .figure.square{aspect-ratio:1/1}
+    .figure>img{position:absolute; inset:0; width:100%; height:100%; object-fit:contain; display:block}
+
+    .row{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+    .input{background:#110d13; color:var(--text); border:1px solid var(--stroke); border-radius:10px; padding:8px 10px; outline:none}
+    .badge{padding:4px 8px; border:1px solid var(--stroke); border-radius:999px; color:var(--muted); font-size:12px; background:#17111a}
+    .link{color:var(--link); text-decoration:none}
+    .link:hover{text-decoration:underline}
+
+    .widget:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
     .hidden{display:none}
   </style>
 </head>
@@ -114,9 +166,9 @@
       if(header){
         const head=rows.shift().map(h=>h.trim());
         const out=rows.map(r=>{const o={}; head.forEach((h,idx)=>o[h]=(r[idx]??'').trim()); return o;});
-        return skipEmptyLines?out.filter(o=>Object.values(o).some(v=>v!=='')):out;
+        return skipEmptyLines ? out.filter(o=>Object.values(o).some(v=>v!=='')) : out;
       }
-      return skipEmptyLines?rows.filter(r=>r.some(v=>v!=='')):rows;
+      return skipEmptyLines ? rows.filter(r=>r.some(v=>v!=='')) : rows;
     }
     const validUrl = (u)=>{ try{ new URL(u); return true; }catch{ return false; } };
 
@@ -139,8 +191,8 @@
     const GH = {
       user:   qs('gh_user',   auto?.user || 'StellaWQL'),
       repo:   qs('gh_repo',   auto?.repo || 'recipes-widget'),
-      branch: qs('gh_branch', 'practice'),     // 你现在开发在 practice 分支
-      path:   qs('gh_path',   'data/books'),   // EPUB 目录
+      branch: qs('gh_branch', 'practice'),
+      path:   qs('gh_path',   'data/books'),
     };
 
     // ---------- Widget shell ----------
@@ -158,37 +210,46 @@
 
       root.innerHTML = `
         <div class="w-header" data-draghandle>
-          <div class="w-title">${title}</div>
-          <div class="w-controls">
-            <button class="iconbtn" data-action="minimize" title="Collapse">▾</button>
-            <button class="iconbtn" data-action="top" title="Bring to top">⬆</button>
-            <button class="iconbtn" data-action="close" title="Close">✕</button>
-          </div>
+          <div class="w-title" data-title>${title}</div>
         </div>
         <div class="w-body"></div>
         <div class="w-footer"></div>
       `;
-      const header = root.querySelector('[data-draghandle]');
-      let drag = {on:false, dx:0, dy:0};
-      header.addEventListener('mousedown', (e)=>{ drag.on=true; header.style.cursor='grabbing'; zStack.bump(root); drag.dx=e.clientX-root.offsetLeft; drag.dy=e.clientY-root.offsetTop; e.preventDefault(); });
-      window.addEventListener('mousemove', (e)=>{ if(!drag.on) return; const nx = Math.max(0, Math.min(window.innerWidth - root.offsetWidth, e.clientX - drag.dx)); const ny = Math.max(48, Math.min(window.innerHeight - 40, e.clientY - drag.dy)); root.style.left = nx+'px'; root.style.top = ny+'px'; });
-      window.addEventListener('mouseup', ()=>{ if(drag.on){ drag.on=false; header.style.cursor='grab'; saveLayout(); }});
-      header.addEventListener('dblclick', ()=>{ zStack.bump(root); });
 
-      root.addEventListener('click', (e)=>{
-        const btn = e.target.closest('[data-action]');
-        if(!btn) return;
-        const act = btn.dataset.action;
-        const body = root.querySelector('.w-body');
-        if(act==='close'){ root.remove(); saveLayout(); }
-        if(act==='top'){ zStack.bump(root); }
-        if(act==='minimize'){ body.classList.toggle('hidden'); saveLayout(); }
+      const header = root.querySelector('[data-draghandle]');
+      const titleEl = root.querySelector('[data-title]');
+      const body = root.querySelector('.w-body');
+
+      // —— 拖拽逻辑（避免误关）——
+      let drag = {on:false, dx:0, dy:0, moved:false, startX:0, startY:0};
+      header.addEventListener('mousedown', (e)=>{
+        drag.on=true; drag.moved=false;
+        header.style.cursor='grabbing'; zStack.bump(root);
+        drag.dx=e.clientX-root.offsetLeft; drag.dy=e.clientY-root.offsetTop;
+        drag.startX = e.clientX; drag.startY = e.clientY;
+        e.preventDefault();
+      });
+      window.addEventListener('mousemove', (e)=>{
+        if(!drag.on) return;
+        const nx = Math.max(0, Math.min(window.innerWidth - root.offsetWidth, e.clientX - drag.dx));
+        const ny = Math.max(48, Math.min(window.innerHeight - 40, e.clientY - drag.dy));
+        if(Math.hypot(e.clientX - drag.startX, e.clientY - drag.startY) > 4) drag.moved = true;
+        root.style.left = nx+'px'; root.style.top = ny+'px';
+      });
+      window.addEventListener('mouseup', ()=>{
+        if(drag.on){ drag.on=false; header.style.cursor='grab'; saveLayout(); }
       });
 
-      const body = root.querySelector('.w-body');
-      const foot = root.querySelector('.w-footer');
+      // —— 点击标题关闭（仅在未拖动时）——
+      titleEl.addEventListener('click', ()=>{
+        if(drag.moved) return;
+        root.remove(); saveLayout();
+      });
+
+      root.addEventListener('dblclick', ()=>{ zStack.bump(root); });
+
       board.appendChild(root);
-      return { id, root, body, foot, state };
+      return { id, root, body, state };
     }
 
     // ---------- Recipe ----------
@@ -278,7 +339,6 @@
         title:w.body.querySelector('[data-title]'),
         year:w.body.querySelector('[data-year]'),
         score:w.body.querySelector('[data-score]'),
-        csv:w.body.querySelector('[data-csvpath]'),
         issues:w.body.querySelector('[data-issues]'),
       };
       const showIssues=(arr=[])=>{ el.issues.innerHTML=''; arr.forEach(m=>{ const s=document.createElement('span'); s.className='badge'; s.textContent=m; el.issues.appendChild(s); }) };
@@ -310,7 +370,7 @@
           }catch(e){ lastErr=e; }
         }
         if(!rows){ throw new Error('找不到可用的 movies CSV（尝试了：'+candidates.join(', ')+')'); }
-        w.state.rows = rows; w.state.csvPath = used; if(el.csv) el.csv.textContent = used;
+        w.state.rows = rows; w.state.csvPath = used;
         return rows;
       }
       function render(r){
@@ -358,7 +418,6 @@
         link:  w.body.querySelector('[data-link]'),
         open:  w.body.querySelector('[data-open]'),
         title: w.body.querySelector('[data-title]'),
-        src:   w.body.querySelector('[data-src]'),
         issues:w.body.querySelector('[data-issues]')
       };
       const showIssues=(arr=[])=>{ el.issues.innerHTML=''; arr.forEach(m=>{ const s=document.createElement('span'); s.className='badge'; s.textContent=m; el.issues.appendChild(s); }) };
@@ -373,7 +432,6 @@
           if(cached && (now - cached.t < CACHE_MS)) return cached.list;
         }catch{}
         const apiUrl = `https://api.github.com/repos/${GH.user}/${GH.repo}/contents/${GH.path}?ref=${GH.branch}`;
-        if (el.src) el.src.textContent = apiUrl;
         const res = await fetch(apiUrl, {cache:'no-store'});
         if(!res.ok){
           const txt = await res.text().catch(()=> '');
@@ -393,7 +451,6 @@
         return list;
       }
 
-      // —— 用 epub.js 解析封面（需要 JSZip + epub.js，已在 <head> 引入）—
       async function extractCoverUrl(epubUrl){
         if(!window.ePub){ throw new Error('epub.js 未加载'); }
         const book = ePub(epubUrl);
@@ -462,7 +519,7 @@
           </div>
         </div>`;
       const area = w.body.querySelector('[data-area]');
-      const renderCard = (c)=>{ area.innerHTML=''; const card=document.createElement('div'); card.style.border='1px solid var(--stroke)'; card.style.borderRadius='12px'; card.style.padding='10px'; card.style.background='#221b17'; card.innerHTML=`<strong>${c.title}</strong><div class="muted">${c.desc||''}</div>`; area.appendChild(card); };
+      const renderCard = (c)=>{ area.innerHTML=''; const card=document.createElement('div'); card.style.border='1px solid var(--stroke)'; card.style.borderRadius='12px'; card.style.padding='10px'; card.style.background='#17111a'; card.innerHTML=`<strong>${c.title}</strong><div class="muted">${c.desc||''}</div>`; area.appendChild(card); };
       w.body.querySelector('[data-draw]').addEventListener('click',()=>{ const d=w.state.deck; const i=Math.floor(Math.random()*d.length); renderCard(d[i]); saveLayout(); });
       w.body.querySelector('[data-peek]').addEventListener('click',()=>{ area.innerHTML=''; w.state.deck.forEach(c=>{ const row=document.createElement('div'); row.className='row'; row.innerHTML=`<span class="badge">${c.title}</span><span class="muted">${c.desc||''}</span>`; area.appendChild(row); }); });
       return w;
