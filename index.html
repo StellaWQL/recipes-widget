@@ -263,7 +263,7 @@
 
     // ---------- Recipe ----------
     async function RecipeWidget(opts={}){
-      const w = createWidget({type:'recipe', title:'🍳 Recipe', x:140, y:120, ...opts});
+      const w = createWidget({type:'recipe', title:'Rubedo', x:140, y:120, ...opts});
       w.body.innerHTML = `
         <div class="grid">
           <div class="row" data-incant></div>
@@ -329,7 +329,7 @@
 
     // ---------- Movie（隐藏触发词 = 第一个 amavi） ----------
     async function MovieWidget(opts={}){
-      const w = createWidget({type:'movie', title:'🎬 Movie', x:360, y:180, ...opts});
+      const w = createWidget({type:'movie', title:'Citrinitas', x:360, y:180, ...opts});
       w.body.innerHTML = `
         <div class="grid">
           <div class="row" data-incant></div>
@@ -417,7 +417,7 @@
           {text:'te', hot:false},
           {text:'amavi.', hot:false}
         ],
-        author:'S. Augustine.'
+        author:''
       });
 
       try{ await ensureData(); pick(); }catch(e){ el.issues.innerHTML=`<span class="badge">${String(e.message||e)}</span>`; }
@@ -426,7 +426,7 @@
 
     // ---------- Read（隐藏触发词 = stars；去掉 .epub；封面点击打开 reader.html） ----------
     async function ReadWidget(opts={}){
-      const w = createWidget({type:'read', title:'📚 Read', x:720, y:140, ...opts});
+      const w = createWidget({type:'read', title:'Albedo', x:720, y:140, ...opts});
       w.body.innerHTML = `
         <div class="grid">
           <div class="row" data-incant></div>
@@ -535,7 +535,7 @@
           {text:'their', hot:false},
           {text:'husks.', hot:false}
         ],
-        author:'William Blake.'
+        author:''
       });
 
       try{ await ensureList(); pick(); }catch(e){ el.issues.innerHTML=`<span class="badge">${String(e.message||e)}</span>`; }
@@ -544,7 +544,7 @@
 
     // ---------- Card Drawer ----------
     function CardDrawer(opts={}){
-      const w = createWidget({type:'drawer', title:'🃏 Card Drawer', x:820, y:160, ...opts});
+      const w = createWidget({type:'drawer', title:'Nigredo', x:820, y:160, ...opts});
       w.state.deck = (opts.state && opts.state.deck) || [
         {title:'今日惊喜', desc:'TBD'},
         {title:'健康打卡', desc:'TBD'},
