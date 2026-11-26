@@ -1,0 +1,110 @@
+/* The raster illustration is cut into moving paper layers in the scene SVG. */
+.stage-frame {
+  --paper-duration: 560ms;
+  --paper-ease: cubic-bezier(.2,.65,.25,1);
+  --bird-hover: 10px;
+  --bird-max-pull: 75px;
+  --bird-pull-threshold: 20px;
+  --bird-string-length: 137px;
+  --lid-lift: -82px;
+  --lid-turn: -4deg;
+  --cards-lift: -45px;
+  --pear-lift: -26px;
+  --curtain-open: 76px;
+  --bookmark-pull: 14px;
+  --petal-turn: -8deg;
+}
+
+.scene-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+  visibility: hidden;
+}
+.stage-frame.is-art-ready .scene-overlay { visibility: visible; }
+
+.hotspot { z-index: 3; box-shadow: none; }
+.hotspot:active { transform: none; }
+.hotspot::before, .hotspot::after { content: none !important; display: none !important; }
+.hotspot:focus-visible { outline: none; box-shadow: none; }
+.hotspot-letter { cursor: grab; touch-action: none; }
+.stage-frame.is-pulling .hotspot-letter { cursor: grabbing; }
+
+.scene-overlay :is(.scene-bird,.scene-string,.scene-lid,.scene-cards,.scene-pear,.scene-curtain-left,.scene-curtain-right,.scene-bookmark,.scene-petal) {
+  transform-box: view-box;
+  transition: transform var(--paper-duration) var(--paper-ease);
+  pointer-events: none;
+}
+
+.scene-bird { transform: translateY(0); }
+.scene-string {
+  transform-origin: var(--string-origin, 50% 0%);
+  transform: scaleY(1);
+}
+.stage-frame[data-active="inspiration"] .scene-bird { transform: translateY(var(--bird-hover)); }
+.stage-frame[data-active="inspiration"] .scene-string { transform: scaleY(var(--bird-string-hover-scale,1.073)); }
+.stage-frame.is-pulling .scene-bird {
+  transform: translateY(var(--bird-pull,0px));
+  transition: none;
+}
+.stage-frame.is-pulling .scene-string {
+  transform: scaleY(var(--bird-string-scale,1));
+  transition: none;
+}
+
+.scene-city-light {
+  opacity: 0;
+  transition: opacity 560ms ease;
+  pointer-events: none;
+}
+.stage-frame[data-active="city"] .scene-city-light {
+  opacity: 1;
+}
+
+.scene-lid {
+  transform-origin: var(--lid-origin,37% 76%);
+  transform: translateY(0) rotate(0);
+}
+.scene-overlay .scene-cards {
+  opacity: 0;
+  transform: translateY(0);
+  transition: transform var(--paper-duration) var(--paper-ease), opacity 180ms ease;
+}
+.stage-frame[data-active="tarot"] .scene-lid {
+  transform: translateY(var(--lid-lift)) rotate(var(--lid-turn));
+}
+.stage-frame[data-active="tarot"] .scene-cards {
+  opacity: 1;
+  transform: translateY(var(--cards-lift));
+  transition-delay: 70ms;
+}
+
+.scene-pear {
+  transform: translateY(0);
+}
+.stage-frame[data-active="recipe"] .scene-pear {
+  transform: translateY(var(--pear-lift));
+}
+
+.scene-curtain-left, .scene-curtain-right { transform: translateX(0); }
+.stage-frame[data-active="movie"] .scene-curtain-left { transform: translateX(calc(-1 * var(--curtain-open))); }
+.stage-frame[data-active="movie"] .scene-curtain-right { transform: translateX(var(--curtain-open)); }
+
+.scene-bookmark { transform: translate(0,0); }
+.stage-frame[data-active="reader"] .scene-bookmark { transform: translate(-4px,var(--bookmark-pull)); }
+
+.scene-petal {
+  transform-origin: var(--petal-origin,64% 90%);
+  transform: rotate(0);
+}
+.stage-frame[data-active="directory"] .scene-petal { transform: rotate(var(--petal-turn)); }
+
+@media (prefers-reduced-motion: reduce) {
+  .scene-overlay * { transition: none !important; }
+}

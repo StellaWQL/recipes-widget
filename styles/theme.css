@@ -1,0 +1,77 @@
+
+:root{
+  --bg:#0a0a0c; --bg-grad1:#0f0e13;
+  --veil1:rgba(198,169,105,.08); --veil2:rgba(122,31,61,.10);
+  --panel:#141018; --panel-2:#0f0b13;
+  --text:#eee7db; --muted:#b8b0a2; --stroke:#2b2330;
+  --accent:#c6a969; --accent2:#9b7b3a; --danger:#7a1f3d; --link:#d7c08a;
+  --shadow:0 22px 50px rgba(0,0,0,.6); --shadow-sm:0 12px 28px rgba(0,0,0,.45);
+
+  --serif:
+    "Iowan Old Style","Palatino Linotype","Book Antiqua",Georgia,
+    "Times New Roman","Times","Noto Serif","Noto Serif SC","Noto Serif TC",
+    "Source Han Serif SC","Source Han Serif TC","Songti SC","STSong",
+    "Hiragino Mincho ProN","Hiragino Mincho Pro","Yu Mincho","PMingLiU","MingLiU",serif;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  background:
+    radial-gradient(1000px 700px at 12% -10%, var(--veil1), transparent 55%),
+    radial-gradient(900px 600px at 110% 8%, var(--veil2), transparent 60%),
+    linear-gradient(120deg, var(--bg), var(--bg-grad1));
+  color:var(--text); font-family:var(--serif); overflow:hidden; letter-spacing:.2px;
+  font-variant-ligatures:normal; font-feature-settings:"liga" 1,"kern" 1;
+  text-rendering:optimizeLegibility; -webkit-font-smoothing:antialiased;
+}
+.topbar{
+  position:fixed; inset:12px 12px auto 12px;
+  background:linear-gradient(180deg,var(--panel),var(--panel-2));
+  border:1px solid var(--stroke); border-radius:14px;
+  display:flex; align-items:center; gap:10px;
+  padding:8px 10px; z-index:10000; box-shadow:var(--shadow-sm)
+}
+.btn{
+  appearance:none; border:0; border-radius:12px; padding:8px 12px; cursor:pointer;
+  font-weight:800; letter-spacing:.3px;
+  color:#160e10; background:linear-gradient(180deg,var(--accent),#b28b4a);
+  box-shadow:0 10px 22px rgba(198,169,105,.28);
+  transition:filter .12s ease, transform .05s ease
+}
+.btn:hover{filter:brightness(1.06)} .btn:active{transform:translateY(1px)}
+.btn.secondary{background:linear-gradient(180deg,#1b141b,#130f15); color:var(--text); box-shadow:none; border:1px solid var(--stroke)}
+.btn.danger{background:linear-gradient(180deg,#8d2647,var(--danger)); color:#f8eaea}
+.hint{color:var(--muted); font-size:12px; margin-left:6px}
+#board{position:absolute; inset:0; padding:64px 16px 16px 16px}
+
+.widget{
+  position:absolute; width:360px; min-width:260px; max-width:560px;
+  background:linear-gradient(180deg,var(--panel),#0c0a10);
+  border:1px solid var(--stroke); border-radius:16px; box-shadow:var(--shadow); overflow:hidden
+}
+.widget.resizable{resize:both}
+.w-header{
+  cursor:grab; user-select:none; background:linear-gradient(180deg,#1a1420,#100c14);
+  padding:10px 12px; border-bottom:1px solid var(--stroke); display:flex; align-items:center; justify-content:center
+}
+.w-title{
+  font-size:15px; font-weight:900; letter-spacing:.35px; cursor:pointer;
+  transition:filter .15s ease, text-shadow .15s ease, color .15s ease, transform .05s ease
+}
+.w-title:hover{color:#f6ead0; text-shadow:0 0 6px rgba(198,169,105,.45),0 0 14px rgba(122,31,61,.35)}
+.w-title:active{transform:translateY(1px)}
+.w-body{padding:12px; display:grid; gap:10px}
+.w-footer{padding:10px 12px; border-top:1px solid var(--stroke); color:var(--muted); font-size:12px}
+.figure{
+  position:relative; display:block; width:100%; border-radius:12px; border:1px solid var(--stroke); overflow:hidden;
+  background:repeating-linear-gradient(45deg, rgba(255,245,230,.04) 0 6px, rgba(0,0,0,.02) 6px 12px),
+             radial-gradient(500px 300px at 85% 20%, rgba(122,31,61,.10), transparent 60%), #0f0b12
+}
+.figure.poster{aspect-ratio:2/3} .figure.square{aspect-ratio:1/1}
+.figure>img{position:absolute; inset:0; width:100%; height:100%; object-fit:contain; display:block}
+.row{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+.input{background:#110d13; color:var(--text); border:1px solid var(--stroke); border-radius:10px; padding:8px 10px; outline:none}
+.badge{padding:4px 8px; border:1px solid var(--stroke); border-radius:999px; color:var(--muted); font-size:12px; background:#17111a}
+.link{color:var(--link); text-decoration:none} .link:hover{text-decoration:underline}
+.hidden{display:none}

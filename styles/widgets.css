@@ -1,0 +1,15 @@
+
+.incant-wrap{width:100%}
+.incant-wrap .divider{
+  height:1px; width:100%;
+  background:linear-gradient(90deg, transparent, rgba(214,191,129,.65), transparent);
+  opacity:.85; margin:2px 0 8px 0
+}
+.incant-wrap .divider.bottom{margin:8px 0 2px 0}
+.spell{line-height:1.55; color:var(--muted); user-select:none; -webkit-user-select:none; text-align:left}
+.spell .hot{
+  color:inherit; cursor:pointer; font-weight:inherit; text-decoration:none; padding:0 1px; border-radius:3px;
+  transition:text-shadow .15s ease, filter .15s ease
+}
+.spell .hot:hover{ text-shadow:0 0 6px rgba(214,191,129,.55), 0 0 16px rgba(128,34,66,.45); filter:brightness(1.07) }
+.spell .author{display:block; margin-top:6px; color:#cbbf9f; opacity:.9; font-size:12px; letter-spacing:.2px}

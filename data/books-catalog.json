@@ -1,0 +1,86 @@
+[
+  {
+    "name": "The Collected Works of W.B. Yeats Volume I.epub",
+    "download_url": "https://raw.githubusercontent.com/StellaWQL/recipes-widget/practice/data/books/The%20Collected%20Works%20of%20W.B.%20Yeats%20Volume%20I.epub",
+    "path": "data/books/The Collected Works of W.B. Yeats Volume I.epub",
+    "type": "file",
+    "size": 630321
+  },
+  {
+    "name": "The Yellow Wallpaper.epub",
+    "download_url": "https://raw.githubusercontent.com/StellaWQL/recipes-widget/practice/data/books/The%20Yellow%20Wallpaper.epub",
+    "path": "data/books/The Yellow Wallpaper.epub",
+    "type": "file",
+    "size": 111475
+  },
+  {
+    "name": "倾城之恋.epub",
+    "download_url": "https://raw.githubusercontent.com/StellaWQL/recipes-widget/practice/data/books/倾城之恋.epub",
+    "path": "data/books/倾城之恋.epub",
+    "type": "file",
+    "size": 527062
+  },
+  {
+    "name": "半生缘.epub",
+    "download_url": "https://raw.githubusercontent.com/StellaWQL/recipes-widget/practice/data/books/半生缘.epub",
+    "path": "data/books/半生缘.epub",
+    "type": "file",
+    "size": 420191
+  },
+  {
+    "name": "小团圆.epub",
+    "download_url": "https://raw.githubusercontent.com/StellaWQL/recipes-widget/practice/data/books/小团圆.epub",
+    "path": "data/books/小团圆.epub",
+    "type": "file",
+    "size": 3212473
+  },
+  {
+    "name": "忏悔录.epub",
+    "download_url": "https://raw.githubusercontent.com/StellaWQL/recipes-widget/practice/data/books/忏悔录.epub",
+    "path": "data/books/忏悔录.epub",
+    "type": "file",
+    "size": 327745
+  },
+  {
+    "name": "怨女.epub",
+    "download_url": "https://raw.githubusercontent.com/StellaWQL/recipes-widget/practice/data/books/怨女.epub",
+    "path": "data/books/怨女.epub",
+    "type": "file",
+    "size": 255566
+  },
+  {
+    "name": "流俗地 .epub",
+    "download_url": "https://raw.githubusercontent.com/StellaWQL/recipes-widget/practice/data/books/流俗地 .epub",
+    "path": "data/books/流俗地 .epub",
+    "type": "file",
+    "size": 691821
+  },
+  {
+    "name": "流言.epub",
+    "download_url": "https://raw.githubusercontent.com/StellaWQL/recipes-widget/practice/data/books/流言.epub",
+    "path": "data/books/流言.epub",
+    "type": "file",
+    "size": 455367
+  },
+  {
+    "name": "红玫瑰与白玫瑰.epub",
+    "download_url": "https://raw.githubusercontent.com/StellaWQL/recipes-widget/practice/data/books/红玫瑰与白玫瑰.epub",
+    "path": "data/books/红玫瑰与白玫瑰.epub",
+    "type": "file",
+    "size": 418159
+  },
+  {
+    "name": "蛇结.epub",
+    "download_url": "https://raw.githubusercontent.com/StellaWQL/recipes-widget/practice/data/books/蛇结.epub",
+    "path": "data/books/蛇结.epub",
+    "type": "file",
+    "size": 1629544
+  },
+  {
+    "name": "论三位一体.epub",
+    "download_url": "https://raw.githubusercontent.com/StellaWQL/recipes-widget/practice/data/books/论三位一体.epub",
+    "path": "data/books/论三位一体.epub",
+    "type": "file",
+    "size": 264074
+  }
+]

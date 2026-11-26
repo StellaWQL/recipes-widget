@@ -1,0 +1,551 @@
+{
+  "version": 1,
+  "cards": [
+    {
+      "id": "IMG_0483.PNG",
+      "filename": "IMG_0483.PNG",
+      "src": "../assets/tarot/IMG_0483.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0484.PNG",
+      "filename": "IMG_0484.PNG",
+      "src": "../assets/tarot/IMG_0484.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0485.PNG",
+      "filename": "IMG_0485.PNG",
+      "src": "../assets/tarot/IMG_0485.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0486.PNG",
+      "filename": "IMG_0486.PNG",
+      "src": "../assets/tarot/IMG_0486.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0487.PNG",
+      "filename": "IMG_0487.PNG",
+      "src": "../assets/tarot/IMG_0487.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0488.PNG",
+      "filename": "IMG_0488.PNG",
+      "src": "../assets/tarot/IMG_0488.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0489.PNG",
+      "filename": "IMG_0489.PNG",
+      "src": "../assets/tarot/IMG_0489.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0490.PNG",
+      "filename": "IMG_0490.PNG",
+      "src": "../assets/tarot/IMG_0490.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0491.PNG",
+      "filename": "IMG_0491.PNG",
+      "src": "../assets/tarot/IMG_0491.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0492.PNG",
+      "filename": "IMG_0492.PNG",
+      "src": "../assets/tarot/IMG_0492.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0493.PNG",
+      "filename": "IMG_0493.PNG",
+      "src": "../assets/tarot/IMG_0493.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0494.PNG",
+      "filename": "IMG_0494.PNG",
+      "src": "../assets/tarot/IMG_0494.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0496.PNG",
+      "filename": "IMG_0496.PNG",
+      "src": "../assets/tarot/IMG_0496.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0497.PNG",
+      "filename": "IMG_0497.PNG",
+      "src": "../assets/tarot/IMG_0497.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0498.PNG",
+      "filename": "IMG_0498.PNG",
+      "src": "../assets/tarot/IMG_0498.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0499.PNG",
+      "filename": "IMG_0499.PNG",
+      "src": "../assets/tarot/IMG_0499.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0500.PNG",
+      "filename": "IMG_0500.PNG",
+      "src": "../assets/tarot/IMG_0500.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0501.PNG",
+      "filename": "IMG_0501.PNG",
+      "src": "../assets/tarot/IMG_0501.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0502.PNG",
+      "filename": "IMG_0502.PNG",
+      "src": "../assets/tarot/IMG_0502.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0503.PNG",
+      "filename": "IMG_0503.PNG",
+      "src": "../assets/tarot/IMG_0503.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0504.PNG",
+      "filename": "IMG_0504.PNG",
+      "src": "../assets/tarot/IMG_0504.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0505.PNG",
+      "filename": "IMG_0505.PNG",
+      "src": "../assets/tarot/IMG_0505.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0506.PNG",
+      "filename": "IMG_0506.PNG",
+      "src": "../assets/tarot/IMG_0506.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0507.PNG",
+      "filename": "IMG_0507.PNG",
+      "src": "../assets/tarot/IMG_0507.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0508.PNG",
+      "filename": "IMG_0508.PNG",
+      "src": "../assets/tarot/IMG_0508.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0509.PNG",
+      "filename": "IMG_0509.PNG",
+      "src": "../assets/tarot/IMG_0509.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0510.PNG",
+      "filename": "IMG_0510.PNG",
+      "src": "../assets/tarot/IMG_0510.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0511.PNG",
+      "filename": "IMG_0511.PNG",
+      "src": "../assets/tarot/IMG_0511.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0512.PNG",
+      "filename": "IMG_0512.PNG",
+      "src": "../assets/tarot/IMG_0512.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0513.PNG",
+      "filename": "IMG_0513.PNG",
+      "src": "../assets/tarot/IMG_0513.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0514.PNG",
+      "filename": "IMG_0514.PNG",
+      "src": "../assets/tarot/IMG_0514.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0515.PNG",
+      "filename": "IMG_0515.PNG",
+      "src": "../assets/tarot/IMG_0515.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0516.PNG",
+      "filename": "IMG_0516.PNG",
+      "src": "../assets/tarot/IMG_0516.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0517.PNG",
+      "filename": "IMG_0517.PNG",
+      "src": "../assets/tarot/IMG_0517.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0518.PNG",
+      "filename": "IMG_0518.PNG",
+      "src": "../assets/tarot/IMG_0518.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0519.PNG",
+      "filename": "IMG_0519.PNG",
+      "src": "../assets/tarot/IMG_0519.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0520.PNG",
+      "filename": "IMG_0520.PNG",
+      "src": "../assets/tarot/IMG_0520.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0521.PNG",
+      "filename": "IMG_0521.PNG",
+      "src": "../assets/tarot/IMG_0521.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0522.PNG",
+      "filename": "IMG_0522.PNG",
+      "src": "../assets/tarot/IMG_0522.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0523.PNG",
+      "filename": "IMG_0523.PNG",
+      "src": "../assets/tarot/IMG_0523.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0524.PNG",
+      "filename": "IMG_0524.PNG",
+      "src": "../assets/tarot/IMG_0524.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0525.PNG",
+      "filename": "IMG_0525.PNG",
+      "src": "../assets/tarot/IMG_0525.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0526.PNG",
+      "filename": "IMG_0526.PNG",
+      "src": "../assets/tarot/IMG_0526.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0527.PNG",
+      "filename": "IMG_0527.PNG",
+      "src": "../assets/tarot/IMG_0527.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0528.PNG",
+      "filename": "IMG_0528.PNG",
+      "src": "../assets/tarot/IMG_0528.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0529.PNG",
+      "filename": "IMG_0529.PNG",
+      "src": "../assets/tarot/IMG_0529.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0530.PNG",
+      "filename": "IMG_0530.PNG",
+      "src": "../assets/tarot/IMG_0530.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0531.PNG",
+      "filename": "IMG_0531.PNG",
+      "src": "../assets/tarot/IMG_0531.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0532.PNG",
+      "filename": "IMG_0532.PNG",
+      "src": "../assets/tarot/IMG_0532.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0533.PNG",
+      "filename": "IMG_0533.PNG",
+      "src": "../assets/tarot/IMG_0533.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0534.PNG",
+      "filename": "IMG_0534.PNG",
+      "src": "../assets/tarot/IMG_0534.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0535.PNG",
+      "filename": "IMG_0535.PNG",
+      "src": "../assets/tarot/IMG_0535.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0536.PNG",
+      "filename": "IMG_0536.PNG",
+      "src": "../assets/tarot/IMG_0536.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0537.PNG",
+      "filename": "IMG_0537.PNG",
+      "src": "../assets/tarot/IMG_0537.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0538.PNG",
+      "filename": "IMG_0538.PNG",
+      "src": "../assets/tarot/IMG_0538.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0539.PNG",
+      "filename": "IMG_0539.PNG",
+      "src": "../assets/tarot/IMG_0539.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0540.PNG",
+      "filename": "IMG_0540.PNG",
+      "src": "../assets/tarot/IMG_0540.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0541.PNG",
+      "filename": "IMG_0541.PNG",
+      "src": "../assets/tarot/IMG_0541.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0542.PNG",
+      "filename": "IMG_0542.PNG",
+      "src": "../assets/tarot/IMG_0542.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0543.PNG",
+      "filename": "IMG_0543.PNG",
+      "src": "../assets/tarot/IMG_0543.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0544.PNG",
+      "filename": "IMG_0544.PNG",
+      "src": "../assets/tarot/IMG_0544.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0545.PNG",
+      "filename": "IMG_0545.PNG",
+      "src": "../assets/tarot/IMG_0545.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0546.PNG",
+      "filename": "IMG_0546.PNG",
+      "src": "../assets/tarot/IMG_0546.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0547.PNG",
+      "filename": "IMG_0547.PNG",
+      "src": "../assets/tarot/IMG_0547.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0548.PNG",
+      "filename": "IMG_0548.PNG",
+      "src": "../assets/tarot/IMG_0548.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0549.PNG",
+      "filename": "IMG_0549.PNG",
+      "src": "../assets/tarot/IMG_0549.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0550.PNG",
+      "filename": "IMG_0550.PNG",
+      "src": "../assets/tarot/IMG_0550.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0551.PNG",
+      "filename": "IMG_0551.PNG",
+      "src": "../assets/tarot/IMG_0551.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0552.PNG",
+      "filename": "IMG_0552.PNG",
+      "src": "../assets/tarot/IMG_0552.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0553.PNG",
+      "filename": "IMG_0553.PNG",
+      "src": "../assets/tarot/IMG_0553.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0554.PNG",
+      "filename": "IMG_0554.PNG",
+      "src": "../assets/tarot/IMG_0554.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0555.PNG",
+      "filename": "IMG_0555.PNG",
+      "src": "../assets/tarot/IMG_0555.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0556.PNG",
+      "filename": "IMG_0556.PNG",
+      "src": "../assets/tarot/IMG_0556.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0557.PNG",
+      "filename": "IMG_0557.PNG",
+      "src": "../assets/tarot/IMG_0557.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0558.PNG",
+      "filename": "IMG_0558.PNG",
+      "src": "../assets/tarot/IMG_0558.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0559.PNG",
+      "filename": "IMG_0559.PNG",
+      "src": "../assets/tarot/IMG_0559.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0560.PNG",
+      "filename": "IMG_0560.PNG",
+      "src": "../assets/tarot/IMG_0560.PNG",
+      "width": 240,
+      "height": 320
+    },
+    {
+      "id": "IMG_0561.PNG",
+      "filename": "IMG_0561.PNG",
+      "src": "../assets/tarot/IMG_0561.PNG",
+      "width": 240,
+      "height": 320
+    }
+  ]
+}

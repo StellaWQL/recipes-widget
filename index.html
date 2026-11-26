@@ -1,625 +1,86 @@
-
 <!doctype html>
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#9a8794">
+  <meta name="description" content="THE RAVEN，藏在纸剧场里的日常。">
   <title>THE RAVEN.</title>
-
-  <!-- ReadWidget 依赖：先 JSZip 后 epub.js -->
-  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
-  <script src="https://unpkg.com/epubjs/dist/epub.min.js"></script>
-
-  <style>
-    :root{
-      --bg:#0a0a0c; --bg-grad1:#0f0e13;
-      --veil1:rgba(198,169,105,.08); --veil2:rgba(122,31,61,.10);
-      --panel:#141018; --panel-2:#0f0b13;
-      --text:#eee7db; --muted:#b8b0a2; --stroke:#2b2330;
-      --accent:#c6a969; --accent2:#9b7b3a; --danger:#7a1f3d; --link:#d7c08a;
-      --shadow:0 22px 50px rgba(0,0,0,.6);
-      --shadow-sm:0 12px 28px rgba(0,0,0,.45);
-
-      --serif:
-        "Iowan Old Style","Palatino Linotype","Book Antiqua",Georgia,
-        "Times New Roman","Times",
-        "Noto Serif","Noto Serif SC","Noto Serif TC",
-        "Source Han Serif SC","Source Han Serif TC",
-        "Songti SC","STSong",
-        "Hiragino Mincho ProN","Hiragino Mincho Pro","Yu Mincho",
-        "PMingLiU","MingLiU",serif;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      background:
-        radial-gradient(1000px 700px at 12% -10%, var(--veil1), transparent 55%),
-        radial-gradient(900px 600px at 110% 8%,  var(--veil2), transparent 60%),
-        linear-gradient(120deg, var(--bg), var(--bg-grad1));
-      color:var(--text);
-      font-family:var(--serif);
-      overflow:hidden; letter-spacing:.2px;
-      font-variant-ligatures:normal; font-feature-settings:"liga" 1,"kern" 1;
-      text-rendering:optimizeLegibility; -webkit-font-smoothing:antialiased;
-    }
-
-    .topbar{position:fixed; inset:12px 12px auto 12px; background:linear-gradient(180deg,var(--panel),var(--panel-2));
-      border:1px solid var(--stroke); border-radius:14px; display:flex; align-items:center; gap:10px;
-      padding:8px 10px; z-index:10000; box-shadow:var(--shadow-sm)}
-    .btn{appearance:none; border:0; border-radius:12px; padding:8px 12px; cursor:pointer; font-weight:800; letter-spacing:.3px;
-      color:#160e10; background:linear-gradient(180deg,var(--accent),#b28b4a); box-shadow:0 10px 22px rgba(198,169,105,.28);
-      transition:filter .12s ease, transform .05s ease}
-    .btn:hover{filter:brightness(1.06)}
-    .btn:active{transform:translateY(1px)}
-    .btn.secondary{background:linear-gradient(180deg,#1b141b,#130f15); color:var(--text); box-shadow:none; border:1px solid var(--stroke)}
-    .btn.danger{background:linear-gradient(180deg,#8d2647,var(--danger)); color:#f8eaea}
-    .hint{color:var(--muted); font-size:12px; margin-left:6px}
-
-    #board{position:absolute; inset:0; padding:64px 16px 16px 16px}
-
-    .widget{position:absolute; top:100px; left:100px; width:360px; min-width:260px; max-width:560px;
-      background:linear-gradient(180deg, var(--panel), #0c0a10); border:1px solid var(--stroke); border-radius:16px; box-shadow:var(--shadow); overflow:hidden}
-    .widget.resizable{resize:both}
-
-    /* 极简 header：只有标题；点击标题=关闭；hover 微光 */
-    .w-header{position:relative; cursor:grab; user-select:none; background:linear-gradient(180deg,#1a1420,#100c14);
-      padding:10px 12px; border-bottom:1px solid var(--stroke); display:flex; align-items:center; justify-content:center}
-    .w-title{font-size:15px; font-weight:900; letter-spacing:.35px; transition:filter .15s ease, text-shadow .15s ease, color .15s ease, transform .05s ease; cursor:pointer}
-    .w-title:hover{color:#f6ead0; text-shadow:0 0 6px rgba(198,169,105,.45), 0 0 14px rgba(122,31,61,.35); filter:brightness(1.06)}
-    .w-title:active{transform:translateY(1px)}
-
-    .w-body{padding:12px; display:grid; gap:10px}
-    .w-footer{padding:10px 12px; border-top:1px solid var(--stroke); color:var(--muted); font-size:12px}
-
-    .figure{position:relative; display:block; width:100%; border-radius:12px; border:1px solid var(--stroke); overflow:hidden;
-      background:repeating-linear-gradient(45deg, rgba(255,245,230,.04) 0 6px, rgba(0,0,0,.02) 6px 12px), radial-gradient(500px 300px at 85% 20%, rgba(122,31,61,.10), transparent 60%), #0f0b12}
-    .figure.poster{aspect-ratio:2/3}
-    .figure.square{aspect-ratio:1/1}
-    .figure>img{position:absolute; inset:0; width:100%; height:100%; object-fit:contain; display:block}
-
-    .row{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
-    .input{background:#110d13; color:var(--text); border:1px solid var(--stroke); border-radius:10px; padding:8px 10px; outline:none}
-    .badge{padding:4px 8px; border:1px solid var(--stroke); border-radius:999px; color:var(--muted); font-size:12px; background:#17111a}
-    .link{color:var(--link); text-decoration:none}
-    .link:hover{text-decoration:underline}
-    .hidden{display:none}
-
-    /* —— 引文咒语：默认完全融入，只有 hover 才微光 —— */
-    .incant-wrap{width:100%}
-    .incant-wrap .divider{height:1px; width:100%; background:linear-gradient(90deg, transparent, rgba(214,191,129,.65), transparent); opacity:.85; margin:2px 0 8px 0}
-    .incant-wrap .divider.bottom{margin:8px 0 2px 0}
-    .spell{line-height:1.55; color:var(--muted); user-select:none; -webkit-user-select:none; text-align:left}
-    .spell .hot{color:inherit; cursor:pointer; font-weight:inherit; text-decoration:none; padding:0 1px; border-radius:3px; transition:text-shadow .15s ease, filter .15s ease}
-    .spell .hot:hover{text-shadow:0 0 6px rgba(214,191,129,.55), 0 0 16px rgba(128,34,66,.45); filter:brightness(1.07)}
-    .spell .author{display:block; margin-top:6px; color:#cbbf9f; opacity:.9; font-size:12px; letter-spacing:.2px}
-  </style>
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="stylesheet" href="./styles/theatre.css">
+  <link rel="stylesheet" href="./styles/motion.css">
+  <link rel="stylesheet" href="./styles/tarot.css">
+  <link rel="stylesheet" href="./styles/reader.css">
 </head>
 <body>
-  <div class="topbar">
-    <button class="btn" id="addRecipe">＋ Fooooooood</button>
-    <button class="btn" id="addMovie">＋ Go Theatre!</button>
-    <button class="btn" id="addDrawer">＋ Wonderer</button>
-    <button class="btn" id="addRead">＋ More read?</button>
-    <button class="btn secondary" id="saveLayout">💾 Save layout</button>
-    <button class="btn secondary" id="loadLayout">📂 Load layout</button>
-    <button class="btn danger" id="resetLayout">Back2?</button>
-    <span class="hint">驼背，圣者，和愚人是下弦月。</span>
-  </div>
-  <div id="board"></div>
-
-  <script>
-  ;(function(){
-    const board = document.getElementById('board');
-    const zStack = { top: 10, bump(el){ this.top += 1; el.style.zIndex = this.top; }};
-    const STORAGE_KEY = 'widgets.layout.v1';
-    const uid = ()=>'w_'+Math.random().toString(36).slice(2,9);
-
-    // ---------- utils ----------
-    function parseCSV(text, {header=true, skipEmptyLines=true}={}){
-      const rows=[]; let cur=''; let row=[]; let q=false; let i=0;
-      const pushCell=()=>{ row.push(cur); cur=''; };
-      const pushRow=()=>{ rows.push(row); row=[]; };
-      while(i<text.length){
-        const ch=text[i];
-        if(q){
-          if(ch==='"'){ if(text[i+1]==='"'){ cur+='"'; i+=2; continue; } q=false; i++; }
-          else { cur+=ch; i++; }
-        }else{
-          if(ch==='"'){ q=true; i++; }
-          else if(ch===','){ pushCell(); i++; }
-          else if(ch==='\n'){ pushCell(); pushRow(); i++; }
-          else if(ch==='\r'){ if(text[i+1]==='\n') i++; pushCell(); pushRow(); i++; }
-          else { cur+=ch; i++; }
-        }
-      }
-      pushCell(); pushRow();
-      if(rows.length && rows[rows.length-1].length===1 && rows[rows.length-1][0]==='') rows.pop();
-      if(header){
-        const head=rows.shift().map(h=>h.trim());
-        const out=rows.map(r=>{const o={}; head.forEach((h,idx)=>o[h]=(r[idx]??'').trim()); return o;});
-        return skipEmptyLines ? out.filter(o=>Object.values(o).some(v=>v!==''))
-                              : out;
-      }
-      return skipEmptyLines ? rows.filter(r=>r.some(v=>v!=='')) : rows;
-    }
-    const validUrl = (u)=>{ try{ new URL(u); return true; }catch{ return false; } };
-
-    // ---------- repo detection & GH config（Read 用） ----------
-    function detectRepo(){
-      const host = location.hostname;
-      const path = location.pathname.replace(/^\/+/, '');
-      if(/github\.io$/i.test(host)){
-        const user = host.split('.')[0];
-        const repo = path.split('/')[0] || '';
-        if(user && repo) return {user, repo};
-      }
-      return null;
-    }
-    function qs(key, fallback=null){
-      const v = new URLSearchParams(location.search).get(key);
-      return v ? decodeURIComponent(v) : fallback;
-    }
-    const auto = detectRepo();
-    const GH = {
-      user:   qs('gh_user',   auto?.user || 'StellaWQL'),
-      repo:   qs('gh_repo',   auto?.repo || 'recipes-widget'),
-      branch: qs('gh_branch', 'practice'),
-      path:   qs('gh_path',   'data/books'),
-    };
-
-    // ---------- Widget shell ----------
-    function createWidget({type,title,x=120,y=120,w=360,h=null,state={}}){
-      const id = uid();
-      const root = document.createElement('div');
-      root.className = 'widget resizable';
-      root.tabIndex = 0;
-      root.style.left = x+'px';
-      root.style.top  = y+'px';
-      if(w) root.style.width = w+'px';
-      if(h) root.style.height = h+'px';
-      root.dataset.id = id; root.dataset.type = type;
-      zStack.bump(root);
-
-      root.innerHTML = `
-        <div class="w-header" data-draghandle>
-          <div class="w-title" data-title>${title}</div>
-        </div>
-        <div class="w-body"></div>
-        <div class="w-footer"></div>
-      `;
-
-      const header = root.querySelector('[data-draghandle]');
-      const titleEl = root.querySelector('[data-title]');
-      const body = root.querySelector('.w-body');
-
-      // 拖拽
-      let drag = {on:false, dx:0, dy:0, moved:false, startX:0, startY:0};
-      header.addEventListener('mousedown', (e)=>{
-        drag.on=true; drag.moved=false;
-        header.style.cursor='grabbing'; zStack.bump(root);
-        drag.dx=e.clientX-root.offsetLeft; drag.dy=e.clientY-root.offsetTop;
-        drag.startX = e.clientX; drag.startY = e.clientY;
-        e.preventDefault();
-      });
-      window.addEventListener('mousemove', (e)=>{
-        if(!drag.on) return;
-        const nx = Math.max(0, Math.min(window.innerWidth - root.offsetWidth, e.clientX - drag.dx));
-        const ny = Math.max(48, Math.min(window.innerHeight - 40, e.clientY - drag.dy));
-        if(Math.hypot(e.clientX - drag.startX, e.clientY - drag.startY) > 4) drag.moved = true;
-        root.style.left = nx+'px'; root.style.top = ny+'px';
-      });
-      window.addEventListener('mouseup', ()=>{
-        if(drag.on){ drag.on=false; header.style.cursor='grab'; saveLayout(); }
-      });
-      // 点击标题 = 关闭（未拖动时）
-      titleEl.addEventListener('click', ()=>{ if(!drag.moved){ root.remove(); saveLayout(); } });
-      root.addEventListener('dblclick', ()=>{ zStack.bump(root); });
-
-      board.appendChild(root);
-      return { id, root, body, state };
-    }
-
-    // ---------- 引文组件：上、下金线；parts 中 hot=true 的词可点 ----------
-    function makeIncantation(container, {parts, author}){
-      const wrap = document.createElement('div');
-      wrap.className = 'incant-wrap';
-
-      const top = document.createElement('div');
-      top.className = 'divider';
-      const bottom = document.createElement('div');
-      bottom.className = 'divider bottom';
-
-      const line = document.createElement('div');
-      line.className = 'spell';
-
-      parts.forEach((p,i)=>{
-        const span = document.createElement('span');
-        span.textContent = p.text;
-        if(p.hot){
-          span.className = 'hot';
-          if(typeof p.onClick === 'function'){
-            span.addEventListener('click', (e)=>{ e.stopPropagation(); p.onClick(); });
-          }
-        }
-        line.appendChild(span);
-        if(i !== parts.length-1) line.append(' ');
-      });
-
-      if(author){
-        const au = document.createElement('span');
-        au.className = 'author';
-        au.textContent = `— ${author}`;
-        line.appendChild(au);
-      }
-
-      wrap.appendChild(top);
-      wrap.appendChild(line);
-      wrap.appendChild(bottom);
-      container.appendChild(wrap);
-      return wrap;
-    }
-
-    // ---------- Recipe ----------
-    async function RecipeWidget(opts={}){
-      const w = createWidget({type:'recipe', title:'Rubedo', x:140, y:120, ...opts});
-      w.body.innerHTML = `
-        <div class="grid">
-          <div class="row" data-incant></div>
-          <div class="grid">
-            <a class="figure square" data-link target="_blank" rel="noopener noreferrer">
-              <img data-img alt="recipe image" />
-            </a>
-            <div class="row">
-              <strong data-title>准备中…</strong>
-            </div>
-            <div class="row" data-issues></div>
-          </div>
-        </div>`;
-      const el = {
-        incant: w.body.querySelector('[data-incant]'),
-        title: w.body.querySelector('[data-title]'),
-        img: w.body.querySelector('[data-img]'),
-        link: w.body.querySelector('[data-link]'),
-        issues: w.body.querySelector('[data-issues]')
-      };
-      async function ensureData(){
-        if(w.state.rows?.length) return w.state.rows;
-        const CSV_PATH = 'data/atk_recipes_all.csv';
-        const res = await fetch(`${CSV_PATH}?t=${Date.now()}`, {cache:'no-store'});
-        if(!res.ok) throw new Error('CSV 加载失败: '+res.status);
-        const text = await res.text();
-        const rows = parseCSV(text, {header:true, skipEmptyLines:true}).map(r=>({
-          title:(r.title||r.Title||r.name||'').trim(),
-          image_url:(r.image_url||r.image||r.img||'').trim(),
-          recipe_url:(r.recipe_url||r.url||r.link||'').trim()
-        })).filter(r=>r.title && (r.image_url||r.recipe_url));
-        if(!rows.length) throw new Error('CSV 没有有效行');
-        w.state.rows = rows; return rows;
-      }
-      function render(r){
-        el.title.textContent = r.title || '未命名';
-        const imgOk = r.image_url && (()=>{ try{ new URL(r.image_url); return true;}catch{return false;} })();
-        const linkOk= r.recipe_url && (()=>{ try{ new URL(r.recipe_url); return true;}catch{return false;} })();
-        el.img.src = imgOk? r.image_url : '';
-        el.link.href = linkOk? r.recipe_url : '#';
-        const issues=[]; if(!imgOk) issues.push('图片无效'); if(!linkOk) issues.push('链接无效');
-        el.issues.innerHTML = issues.map(s=>`<span class="badge">${s}</span>`).join('');
-      }
-      function pick(){
-        const a=w.state.rows; if(!a?.length) return;
-        let i; do{ i=Math.floor(Math.random()*a.length) }while(a.length>1 && i===w.state.last);
-        w.state.last=i; render(a[i]); saveLayout();
-      }
-
-      makeIncantation(el.incant, {
-        parts:[
-          {text:'Et', hot:false},
-          {text:'luna', hot:false},
-          {text:'phase', hot:true, onClick:()=> pick()},
-          {text:'XI', hot:false}
-        ],
-        author:''
-      });
-
-      try{ await ensureData(); pick(); }catch(e){ el.issues.innerHTML=`<span class="badge">${String(e.message||e)}</span>`; }
-      return w;
-    }
-
-    // ---------- Movie（隐藏触发词 = 第一个 amavi） ----------
-    async function MovieWidget(opts={}){
-      const w = createWidget({type:'movie', title:'Citrinitas', x:360, y:180, ...opts});
-      w.body.innerHTML = `
-        <div class="grid">
-          <div class="row" data-incant></div>
-          <div class="grid">
-            <a class="figure poster" data-link target="_blank" rel="noopener noreferrer">
-              <img data-img alt="movie poster" />
-            </a>
-            <div class="row">
-              <strong data-title>准备中…</strong>
-              <span class="badge" data-year></span>
-              <span class="badge" data-score></span>
-            </div>
-            <div class="row" data-issues></div>
-          </div>
-        </div>`;
-      const el = {
-        incant:w.body.querySelector('[data-incant]'),
-        img:w.body.querySelector('[data-img]'),
-        link:w.body.querySelector('[data-link]'),
-        title:w.body.querySelector('[data-title]'),
-        year:w.body.querySelector('[data-year]'),
-        score:w.body.querySelector('[data-score]'),
-        issues:w.body.querySelector('[data-issues]'),
-      };
-      const parseYear = (d)=>{
-        if(!d) return '';
-        const m4 = String(d).match(/(19|20)\d{2}/); if(m4) return m4[0];
-        const m2 = String(d).match(/(\d{2})(?!.*\d)/);
-        if(m2){ const yy = parseInt(m2[1],10); return String(yy >= 30 ? 1900+yy : 2000+yy); }
-        return '';
-      };
-      async function ensureData(){
-        if(w.state.rows?.length) return w.state.rows;
-        const candidates = w.state.candidates || ['data/movies.csv','movies.csv'];
-        let rows=null;
-        for(const p of candidates){
-          try{
-            const res = await fetch(`${p}?t=${Date.now()}`, {cache:'no-store'});
-            if(!res.ok) continue;
-            const txt  = await res.text();
-            const arr  = parseCSV(txt,{header:true,skipEmptyLines:true}).map(r=>{
-              const t   = (r.title||r.name||'').trim();
-              const rd  = (r.release_date||r.date||'').trim();
-              const ms  = (r.metascore||r.score||r.metascore_w||'').toString().trim();
-              const img = (r.poster_url||r.image_url||r.poster||'').trim();
-              const url = (r.url||r.link||r.movie_url||'').trim();
-              return { title:t, release_date:rd, metascore:ms, poster_url:img, url };
-            }).filter(o=> o.title && (o.poster_url || o.url));
-            if(arr.length){ rows=arr; break; }
-          }catch{}
-        }
-        if(!rows){ throw new Error('找不到可用的 movies CSV'); }
-        w.state.rows = rows;
-        return rows;
-      }
-      function render(r){
-        el.title.textContent = r.title || '未命名';
-        const y = parseYear(r.release_date); el.year.textContent = y ? y : '年份未知';
-        const sc = parseInt(r.metascore,10); el.score.textContent = Number.isFinite(sc) ? `Metascore ${sc}` : '无分数';
-        const hasImg = !!(r.poster_url && (()=>{ try{ new URL(r.poster_url); return true;}catch{return false;} })());
-        el.img.src = hasImg ? r.poster_url : '';
-        const target = r.url && r.url.trim() ? r.url.trim() : `https://www.google.com/search?q=${encodeURIComponent('site:metacritic.com '+(r.title||''))}`;
-        el.link.href = target;
-        const issues=[]; if(!hasImg) issues.push('图片无效或缺失'); if(!target) issues.push('无可用链接');
-        el.issues.innerHTML = issues.map(s=>`<span class="badge">${s}</span>`).join('');
-      }
-      function pick(){
-        const a=w.state.rows; if(!a?.length) return;
-        let i; do{i=Math.floor(Math.random()*a.length)}while(a.length>1 && i===w.state.last);
-        w.state.last = i; render(a[i]); saveLayout();
-      }
-
-      makeIncantation(el.incant, {
-        parts:[
-          {text:'Sero', hot:false},
-          {text:'te', hot:false},
-          {text:'amavi,', hot:true, onClick:()=> pick()},   // 只有这个可点
-          {text:'Pulchritudo', hot:false},
-          {text:'tam', hot:false},
-          {text:'antiqua', hot:false},
-          {text:'et', hot:false},
-          {text:'tam', hot:false},
-          {text:'nova!', hot:false},
-          {text:'Sero', hot:false},
-          {text:'te', hot:false},
-          {text:'amavi.', hot:false}
-        ],
-        author:''
-      });
-
-      try{ await ensureData(); pick(); }catch(e){ el.issues.innerHTML=`<span class="badge">${String(e.message||e)}</span>`; }
-      return w;
-    }
-
-    // ---------- Read（隐藏触发词 = stars；去掉 .epub；封面点击打开 reader.html） ----------
-    async function ReadWidget(opts={}){
-      const w = createWidget({type:'read', title:'Albedo', x:720, y:140, ...opts});
-      w.body.innerHTML = `
-        <div class="grid">
-          <div class="row" data-incant></div>
-          <div class="grid">
-            <a class="figure poster" data-link target="_blank" rel="noopener noreferrer">
-              <img data-img alt="book cover" />
-            </a>
-            <div class="row">
-              <strong data-title>准备中…</strong>
-            </div>
-            <div class="row" data-issues></div>
-          </div>
-        </div>`;
-      const el = {
-        incant: w.body.querySelector('[data-incant]'),
-        img:   w.body.querySelector('[data-img]'),
-        link:  w.body.querySelector('[data-link]'),
-        title: w.body.querySelector('[data-title]'),
-        issues:w.body.querySelector('[data-issues]')
-      };
-
-      const CACHE_KEY = `reads.list.${GH.user}.${GH.repo}.${GH.branch}.${GH.path}`;
-      const CACHE_MS  = 10*60*1000;
-
-      async function listFromGitHub(){
-        const now = Date.now();
-        try{
-          const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
-          if(cached && (now - cached.t < CACHE_MS)) return cached.list;
-        }catch{}
-        const apiUrl = `https://api.github.com/repos/${GH.user}/${GH.repo}/contents/${GH.path}?ref=${GH.branch}`;
-        const res = await fetch(apiUrl, {cache:'no-store'});
-        if(!res.ok){
-          const txt = await res.text().catch(()=> '');
-          throw new Error(`GitHub API ${res.status}: ${apiUrl}\n${txt.slice(0,200)}`);
-        }
-        const arr = await res.json();
-        const files = arr.filter(it => it.type==='file' && /\.epub$/i.test(it.name));
-        const list = files.map(it => ({ name: it.name, url: it.download_url }));
-        localStorage.setItem(CACHE_KEY, JSON.stringify({t: now, list}));
-        return list;
-      }
-      async function ensureList(){
-        if(w.state.list?.length) return w.state.list;
-        const list = await listFromGitHub();
-        if(!list.length) throw new Error('没有发现任何 EPUB');
-        w.state.list = list;
-        return list;
-      }
-
-      async function extractCoverUrl(epubUrl){
-        if(!window.ePub){ throw new Error('epub.js 未加载'); }
-        const book = ePub(epubUrl);
-        await book.ready;
-        let coverHref = await book.loaded.cover.catch(()=>null);
-        if(!coverHref){
-          const manifest = await book.loaded.manifest;
-          const item = Object.values(manifest)
-            .find(it => /cover/i.test(it.id||'') || /cover/i.test(it.href||'') || (it.properties||'').includes('cover-image'));
-          coverHref = item ? item.href : null;
-        }
-        if(!coverHref) return null;
-        const url = book.resources.get(coverHref) || (await book.archive.createUrl(coverHref, { base64:false }));
-        return url || null;
-      }
-
-      const readerUrlFor = (epubUrl)=> `reader.html?${new URLSearchParams({ book: epubUrl }).toString()}`;
-
-      async function render(item){
-        const {name, url} = item;
-        const display = (name||'未命名').replace(/\.epub$/i,'');
-        el.title.textContent = display;
-        el.link.href = readerUrlFor(url);
-
-        if(!w.state.covers) w.state.covers = {};
-        if(w.state.covers[url]){ el.img.src = w.state.covers[url]; return; }
-
-        el.img.removeAttribute('src');
-        try{
-          const cover = await extractCoverUrl(url);
-          if(cover){ w.state.covers[url] = cover; el.img.src = cover; }
-          else { el.issues.innerHTML=`<span class="badge">未找到封面</span>`; }
-        }catch(e){
-          el.issues.innerHTML=`<span class="badge">封面解析失败（检查 JSZip/epub.js 与 CORS）</span>`;
-          console.error(e);
-        }
-      }
-      function pick(){
-        const a = w.state.list; if(!a?.length) return;
-        let i; do{ i = Math.floor(Math.random()*a.length); }while(a.length>1 && i===w.state.last);
-        w.state.last = i; render(a[i]); saveLayout();
-      }
-
-      makeIncantation(el.incant, {
-        parts:[
-          {text:'The', hot:false},
-          {text:'stars', hot:true, onClick:()=> pick()},
-          {text:'are', hot:false},
-          {text:'threshed,', hot:false},
-          {text:'and', hot:false},
-          {text:'the', hot:false},
-          {text:'souls', hot:false},
-          {text:'are', hot:false},
-          {text:'threshed', hot:false},
-          {text:'from', hot:false},
-          {text:'their', hot:false},
-          {text:'husks.', hot:false}
-        ],
-        author:''
-      });
-
-      try{ await ensureList(); pick(); }catch(e){ el.issues.innerHTML=`<span class="badge">${String(e.message||e)}</span>`; }
-      return w;
-    }
-
-    // ---------- Card Drawer ----------
-    function CardDrawer(opts={}){
-      const w = createWidget({type:'drawer', title:'Nigredo', x:820, y:160, ...opts});
-      w.state.deck = (opts.state && opts.state.deck) || [
-        {title:'今日惊喜', desc:'TBD'},
-        {title:'健康打卡', desc:'TBD'},
-        {title:'电影之夜', desc:'TBD'},
-        {title:'整理时间', desc:'TBD'},
-        {title:'放松一下', desc:'TBD'}
-      ];
-      w.body.innerHTML = `
-        <div class="grid">
-          <div class="row">
-            <button class="btn" data-draw>抽一张</button>
-            <button class="btn secondary" data-peek>查看卡组(${w.state.deck.length})</button>
-          </div>
-          <div class="grid" data-area>
-            <div class="badge">点“抽一张”随机出卡</div>
-          </div>
-        </div>`;
-      const area = w.body.querySelector('[data-area]');
-      const renderCard = (c)=>{ area.innerHTML=''; const card=document.createElement('div'); card.style.border='1px solid var(--stroke)'; card.style.borderRadius='12px'; card.style.padding='10px'; card.style.background='#17111a'; card.innerHTML=`<strong>${c.title}</strong><div class="muted">${c.desc||''}</div>`; area.appendChild(card); };
-      w.body.querySelector('[data-draw]').addEventListener('click',()=>{ const d=w.state.deck; const i=Math.floor(Math.random()*d.length); renderCard(d[i]); saveLayout(); });
-      w.body.querySelector('[data-peek]').addEventListener('click',()=>{ area.innerHTML=''; w.state.deck.forEach(c=>{ const row=document.createElement('div'); row.className='row'; row.innerHTML=`<span class="badge">${c.title}</span><span class="muted">${c.desc||''}</span>`; area.appendChild(row); }); });
-      return w;
-    }
-
-    // ---------- Layout persistence ----------
-    function serialize(){
-      const data=[]; document.querySelectorAll('.widget').forEach(el=>{
-        const bodyHidden = el.querySelector('.w-body')?.classList.contains('hidden');
-        data.push({ id: el.dataset.id, type: el.dataset.type, x: el.offsetLeft, y: el.offsetTop, w: el.offsetWidth, h: el.offsetHeight, minimized: !!bodyHidden, state: window.__widgetState?.[el.dataset.id] || {} });
-      });
-      return data;
-    }
-    function saveLayout(){ const data=serialize(); localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
-    async function loadLayout(){
-      const raw = localStorage.getItem(STORAGE_KEY); if(!raw) return false;
-      const arr = JSON.parse(raw);
-      board.querySelectorAll('.widget').forEach(n=>n.remove());
-      window.__widgetState = {};
-      for(const w of arr){
-        let inst;
-        if(w.type==='recipe')      inst = await RecipeWidget({x:w.x,y:w.y,w:w.w,h:w.h,state:w.state});
-        else if(w.type==='movie')  inst = await MovieWidget({x:w.x,y:w.y,w:w.w,h:w.h,state:w.state});
-        else if(w.type==='drawer') inst = await CardDrawer({x:w.x,y:w.y,w:w.w,h:w.h,state:w.state});
-        else if(w.type==='read')   inst = await ReadWidget({x:w.x,y:w.y,w:w.w,h:w.h,state:w.state});
-        if(inst){
-          window.__widgetState[inst.id] = inst.state;
-          if(w.minimized){ inst.root.querySelector('.w-body').classList.add('hidden'); }
-        }
-      }
-      return true;
-    }
-
-    // ---------- Toolbar ----------
-    document.getElementById('addRecipe').addEventListener('click', async()=>{ const inst = await RecipeWidget(); (window.__widgetState||(window.__widgetState={}))[inst.id]=inst.state; saveLayout(); });
-    document.getElementById('addMovie').addEventListener('click',  async()=>{ const inst = await MovieWidget();  (window.__widgetState||(window.__widgetState={}))[inst.id]=inst.state; saveLayout(); });
-    document.getElementById('addDrawer').addEventListener('click', ()=>{ const inst = CardDrawer();              (window.__widgetState||(window.__widgetState={}))[inst.id]=inst.state; saveLayout(); });
-    document.getElementById('addRead').addEventListener('click',   async()=>{ const inst = await ReadWidget();   (window.__widgetState||(window.__widgetState={}))[inst.id]=inst.state; saveLayout(); });
-    document.getElementById('saveLayout').addEventListener('click', saveLayout);
-    document.getElementById('loadLayout').addEventListener('click', ()=>{ loadLayout(); });
-    document.getElementById('resetLayout').addEventListener('click', ()=>{ localStorage.removeItem(STORAGE_KEY); location.reload(); });
-
-    // ---------- Boot ----------
-    (async function boot(){
-      const ok = await loadLayout();
-      if(!ok){
-        const a = await RecipeWidget({x:120,y:140});
-        const b = await MovieWidget({x:520,y:120});
-        const c = CardDrawer({x:820,y:160});
-        const d = await ReadWidget({x:920,y:140});
-        window.__widgetState = {[a.id]:a.state,[b.id]:b.state,[c.id]:c.state,[d.id]:d.state};
-        saveLayout();
-      }
-    })();
-  })();
-  </script>
+  <main id="theatre" aria-label="纸剧场">
+    <div class="stage-frame">
+      <img class="stage-art" src="./assets/art/paper-theatre.png" alt="" fetchpriority="high" draggable="false">
+      <svg class="scene-overlay" viewBox="0 0 1672 941" aria-hidden="true" focusable="false">
+        <defs>
+          <image id="scene-original" href="./assets/art/paper-theatre.png" width="1672" height="941"/>
+          <image id="scene-clean" href="./assets/art/paper-theatre-clean.png" width="1672" height="941"/>
+          <image id="paper-props" href="./assets/art/paper-props.png" width="1673" height="940"/>
+          <clipPath id="clip-bird"><path d="M675 191.5 L776.5 191.5 L825 238.5 L853.5 213.5 Q859 209 870 214 L882.5 227.5 L917.5 241.5 L880.5 234.5 L867 247 L846 283.5 L820 301 L811 297.5 L766 298.5 L732.5 333.5 L731 321 L717 328 L718.5 312 L704 308 L785 267 Q773 264 768 258 Q759 258 756 252 L757 249 Q745 250 741 246 Q739 244 741 239 L743 237 Q727 239 720 231 Q718 229 721 226 L723 224 Q708 226 697 217 Q693 214 696 211 L699 209 Q683 209 675 191.5 Z M844 259 L919 242 L944 302 L860 335 Z"/></clipPath>
+<clipPath id="clip-lid"><path d="M506 684 L683 638 L816 680 L815 709 L637 760 L506 714 Z"/></clipPath>
+<clipPath id="clip-petal"><path d="M1010 791 Q1016 785 1024 792 L1044 806 Q1060 796 1073 790 Q1097 779 1115 783 Q1107 790 1104 800 Q1098 814 1086 820 Q1059 828 1039 815 Q1028 810 1023 800 Z"/></clipPath>
+<clipPath id="clip-box-front"><path d="M510 703 L637 748 L811 694 L811 797 L638 841 L509 801 Z"/></clipPath>
+<clipPath id="clip-basket-front"><path d="M87 646 Q89 635 101 636 Q119 649 151 655 Q195 667 243 657 Q281 649 322 640 Q354 625 376 634 L405 850 H80 Z"/></clipPath>
+<clipPath id="clip-curtain-aperture"><path d="M407 416 H618 V653 H407 Z"/></clipPath>
+<clipPath id="clip-stage-frame"><path d="M375 319 H649 V422 H375 Z M375 410 H408 V667 H375 Z M618 410 H649 V667 H618 Z M390 653 H640 V667 H390 Z"/></clipPath>
+<clipPath id="clip-bookmark-exit"><path d="M1160 615 L1211 622 L1234 626 L1260 630 V725 H1160 Z"/></clipPath>
+          <filter id="city-mask-edge" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="4"/></filter>
+          <mask id="mask-city-light" maskUnits="userSpaceOnUse" x="1134" y="130" width="440" height="244">
+            <rect x="1148" y="146" width="410" height="214" rx="10" fill="white" filter="url(#city-mask-edge)"/>
+          </mask>
+          <symbol id="paper-card-back" viewBox="0 0 3 4">
+            <image href="./assets/art/tarot-back.png" width="3" height="4"/>
+          </symbol>
+        </defs>
+        <use href="#scene-clean"/>
+        <!-- Painted light lives inside the windows, including warm sills and paper grain. -->
+        <image class="scene-city-light" href="./assets/art/city-lit.png" width="1672" height="941" mask="url(#mask-city-light)"/>
+        <g class="scene-string" style="--string-origin:832px 94px">
+          <path d="M832 94V231" fill="none" stroke="#b79d7d" stroke-width="1.3"/>
+        </g>
+        <g class="scene-bird" ><use href="#scene-original" clip-path="url(#clip-bird)"/></g>
+        <!-- Both paper panels are closed at rest and slide laterally behind the wooden frame. -->
+        <g clip-path="url(#clip-curtain-aperture)">
+          <g class="scene-curtain-left"><svg x="404" y="408" width="111" height="249" viewBox="506 103 391 738" preserveAspectRatio="none" overflow="hidden"><use href="#paper-props"/></svg></g>
+          <g class="scene-curtain-right"><svg x="514" y="408" width="109" height="249" viewBox="897 103 384 738" preserveAspectRatio="none" overflow="hidden"><use href="#paper-props"/></svg></g>
+        </g>
+        <g class="" ><use href="#scene-clean" clip-path="url(#clip-stage-frame)"/></g>
+        <!-- The entire pear slides. Its complete base remains behind the fixed basket front. -->
+        <g class="scene-pear"><svg x="155" y="562" width="96" height="140" viewBox="92 310 324 472" preserveAspectRatio="none" overflow="hidden"><use href="#paper-props"/></svg></g>
+        <g class="" ><use href="#scene-clean" clip-path="url(#clip-basket-front)"/></g>
+        <g class="scene-cards">
+          <use href="#paper-card-back" x="564" y="715" width="75" height="100" transform="rotate(-12 602 765)"/>
+          <use href="#paper-card-back" x="624" y="704" width="75" height="100" transform="rotate(-3 662 754)"/>
+          <use href="#paper-card-back" x="683" y="698" width="75" height="100" transform="rotate(9 721 748)"/>
+        </g>
+        <g class="" ><use href="#scene-clean" clip-path="url(#clip-box-front)"/></g>
+        <g class="scene-lid" style="--lid-origin:675px 665px"><use href="#scene-original" clip-path="url(#clip-lid)"/></g>
+        <!-- A single long ribbon passes through a fixed page slit; the concealed tail moves with it. -->
+        <g clip-path="url(#clip-bookmark-exit)">
+          <g class="scene-bookmark"><g transform="rotate(16 1223 624)"><svg x="1209" y="536" width="28" height="145" viewBox="1396 101 143 739" preserveAspectRatio="none" overflow="hidden"><use href="#paper-props"/></svg></g></g>
+        </g>
+        <g class="scene-petal" style="--petal-origin:1026px 805px"><use href="#scene-original" clip-path="url(#clip-petal)"/></g>
+      </svg>
+      <button class="hotspot hotspot-food" data-tool="recipe" aria-label="菜谱"></button>
+      <button class="hotspot hotspot-movie" data-tool="movie" aria-label="电影"></button>
+      <button class="hotspot hotspot-letter" data-tool="inspiration" aria-label="生活灵感"></button>
+      <button class="hotspot hotspot-city" data-tool="city" aria-label="四小时城市"></button>
+      <button class="hotspot hotspot-book" data-tool="reader" aria-label="阅读"></button>
+      <button class="hotspot hotspot-tarot" data-tool="tarot" aria-label="塔罗"></button>
+      <button class="hotspot hotspot-petal" data-tool="directory" aria-label="全部工具"></button>
+    </div>
+  </main>
+  <dialog id="tool-dialog" class="tool-dialog" aria-label="展开的工具">
+    <button id="close-tool" class="paper-control close-tool" aria-label="回到纸剧场">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6 18 18M18 6 6 18"/></svg>
+    </button>
+    <div id="tool-content" class="tool-content"></div>
+  </dialog>
+  <script type="module" src="./js/app.js?v=4"></script>
 </body>
 </html>
-

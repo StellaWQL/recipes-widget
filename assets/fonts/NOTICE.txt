@@ -1,0 +1,4 @@
+汇文明朝体GBK / Huiwen-MinchoGBK Regular
+Font © Copyright 2022 TerryWang. All rights reserved.
+V 1.001 本字体文件开源且免费商用，禁止第三方在任何平台以任何方式用此字体牟利。如果您用付费方式获得了此字体文件，请找卖家退款。
+本项目仅将原字库转换为 WOFF2 格式用于网页显示，没有修改字形。
