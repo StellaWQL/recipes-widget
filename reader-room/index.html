@@ -3,55 +3,75 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#9a6c76">
+  <meta name="theme-color" content="#a87988">
+  <meta name="color-scheme" content="only light">
+  <meta name="darkreader-lock">
   <meta name="description" content="THE RAVEN 的书库与阅读室。">
   <title>THE RAVEN · 阅读室</title>
-  <link rel="stylesheet" href="./room.css">
+  <link rel="stylesheet" href="./room.css?v=import4">
   <script src="./vendor/jszip.min.js" defer></script>
   <script src="./vendor/epub.min.js" defer></script>
-  <script src="./room.js" type="module"></script>
+  <script src="./room.js?v=import4" type="module"></script>
 </head>
 <body class="room">
   <main class="room-app">
     <h1 class="visually-hidden">THE RAVEN 阅读室</h1>
 
     <section id="library-view" class="library room-view" aria-label="书库">
-      <div class="library-stage">
+      <div id="library-scene" class="scene-frame library-scene">
+        <img id="library-scene-image" class="scene-image" src="./assets/library-scene-v4.png" alt="旧玫瑰色纸制书架，旁边放着钥匙和收书纸函" draggable="false" fetchpriority="high">
+        <canvas id="library-scene-canvas" class="scene-canvas" aria-hidden="true"></canvas>
+        <h2 class="library-heading">藏书</h2>
         <div id="library-grid" class="library-grid" aria-label="藏书"></div>
-        <p id="library-empty" class="library-empty" hidden>书架上暂时没有找到这本书。</p>
+        <p id="library-empty" class="library-empty" hidden>书架正等着第一本书。</p>
+        <button class="scene-hotspot library-home" type="button" data-action="home" data-motion="key" aria-label="回到纸剧场主页"></button>
+        <button class="scene-hotspot library-import" type="button" data-action="import-room" data-motion="newbook" aria-label="打开收书函，导入 EPUB" aria-controls="import-view"></button>
+        <nav id="shelf-pager" class="shelf-pager" aria-label="书架翻页" hidden>
+          <button type="button" data-action="shelf-previous" aria-label="上一架">上一架</button>
+          <output id="shelf-page" aria-live="polite"></output>
+          <button type="button" data-action="shelf-next" aria-label="下一架">下一架</button>
+        </nav>
       </div>
-      <button class="prop-button library-home prop-key" type="button" data-action="home" aria-label="回到纸剧场主页">
-        <span class="prop-art art-key" aria-hidden="true"></span>
-      </button>
-      <button class="prop-button library-search prop-search" type="button" data-action="search" aria-label="搜索或载入图书">
-        <span class="prop-art art-search" aria-hidden="true"></span>
-      </button>
+      <nav class="mobile-tools library-mobile-tools" aria-label="书库工具">
+        <button type="button" data-action="home">主页</button>
+        <button type="button" data-action="import-room">新书入藏</button>
+      </nav>
+    </section>
+
+    <section id="import-view" class="import-room room-view" aria-label="新书入藏" hidden>
+      <div id="import-scene" class="scene-frame import-scene">
+        <img id="import-scene-image" class="scene-image" src="./assets/import-scene-v4.png" alt="旧玫瑰色书桌上展开一只花边收书纸函，旁边放着藏书簿和装帧工具" draggable="false">
+        <img class="import-mobile-scene" src="./assets/import-mobile-v4.png" alt="花边收书纸函与藏书簿" draggable="false">
+        <canvas id="import-scene-canvas" class="scene-canvas" aria-hidden="true"></canvas>
+        <button class="scene-hotspot import-back" type="button" data-action="library" data-motion="register" aria-label="合上收书函，回到书库"></button>
+        <button id="import-dropzone" class="import-dropzone" type="button" data-action="import" data-motion="wrapper" aria-label="选择或拖入一本 EPUB" aria-describedby="import-message">
+          <span class="import-copy">
+            <span class="import-heading">新书入藏</span>
+            <span id="import-message" class="import-message" role="status" aria-live="polite">轻点纸函，放入一本 EPUB</span>
+            <span id="import-detail" class="import-detail">也可以把书拖到这里</span>
+          </span>
+        </button>
+      </div>
     </section>
 
     <section id="reader-view" class="reader room-view" aria-label="阅读室" hidden>
-      <div id="book-shell" class="book-shell">
-        <span id="running-left" class="running-title running-left" aria-hidden="true"></span>
-        <span id="running-right" class="running-title running-right" aria-hidden="true"></span>
-        <div id="epub-viewer" class="epub-viewer" aria-label="书籍正文"></div>
-        <span id="folio-left" class="folio folio-left" aria-hidden="true"></span>
-        <span id="folio-right" class="folio folio-right" aria-hidden="true"></span>
+      <div id="reader-scene" class="scene-frame reader-scene">
+        <img id="reader-scene-image" class="scene-image" src="./assets/reader-scene-v2.png" alt="摊开的花边书页和放在同一张桌面上的目录折页、卡片袋、钥匙与线轴" draggable="false">
+        <img id="scroll-scene-image" class="scroll-scene-image" src="./assets/scroll-scene-v3.png" alt="旧玫瑰色桌面上展开的花边卷轴，上方放着章节折页、目录卡袋与钥匙" draggable="false">
+        <canvas id="reader-scene-canvas" class="scene-canvas" aria-hidden="true"></canvas>
+        <div id="book-shell" class="book-shell">
+          <span id="running-left" class="running-title running-left" aria-hidden="true"></span>
+          <span id="running-right" class="running-title running-right" aria-hidden="true"></span>
+          <div id="epub-viewer" class="epub-viewer" aria-label="书籍正文"></div>
+          <span id="folio-left" class="folio folio-left" aria-hidden="true"></span>
+          <span id="folio-right" class="folio folio-right" aria-hidden="true"></span>
+        </div>
+        <button class="scene-hotspot reader-chapters" type="button" data-action="chapters" data-motion="programme" aria-label="打开章节目录" aria-controls="chapter-dialog" aria-haspopup="dialog"></button>
+        <button class="scene-hotspot reader-library" type="button" data-action="library" data-motion="cards" aria-label="回到书库"></button>
+        <button class="scene-hotspot reader-home" type="button" data-action="home" data-motion="key" aria-label="回到纸剧场主页"></button>
+        <button class="scene-hotspot reader-previous" type="button" data-action="previous" data-motion="previous" aria-label="上一页" aria-keyshortcuts="K ArrowLeft PageUp"></button>
+        <button class="scene-hotspot reader-next" type="button" data-action="next" data-motion="next" aria-label="下一页" aria-keyshortcuts="J ArrowRight PageDown"></button>
       </div>
-
-      <button class="prop-button reader-chapters prop-programme" type="button" data-action="chapters" aria-label="打开章节目录" aria-controls="chapter-dialog" aria-haspopup="dialog">
-        <span class="prop-art art-programme" aria-hidden="true"></span>
-      </button>
-      <button class="prop-button reader-library prop-folio" type="button" data-action="library" aria-label="回到书库">
-        <span class="prop-art art-folio" aria-hidden="true"></span>
-      </button>
-      <button class="prop-button reader-home prop-key" type="button" data-action="home" aria-label="回到纸剧场主页">
-        <span class="prop-art art-key" aria-hidden="true"></span>
-      </button>
-      <button class="prop-button reader-previous prop-spool" type="button" data-action="previous" aria-label="上一页" aria-keyshortcuts="K">
-        <span class="prop-art art-spool art-mirrored" aria-hidden="true"></span>
-      </button>
-      <button class="prop-button reader-next prop-spool" type="button" data-action="next" aria-label="下一页" aria-keyshortcuts="J">
-        <span class="prop-art art-spool" aria-hidden="true"></span>
-      </button>
     </section>
   </main>
 
@@ -62,33 +82,14 @@
 
   <dialog id="chapter-dialog" class="paper-dialog chapter-dialog" aria-labelledby="chapter-title">
     <button class="dialog-close" type="button" data-action="close-dialog" aria-label="关闭章节目录"><span aria-hidden="true">×</span></button>
-    <div class="dialog-ornament" aria-hidden="true"></div>
     <h2 id="chapter-title">章节</h2>
     <div class="font-settings" role="group" aria-label="正文字号">
       <span class="settings-label">字号</span>
       <button class="paper-button size-button" type="button" data-action="smaller" aria-label="减小字号">−</button>
-      <output id="font-size-value" aria-live="polite" aria-label="当前字号">22</output>
+      <output id="font-size-value" aria-live="polite" aria-label="当前字号">17</output>
       <button class="paper-button size-button" type="button" data-action="larger" aria-label="增大字号">+</button>
     </div>
     <nav id="chapter-list" class="chapter-list" aria-label="书籍章节"></nav>
-  </dialog>
-
-  <dialog id="search-dialog" class="paper-dialog search-dialog" aria-labelledby="search-title">
-    <button class="dialog-close" type="button" data-action="close-dialog" aria-label="关闭图书搜索"><span aria-hidden="true">×</span></button>
-    <h2 id="search-title">书库</h2>
-    <label class="visually-hidden" for="library-search">按书名或作者搜索</label>
-    <input id="library-search" class="paper-input" type="search" placeholder="书名或作者" autocomplete="off" spellcheck="false">
-    <output id="search-count" class="search-count" aria-live="polite"></output>
-    <div class="import-actions">
-      <button class="paper-button" type="button" data-action="import">导入 EPUB</button>
-    </div>
-    <div id="epub-url" class="url-source">
-      <form id="url-form" class="url-form">
-        <label class="visually-hidden" for="url-input">EPUB 文件地址</label>
-        <input id="url-input" class="paper-input" type="url" inputmode="url" placeholder="EPUB 文件地址" autocomplete="url" spellcheck="false" required>
-        <button class="paper-button" type="submit">打开</button>
-      </form>
-    </div>
   </dialog>
 
   <input id="import-file" type="file" accept=".epub,application/epub+zip" hidden>

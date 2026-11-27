@@ -1,0 +1,53 @@
+{
+  "method": "Built-in image_gen; each resting scene is one complete painting. All interactive components sample their own complete scene.",
+  "assets": {
+    "import-scene-v4.png": {
+      "dimensions": [
+        1672,
+        941
+      ],
+      "role": "Complete desktop book receiving desk"
+    },
+    "import-clean-v4.png": {
+      "dimensions": [
+        1672,
+        941
+      ],
+      "role": "Only fills fixed masks behind the moving top flap and register card"
+    },
+    "import-mobile-v4.png": {
+      "dimensions": [
+        852,
+        1846
+      ],
+      "role": "Complete portrait desk illustration"
+    },
+    "library-scene-v4.png": {
+      "dimensions": [
+        1672,
+        941
+      ],
+      "role": "Whole library scene with receiving wallet in place of the magnifier"
+    },
+    "library-clean-v4.png": {
+      "dimensions": [
+        1672,
+        941
+      ],
+      "role": "Only fills fixed masks behind the small card and tassel"
+    }
+  },
+  "style_reference": "assets/reader-scene-v2.png",
+  "desktop_prompt": "Use case: illustration-story, production website scene. Create ONE complete integrated hand-painted picture for an EPUB book import room. The attached image is a STYLE and PALETTE reference only: retain its old-rose woven/floral paper desk surface, fine colored-pencil outlines, matte aged paper, soft watercolor, restrained dusty rose and warm ivory. New composition, full landscape 16:9, near-orthographic overhead view with very shallow depth like a lovingly painted paper theatre, no 3D render. In the center is a large OPEN handmade archival book-wrapper / four-flap paper folio that receives a new book. It occupies central x=31%-70%, y=16%-87%; its bottom is wide flat rectangular warm ivory blank paper with VERY sparse botanical corner flourishes and thin old-rose borders, and its upper pink flap is unfolded outward like a welcoming book jacket. The central interior MUST provide a clean unprinted vertical rectangle x=38%-63%,y=36%-66% for live text later. There is NO book occupying this blank interior yet. A thin rose silk tie rests loosely beside the wrapper, not tied closed. At upper-left x=17%-30%,y=16%-31%, a small closed old-rose cloth-bound register book with a cream paper library ticket partly protruding from its upper edge; keep this silhouette separate and clearly visible to become a back-to-library interaction. Around the far margins only, a quiet arrangement of a small bone folder, a little roll of binding linen, and two extremely delicate pressed leaves, all painted as part of the same scene with matching contact shadows. Large quiet tabletop spaces around the objects. No upright bookcase, no bird, no letter envelope, no keys, no flowers as standalone icons, no dramatic lighting, no black, no rich saturated colors. This is a beautiful seamless complete illustration, all interactive objects fully included in this SAME painting, not floating assets, not a collage, not a UI screenshot. Absolutely NO TEXT or letters or numbers or arrows or user interface controls. All objects fully inside the frame, including the wrapper flaps. The open wrapper should visually feel like a special place to gently lay a new book. Color balance old rose and muted lilac, avoiding orange/yellow wash. Match the reference delicate tactile illustration quality.",
+  "library_prompts": "assets/library-generation-notes-v4.json",
+  "motion": "Rigid fold about the original crease, register card pulls 13 px, library card pulls 16 px. Moving paper is sampled from the full paintings, not separately generated objects. Clean images only reveal tiny fixed silhouettes; no whole-scene warp.",
+  "text": "Real Huiwen Mincho HTML typography; painted panels have no baked text.",
+  "reader_type": {
+    "desktop_px": 17,
+    "mobile_px": 16,
+    "note_marker_scale": 0.72,
+    "note_body_scale": 0.8
+  },
+  "clean_prompt": "Use case: precise-object-edit. This is a production clean plate for a tiny physical paper-fold animation, so preserve the attached entire picture EXACTLY pixel aligned: same 1672x941 canvas, same old rose colors, same shapes, same placement, identical remaining objects. Make ONLY TWO removals. 1) Remove ONLY the upper open flap of the central archival paper wrapper, the wide pink panel above the horizontal fold at approximately y=225, x=540 to1132. Fill that exact upper-flap silhouette with the matching rose floral desk fabric which would be naturally behind it. The central ivory panel starts at y=226 and all its interior, side flaps, lower flap, corners and edges MUST remain absolutely unchanged. 2) Remove ONLY the exposed cream index card sticking out of the upper-left closed register book at x=124 to268,y=88 to176; reconstruct the background fabric behind it. Keep the register book itself pixel-identical. Every other pixel should remain as close to the original as possible. Do not redesign, recolor, move objects, add text, add new props, change perspective, crop or resize. A single seamless complete illustration, no transparency.",
+  "mobile_prompt": "Use case: illustration-story responsive adaptation. Recompose the attached complete hand-painted old rose EPUB import desk into ONE new seamless TALL PORTRAIT phone screen illustration, approximately 9:19.5 aspect ratio. Same delicate colored-pencil and watercolor botanical paper style and quiet old rose/lilac colors, shallow near-orthographic overhead view, same woven floral desk cloth. Main open four-flap book-wrapper centered and large from x=8% to92%, y=22% to90%. The central warm ivory paper interior should provide a large clean unprinted rectangle x=25%-75%,y=43%-70% for later real text; very spare botanical corner florals not near text. Top flap rose pink at y=25%-43%, side flaps fully visible, lower flap near y=82%-89%. The small closed rose cloth-bound register/book with exposed blank ivory library card belongs upper-left x=13%-38%,y=5%-22%, entirely visible as a back-to-library interaction. Thin loose rose tie on right margin, small bone folder or binding linen at bottom margin, no crowding. All props naturally on the SAME desk together, all painted in ONE image, with matching contact shadows, not independent stickers or collage. Quiet muted warm cream, old rose and muted lilac, avoid orange cast. NO text, NO letters, NO arrows, NO UI controls. Preserve the welcoming ritual of placing a new book inside an open archival wrapper."
+}

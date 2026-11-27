@@ -1,0 +1,12 @@
+{
+  "version": 3,
+  "assets": {
+    "scroll-scene-v3.png": "exec-75edde81-9f24-4865-aa3c-27ba98e8dee6.png",
+    "reader-clean-v3.png": "exec-4fa8502f-7e91-4e60-9e33-f07335415640.png",
+    "library-clean-v3.png": "exec-c7b7a571-53d4-43d5-afaf-42e4c1035496.png"
+  },
+  "reader_scene": "Original v2 complete painting retained unchanged. Cleanplate only reveals desk underneath moving original pixels.",
+  "library_scene": "Original v2 complete painting retained unchanged. Cleanplate removes key and magnifier; cards remain.",
+  "mobile_scene": "Approved scroll composition with only demonstration text removed; all props are part of the same generated scene.",
+  "independent_prop_generation": false
+}

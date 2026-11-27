@@ -1,0 +1,37 @@
+{
+  "method": "Built-in image_gen, whole-scene edits only",
+  "source": "library-scene-v2.png",
+  "scenePrompt": "Use case: precise-object-edit. Edit the supplied complete library scene, keeping the identical 1672 by 941 landscape composition and painterly matte paper aesthetic. Keep the entire large rose-pink bookshelf, all three horizontal shelves and shelf heights, arch, label plaque, botanical corner ornaments, upper-right brass key and cord, wall texture, all lighting, and all colors exactly unchanged. Only replace the lower-right magnifying glass and index-card stack, in the small area approximately x=1420..1630, y=590..805, with a petite old-rose paper book-receiving wallet/folio. It should look like a beautiful handmade flat book envelope with an open top and one cream blank library card protruding upward, softly handpainted gold/rose edge rules, a tiny tasteful pressed-flower motif and slim string fastening across the lower half. Keep the object about the same size and angle as the original card stack. This is a whole cohesive illustration, do not make a standalone object or collage. No magnifying glass, no UI icons, no text or lettering anywhere, no changes elsewhere. Preserve exact shelf coordinates so book covers can later occupy the empty shelves. Keep the brass key exactly. The card should be a clearly separate rigid piece of cream paper emerging from the rear of the wallet, suitable for a small upward slide on hover.",
+  "cleanPrompt": "Use case: precise-object-edit. This is the clean background layer for animation of the provided complete 1672x941 rose library illustration. Keep the complete painting and all original coordinates exactly. Make ONLY TWO tiny removals. First remove the hanging tassel only at lower end of the upper right key cord, approximately x1573..1624 y330..405, restoring the uninterrupted rose textile behind it. Keep the entire brass key and upper cord loop unchanged. Second remove ONLY the cream blank card protruding out of the lower-right pink floral paper wallet, approximately x1444..1590 y587..661. Restore the rose textile behind the top exposed portion of this card, and the empty dark rose inner lining of the paper wallet just inside its open mouth. Keep the paper wallet body, curved top opening edge, flowers, string, shadow, lower edges, and exact location unchanged. The wallet must look empty, no cards. Nothing else changes, no redrawing the scene, no color shift, no text, no magnifying glass, no added object, no transparency. All shelf geometry, floral details and tabletop pattern remain identical. This is one whole scene, not an object sprite.",
+  "assets": [
+    "library-scene-v4.png",
+    "library-clean-v4.png"
+  ],
+  "dimensions": [
+    1672,
+    941
+  ],
+  "card": {
+    "visiblePath": "M1446 614 Q1444 611 1451 610 L1576 588 Q1584 587 1585 594 L1592 628 L1556 639 Q1528 667 1494 656 L1452 653 Z",
+    "fullPath": "M1446 614 Q1444 611 1451 610 L1576 588 Q1584 587 1585 594 L1604 709 L1472 733 Z",
+    "bounds": [
+      1442,
+      585,
+      165,
+      150
+    ],
+    "occluder": "M1430 656 L1451 650 Q1490 645 1508 657 Q1534 665 1553 641 L1607 627 L1629 748 L1452 778 Z",
+    "paperSample": [
+      1468,
+      617,
+      70,
+      14
+    ],
+    "suggestedMotion": {
+      "dx": -2,
+      "dy": -16,
+      "rotate": -0.3
+    }
+  },
+  "tassel": "Existing LIBRARY_TASSEL path still fits. Use the clean plate only inside fixed small removal masks; do not replace the full scene."
+}

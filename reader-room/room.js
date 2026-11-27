@@ -1,24 +1,26 @@
-import { config } from './config.js';
+import { config } from './config.js?v=import4';
 import { loadCatalog, resolveCover, revokeCover } from './catalog.js';
-import { createBookEngine } from './epub-engine.js';
+import { createBookEngine } from './epub-engine.js?v=import4';
+import { inspectEpubImport } from './epub-import.js?v=import4';
+import { mountObjectMotion, READER_OBJECTS, LIBRARY_OBJECTS, IMPORT_OBJECTS } from './object-motion.js?v=import4';
 
 const $ = selector => document.querySelector(selector);
 const $$ = selector => [...document.querySelectorAll(selector)];
 const life = new AbortController();
-// Match room.css so the painted page count always agrees with EPUB's 700px spread threshold.
-const narrow = matchMedia('(max-width:1100px), (max-height:620px)');
-const shelfMedium = matchMedia('(max-width:800px)');
-const shelfSmall = matchMedia('(max-width:560px)');
+// The layout mode follows viewport width, not the shape of the old book image.
+const narrow = matchMedia('(max-width:900px)');
+const shelfSmall = matchMedia('(max-width:700px)');
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 const els = {
   library: $('#library-view'), grid: $('#library-grid'), empty: $('#library-empty'),
   reader: $('#reader-view'), shell: $('#book-shell'), viewer: $('#epub-viewer'),
   chapterDialog: $('#chapter-dialog'), chapters: $('#chapter-list'), chapterTitle: $('#chapter-title'),
-  searchDialog: $('#search-dialog'), search: $('#library-search'), searchCount: $('#search-count'),
   status: $('#room-status'), statusMessage: $('#status-message'),
-  importFile: $('#import-file'), urlForm: $('#url-form'), urlInput: $('#url-input'),
+  importFile: $('#import-file'), importRoom: $('#import-view'), importZone: $('#import-dropzone'),
+  importMessage: $('#import-message'), importDetail: $('#import-detail'),
   titleLeft: $('#running-left'), titleRight: $('#running-right'),
   folioLeft: $('#folio-left'), folioRight: $('#folio-right'), fontSize: $('#font-size-value'),
+  shelfPager: $('#shelf-pager'), shelfPage: $('#shelf-page'),
 };
 let books = [];
 let current = null;
@@ -29,13 +31,20 @@ let opening = 0;
 let ready = false;
 let busy = false;
 let turnBusy = false;
+let layoutBusy = false;
+let layoutQueue = Promise.resolve();
 let chapters = [];
 let view = 'library';
-let queryText = '';
+let importing = 0;
+let importBusy = false;
+let dragDepth = 0;
+let shelfPage = 0;
+let shelfPageCount = 1;
 let lastError = '';
 const files = new Map();
 const coverUrls = new Set();
 const pendingCovers = new Set();
+const sceneMotions = [];
 let coverObserver;
 let databasePromise;
 
@@ -46,7 +55,10 @@ const legacy = readStorage(config.legacyStorageKey);
 const saved = readStorage(config.storageKey);
 const state = {
   positions: saved.positions && typeof saved.positions === 'object' ? saved.positions : {},
-  fontSize: Math.max(16, Math.min(34, Number(saved.fontSize || legacy.fontSize) || config.defaultFontSize)),
+  // Apply v4's smaller defaults once, then preserve user changes and all reading locations.
+  typographyVersion: 4,
+  fontSize: Math.max(16, Math.min(34, saved.typographyVersion >= 4 ? Number(saved.fontSize) || config.defaultFontSize : config.defaultFontSize)),
+  scrollFontSize: Math.max(16, Math.min(30, saved.typographyVersion >= 4 ? Number(saved.scrollFontSize) || config.defaultScrollFontSize : config.defaultScrollFontSize)),
   imported: Array.isArray(saved.imported) ? saved.imported : [],
 };
 // Legacy local files remain in the original IndexedDB; references are migrated, not erased.
@@ -63,7 +75,8 @@ function persist() {
     // Temporary blob cover URLs are never written as durable image addresses.
     const imported = state.imported.map(({ coverUrl, blob, ...entry }) => entry);
     localStorage.setItem(config.storageKey, JSON.stringify({ ...state, imported }));
-  } catch { /* A storage quota must not interrupt a reading session. */ }
+    return true;
+  } catch { return false; /* A storage quota must not interrupt a reading session. */ }
 }
 
 function database() {
@@ -87,8 +100,10 @@ async function storedFile(key, file) {
     try {
       const transaction = db.transaction('books', file ? 'readwrite' : 'readonly');
       const request = file ? transaction.objectStore('books').put(file, key) : transaction.objectStore('books').get(key);
-      request.onsuccess = () => resolve(request.result || null);
-      request.onerror = () => resolve(null);
+      let result = null;
+      request.onsuccess = () => { result = request.result || null; };
+      transaction.oncomplete = () => resolve(result);
+      transaction.onerror = transaction.onabort = () => resolve(null);
     } catch { resolve(null); }
   });
 }
@@ -100,33 +115,39 @@ function status(text = '', retry = false) {
   if (button) button.hidden = !retry;
 }
 
+function activeFontSize() { return narrow.matches ? state.scrollFontSize : state.fontSize; }
 function controls() {
   $$('[data-action="previous"]').forEach(button => {
-    button.disabled = busy || !ready || !!engine?.currentLocation?.atStart;
+    button.disabled = narrow.matches || busy || layoutBusy || !ready || !!engine?.currentLocation?.atStart;
   });
   $$('[data-action="next"]').forEach(button => {
-    button.disabled = busy || !ready || !!engine?.currentLocation?.atEnd;
+    button.disabled = narrow.matches || busy || layoutBusy || !ready || !!engine?.currentLocation?.atEnd;
   });
   $$('[data-action="chapters"]').forEach(button => { button.disabled = busy || !ready; });
-  els.fontSize.textContent = `${state.fontSize}`;
+  els.fontSize.textContent = `${activeFontSize()}`;
   const smaller = $('[data-action="smaller"]');
   const larger = $('[data-action="larger"]');
-  if (smaller) smaller.disabled = state.fontSize <= 16;
-  if (larger) larger.disabled = state.fontSize >= 34;
+  if (smaller) smaller.disabled = layoutBusy || activeFontSize() <= 16;
+  if (larger) larger.disabled = layoutBusy || activeFontSize() >= (narrow.matches ? 30 : 34);
 }
 
 function closeDialogs() {
-  for (const dialog of [els.chapterDialog, els.searchDialog]) if (dialog.open) dialog.close();
+  if (els.chapterDialog.open) els.chapterDialog.close();
 }
 function setView(next) {
   closeDialogs();
+  if (view === 'import' && next !== 'import') { importing += 1; importBusy = false; dragDepth = 0; }
   view = next;
   document.body.dataset.view = next;
   els.library.hidden = next !== 'library';
   els.reader.hidden = next !== 'reader';
+  els.importRoom.hidden = next !== 'import';
   if (next === 'library') document.title = '书库 · THE RAVEN';
+  if (next === 'import') document.title = '新书入藏 · THE RAVEN';
+  for (const motion of sceneMotions) motion.setActive(null);
+  requestAnimationFrame(() => { for (const motion of sceneMotions) motion.resize(); });
 }
-function writeRoute(entry, replace = false) {
+function writeRoute(entry, replace = false, roomView = '') {
   const url = new URL(location.href);
   url.hash = '';
   if (entry?.url) url.searchParams.set('book', entry.url);
@@ -134,24 +155,42 @@ function writeRoute(entry, replace = false) {
   else { url.searchParams.delete('book'); url.searchParams.delete('local'); }
   if (entry?.url) url.searchParams.delete('local');
   if (entry?.kind === 'file') url.searchParams.delete('book');
+  if (roomView === 'import') url.searchParams.set('view', 'import');
+  else url.searchParams.delete('view');
   if (url.href !== location.href) history[replace ? 'replaceState' : 'pushState']({}, '', url);
 }
-function showLibrary({ route = true } = {}) {
+function cancelOpening() {
   if (busy) {
     // Leaving during a fetch must not later reopen a hidden reader or report an old error.
     opening += 1; engineGeneration += 1;
     engine?.destroy(); engine = null; enginePromise = null;
     busy = false; ready = false;
   }
+}
+function showLibrary({ route = true } = {}) {
+  cancelOpening();
   setView('library');
   status();
   if (route) writeRoute(null);
   renderBooks();
   controls();
 }
+function importMessage(text = '轻点纸函，放入一本 EPUB', detail = '也可以把书拖到这里', state = 'idle') {
+  els.importMessage.textContent = text;
+  els.importDetail.textContent = detail;
+  els.importRoom.dataset.state = state;
+  els.importZone.disabled = importBusy;
+  els.importZone.setAttribute('aria-busy', String(importBusy));
+}
+function showImport({ route = true } = {}) {
+  cancelOpening();
+  importing += 1; importBusy = false; dragDepth = 0;
+  setView('import'); status(); importMessage();
+  if (route) writeRoute(null, false, 'import');
+}
 
 function title(entry) { return entry.shortTitle || entry.title || entry.filename?.replace(/\.epub$/i, '') || '未命名图书'; }
-function columnCount() { return shelfSmall.matches ? 2 : shelfMedium.matches ? 3 : 4; }
+function columnCount() { return shelfSmall.matches ? 2 : 4; }
 function allBooks() {
   const map = new Map();
   for (const entry of [...books, ...state.imported]) if (entry.key) map.set(entry.key, entry);
@@ -159,14 +198,19 @@ function allBooks() {
 }
 function renderBooks() {
   coverObserver?.disconnect();
-  const filter = queryText.trim().toLocaleLowerCase();
-  const matches = allBooks().filter(entry => `${entry.title} ${entry.shortTitle || ''} ${entry.author || ''}`.toLocaleLowerCase().includes(filter));
+  const matches = allBooks();
   els.grid.replaceChildren();
   els.empty.hidden = matches.length > 0;
-  els.empty.textContent = filter ? '没有找到这本书。' : '这里还没有图书。可以从右下角的目录卡载入 EPUB。';
-  els.searchCount.textContent = filter ? `找到 ${matches.length} 本` : `${matches.length} 本图书`;
+  els.empty.textContent = '书架正等着第一本书。轻点收书纸函，放入 EPUB。';
   let row;
-  matches.forEach((entry, index) => {
+  const pageSize = columnCount() * 3;
+  shelfPageCount = Math.max(1, Math.ceil(matches.length / pageSize));
+  shelfPage = Math.max(0, Math.min(shelfPage, shelfPageCount - 1));
+  els.shelfPager.hidden = shelfPageCount === 1;
+  els.shelfPage.textContent = `${shelfPage + 1} / ${shelfPageCount}`;
+  $('[data-action="shelf-previous"]').disabled = shelfPage === 0;
+  $('[data-action="shelf-next"]').disabled = shelfPage >= shelfPageCount - 1;
+  matches.slice(shelfPage * pageSize, (shelfPage + 1) * pageSize).forEach((entry, index) => {
     if (index % columnCount() === 0) {
       row = document.createElement('div'); row.className = 'shelf-row';
       els.grid.append(row);
@@ -224,7 +268,7 @@ async function loadCover(entry, button) {
 function applyCover(entry, url) {
   entry.coverUrl = url;
   if (url.startsWith('blob:')) coverUrls.add(url);
-  // A search or catalogue refresh can replace both the entry and its DOM button.
+  // A catalogue refresh can replace both the entry and its DOM button.
   for (const item of [...books, ...state.imported]) if (item.key === entry.key) item.coverUrl = url;
   for (const button of $$('.cover-book')) {
     if (button.dataset.key !== entry.key) continue;
@@ -237,6 +281,8 @@ function saveLocation(location) {
   if (busy || !current || !location?.start?.cfi) return;
   state.positions[current.key] = { cfi: location.start.cfi, updatedAt: Date.now() };
   persist();
+  els.viewer.dataset.readingCfi = location.start.cfi;
+  els.viewer.dataset.readingHref = location.start.href || '';
   const start = location.start?.displayed?.page;
   const end = location.end?.displayed?.page;
   els.folioLeft.textContent = start ? String(start) : '';
@@ -284,8 +330,8 @@ async function getEngine() {
   if (!enginePromise) {
     const generation = ++engineGeneration;
     enginePromise = createBookEngine({
-    container: els.viewer, fontUrl: config.fontUrl, ornamentUrl: config.ornamentUrl,
-    onLocation: location => { if (generation === engineGeneration && view === 'reader') saveLocation(location); },
+    container: els.viewer, fontUrl: config.fontUrl, layout: narrow.matches ? 'scroll' : 'spread',
+    onLocation: location => { if (generation === engineGeneration && view === 'reader' && !layoutBusy) saveLocation(location); },
     onNavigation: items => { if (generation === engineGeneration) renderChapters(items); },
     onKeydown: keydown,
     onMetadata: metadata => {
@@ -303,7 +349,7 @@ async function getEngine() {
     },
   }).then(async value => {
     if (generation !== engineGeneration) { value.destroy(); throw new DOMException('已返回书库。', 'AbortError'); }
-    engine = value; await engine.setFontSize(state.fontSize); return value;
+    engine = value; await engine.setFontSize(activeFontSize()); return value;
   }).catch(error => { if (generation === engineGeneration) enginePromise = null; throw error; });
   }
   return enginePromise;
@@ -314,21 +360,21 @@ async function openEntry(entry, { route = true, force = false } = {}) {
   document.title = `${title(entry)} · 阅读室`;
   if (route) writeRoute(entry);
   if (!force && ready && current?.key === entry.key && engine?.currentBook) {
-    status(); requestAnimationFrame(() => engine.resize()); return;
+    status(); await syncResponsiveReader(); requestAnimationFrame(() => engine.resize()); return;
   }
   const operation = ++opening;
   current = entry; ready = false; busy = true; lastError = '';
   els.folioLeft.textContent = ''; els.folioRight.textContent = '';
   els.titleLeft.textContent = title(entry); els.titleRight.textContent = title(entry);
   els.chapterTitle.textContent = title(entry); renderChapters([]);
-  controls(); status('正在翻开书页…');
+  controls(); status(narrow.matches ? '正在展开卷轴…' : '正在翻开书页…');
   try {
     const active = await getEngine();
     if (operation !== opening) return;
     let source = entry;
     if (entry.kind === 'file') {
       source = files.get(entry.key) || await storedFile(entry.key);
-      if (!source) throw new Error('请从书库目录卡重新载入这本本地 EPUB。');
+      if (!source) throw new Error('请从书库的收书纸函重新放入这本 EPUB。');
     }
     await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
     if (operation !== opening) return;
@@ -359,18 +405,19 @@ async function openEntry(entry, { route = true, force = false } = {}) {
   } finally {
     if (operation === opening) {
       busy = false;
-      if (ready && engine?.currentLocation) saveLocation(engine.currentLocation);
       controls();
+      if (ready) void syncResponsiveReader();
     }
   }
 }
 async function turn(direction) {
-  if (view !== 'reader' || !ready || busy || turnBusy || els.chapterDialog.open || els.searchDialog.open) return;
+  if (narrow.matches || view !== 'reader' || !ready || busy || layoutBusy || turnBusy || els.chapterDialog.open) return;
   turnBusy = true;
   try {
     const result = await (direction > 0 ? engine.next() : engine.prev());
     if (result && !reducedMotion.matches) {
-      els.shell.animate([{ opacity: .92 }, { opacity: 1 }], { duration: 190, easing: 'ease-out' });
+      // Only live ink settles after a page turn; the painted desk does not flash.
+      els.viewer.animate([{ opacity: .86 }, { opacity: 1 }], { duration: 150, easing: 'ease-out' });
     }
   } finally { turnBusy = false; controls(); }
 }
@@ -378,11 +425,12 @@ function keydown(event) {
   if (event.defaultPrevented || event.isComposing) return;
   const typing = event.target?.closest?.('input,textarea,select,[contenteditable="true"],[contenteditable=""]');
   if (event.key === 'Escape') {
-    if (els.chapterDialog.open || els.searchDialog.open) { event.preventDefault(); closeDialogs(); }
+    if (els.chapterDialog.open) { event.preventDefault(); closeDialogs(); }
+    else if (view === 'import') { event.preventDefault(); showLibrary(); }
     return;
   }
   if (typing || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey || event.repeat) return;
-  if (view !== 'reader' || els.chapterDialog.open || els.searchDialog.open) return;
+  if (narrow.matches || view !== 'reader' || els.chapterDialog.open) return;
   const key = event.key.toLowerCase();
   const direction = ['j', 'arrowright', 'pagedown'].includes(key) ? 1 : ['k', 'arrowleft', 'pageup'].includes(key) ? -1 : 0;
   if (!direction) return;
@@ -403,21 +451,49 @@ async function restoreRoute() {
   if (query.get('local')) {
     const entry = state.imported.find(item => item.key === query.get('local'));
     if (entry) await openEntry(entry, { route: false });
-    else { showLibrary({ route: false }); status('这本本地书尚未载入，请从目录卡选择 EPUB。'); }
+    else { showImport({ route: false }); importMessage('这本书需要重新放入', '轻点纸函，选择原来的 EPUB'); }
   } else if (query.get('book')) {
     try { await openEntry(externalEntry(query.get('book')), { route: false }); }
     catch (error) { showLibrary({ route: false }); status(error.message); }
-  } else showLibrary({ route: false });
+  } else if (query.get('view') === 'import') showImport({ route: false });
+  else showLibrary({ route: false });
 }
 async function importBook(file) {
-  if (!file) return;
-  if (!/\.epub$/i.test(file.name)) { status('请选择 EPUB 文件。'); return; }
+  if (!file || view !== 'import' || importBusy) return;
+  const operation = ++importing;
+  importBusy = true;
+  importMessage('正在整理这册新书…', file.name, 'receiving');
   const key = `file:${file.name}:${file.size}:${file.lastModified || 0}`;
-  files.set(key, file);
-  await storedFile(key, file);
-  const entry = { key, kind: 'file', imported: true, filename: file.name, title: file.name.replace(/\.epub$/i, ''), author: '' };
-  state.imported = [entry, ...state.imported.filter(item => item.key !== key)];
-  persist(); await openEntry(entry);
+  try {
+    const metadata = await inspectEpubImport(file);
+    if (operation !== importing || view !== 'import') return;
+    const committed = await storedFile(key, file);
+    if (!committed) throw new Error('这册书还没能保存。请检查浏览器存储空间后再放入。');
+    files.set(key, file);
+    const previous = state.imported;
+    const existing = previous.find(item => item.key === key);
+    const entry = { ...existing, key, kind:'file', imported:true, filename:file.name, ...metadata };
+    state.imported = [entry, ...previous.filter(item => item.key !== key)];
+    if (!persist()) {
+      state.imported = previous;
+      throw new Error('藏书记录还没能保存。请允许此网站保存本地数据后再试。');
+    }
+    if (operation !== importing || view !== 'import') { if (view === 'library') renderBooks(); return; }
+    importBusy = false;
+    importMessage('已经收好，正在翻开…', metadata.title, 'received');
+    await openEntry(entry);
+  } catch (error) {
+    if (operation === importing && view === 'import') {
+      importBusy = false;
+      importMessage(error.message || '这册书暂时无法放入。', '轻点纸函，重新选择 EPUB', 'error');
+    }
+  } finally {
+    if (operation === importing) {
+      importBusy = false;
+      els.importZone.disabled = false;
+      els.importZone.setAttribute('aria-busy', 'false');
+    }
+  }
 }
 
 document.addEventListener('keydown', keydown, { capture: true, signal: life.signal });
@@ -428,43 +504,122 @@ document.addEventListener('click', event => {
     case 'home': persist(); location.assign(config.homeUrl); break;
     case 'library': showLibrary(); break;
     case 'chapters': if (ready) { controls(); els.chapterDialog.showModal(); } break;
-    case 'search': els.searchDialog.showModal(); requestAnimationFrame(() => els.search.focus()); break;
+    case 'import-room': showImport(); break;
     case 'previous': void turn(-1); break;
     case 'next': void turn(1); break;
+    case 'shelf-previous': shelfPage = Math.max(0, shelfPage - 1); renderBooks(); break;
+    case 'shelf-next': shelfPage = Math.min(shelfPageCount - 1, shelfPage + 1); renderBooks(); break;
     case 'close-dialog': closeDialogs(); break;
-    case 'import': els.importFile.click(); break;
+    case 'import': if (!importBusy && view === 'import') els.importFile.click(); break;
     case 'retry': if (current) void openEntry(current, { route: false, force: true }); break;
     case 'smaller': case 'larger': {
-      state.fontSize = Math.max(16, Math.min(34, state.fontSize + (button.dataset.action === 'larger' ? 2 : -2)));
-      persist(); controls(); void engine?.setFontSize(state.fontSize); break;
+      const field = narrow.matches ? 'scrollFontSize' : 'fontSize';
+      state[field] = Math.max(16, Math.min(narrow.matches ? 30 : 34, state[field] + (button.dataset.action === 'larger' ? 1 : -1)));
+      persist(); controls(); void engine?.setFontSize(activeFontSize()); break;
     }
   }
 }, { signal: life.signal });
-for (const dialog of [els.chapterDialog, els.searchDialog]) dialog.addEventListener('click', event => {
+for (const dialog of [els.chapterDialog]) dialog.addEventListener('click', event => {
   if (event.target !== dialog) return;
   const rect = dialog.getBoundingClientRect();
   if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dialog.close();
 }, { signal: life.signal });
-els.search.addEventListener('input', () => { queryText = els.search.value; renderBooks(); }, { signal: life.signal });
 els.importFile.addEventListener('change', () => { void importBook(els.importFile.files[0]); els.importFile.value = ''; }, { signal: life.signal });
-els.urlForm?.addEventListener('submit', event => {
+els.importRoom.addEventListener('dragenter', event => {
+  if (!event.dataTransfer?.types.includes('Files')) return;
   event.preventDefault();
-  try { void openEntry(externalEntry(els.urlInput.value)); }
-  catch (error) { status(error.message); }
+  dragDepth += 1;
+  if (!importBusy) importMessage('把这册书轻轻放下', '一次放入一本 EPUB', 'dragging');
+}, { signal: life.signal });
+els.importRoom.addEventListener('dragover', event => {
+  if (!event.dataTransfer?.types.includes('Files')) return;
+  event.preventDefault();
+  event.dataTransfer.dropEffect = importBusy ? 'none' : 'copy';
+}, { signal: life.signal });
+els.importRoom.addEventListener('dragleave', event => {
+  if (!event.dataTransfer?.types.includes('Files')) return;
+  dragDepth = Math.max(0, dragDepth - 1);
+  if (!dragDepth && !importBusy) importMessage();
+}, { signal: life.signal });
+els.importRoom.addEventListener('drop', event => {
+  event.preventDefault(); dragDepth = 0;
+  if (importBusy) return;
+  const incoming = [...(event.dataTransfer?.files || [])];
+  if (incoming.length !== 1) { importMessage('请一次放入一本书', '选好一本 EPUB，再放进纸函', 'error'); return; }
+  void importBook(incoming[0]);
 }, { signal: life.signal });
 window.addEventListener('popstate', () => void restoreRoute(), { signal: life.signal });
+function syncResponsiveReader() {
+  layoutQueue = layoutQueue.catch(() => {}).then(async () => {
+    if (!engine || view !== 'reader' || busy || !ready) return;
+    const active = engine;
+    const operation = opening;
+    const bookKey = current?.key;
+    const targetLayout = narrow.matches ? 'scroll' : 'spread';
+    const targetFontSize = activeFontSize();
+    const unchanged = () => engine === active && operation === opening
+      && current?.key === bookKey && view === 'reader' && !busy;
+    layoutBusy = true; controls();
+    try {
+      const layoutSet = await active.setLayout(targetLayout);
+      if (!unchanged() || !layoutSet) return;
+      const fontSet = await active.setFontSize(targetFontSize);
+      if (unchanged() && fontSet && active.layout === targetLayout
+          && targetLayout === (narrow.matches ? 'scroll' : 'spread')
+          && targetFontSize === activeFontSize() && active.currentLocation) {
+        saveLocation(active.currentLocation);
+      }
+    } catch (error) {
+      if (unchanged()) status(error.message || '阅读布局暂时无法切换。', true);
+    } finally {
+      layoutBusy = false; controls();
+    }
+  });
+  return layoutQueue;
+}
 const updateNarrow = () => {
   document.body.dataset.narrow = String(narrow.matches);
-  requestAnimationFrame(() => engine?.resize());
+  document.body.dataset.readerLayout = narrow.matches ? 'scroll' : 'spread';
+  controls();
+  void syncResponsiveReader();
 };
 narrow.addEventListener('change', updateNarrow, { signal: life.signal });
-for (const media of [shelfMedium, shelfSmall]) media.addEventListener('change', renderBooks, { signal: life.signal });
+shelfSmall.addEventListener('change', () => { shelfPage = 0; renderBooks(); }, { signal: life.signal });
 updateNarrow(); controls();
 
 // The exact same full font is reused by the outer controls and EPUB iframes.
 const fontStyle = document.createElement('style');
 fontStyle.textContent = `@font-face{font-family:HuiwenMincho;src:url(${JSON.stringify(config.fontUrl)}) format('woff2');font-display:swap}`;
 document.head.append(fontStyle);
+
+// Each moving part is sampled from the original complete painting. A clean plate reveals
+// only the small area it leaves behind; no independently generated object art is used.
+function attachScene(id, objects, smallScreen, version = 3) {
+  const canvas = $(`#${id}-scene-canvas`);
+  const image = $(`#${id}-scene-image`);
+  try {
+    const motion = mountObjectMotion({
+      canvas, fallbackImage:image, imageUrl:image.src,
+      cleanImageUrl:new URL(`./assets/${id}-clean-v${version}.png`, import.meta.url).href,
+      objects, reduceMotion:reducedMotion.matches || smallScreen.matches,
+      onStatus:({mode, reason}) => {
+        canvas.dataset.motionState = mode;
+        if (reason) canvas.dataset.motionLastReason = reason;
+      },
+    });
+    sceneMotions.push(motion);
+    void motion.ready.then(result => { canvas.dataset.motionReady = result?.mode || 'ready'; });
+    for (const button of $$(`#${id}-scene [data-motion]`)) motion.bindRegion(button, button.dataset.motion);
+    const update = () => motion.setReducedMotion(reducedMotion.matches || smallScreen.matches);
+    reducedMotion.addEventListener('change', update, {signal:life.signal});
+    smallScreen.addEventListener('change', update, {signal:life.signal});
+  } catch {
+    canvas.hidden = true; image.style.visibility = 'visible';
+  }
+}
+attachScene('reader', READER_OBJECTS, narrow);
+attachScene('library', LIBRARY_OBJECTS, shelfSmall, 4);
+attachScene('import', IMPORT_OBJECTS, narrow, 4);
 
 async function start() {
   const query = new URLSearchParams(location.search);
@@ -487,6 +642,7 @@ window.addEventListener('pagehide', event => {
   persist();
   if (event.persisted) return;
   life.abort(); opening += 1; engine?.destroy(); coverObserver?.disconnect();
+  for (const motion of sceneMotions) motion.destroy();
   for (const url of coverUrls) { revokeCover(url); URL.revokeObjectURL(url); }
   void databasePromise?.then(db => db?.close());
 });
