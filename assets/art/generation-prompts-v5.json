@@ -1,0 +1,6 @@
+{
+  "generator": "Built-in imagegen",
+  "asset": "envelope.png",
+  "constraint": "Reuse the original pigeon artwork without redraw, resize, pose change or silhouette change.",
+  "prompt": "Use case: precise-object-edit / background-extraction. Reference image is the existing paper theatre. Produce ONLY the small paper envelope carried by the original pigeon, as one isolated flat transparent PNG asset. DO NOT draw or change any bird. Keep the envelope's original matte cream folded-paper material, restrained pale dusty-rose round wax seal and fine paper fold lines exactly in the quiet handmade style of the reference. Correct only the envelope proportions to a natural horizontal rectangle, width about 1.65 times its height. Draw it straight-on, long edges horizontal, triangular folded flap on back with small wax seal at meeting point. Delicate subtly hand-painted ivory paper, low contrast natural shading inside envelope only, no photorealistic shiny wax, no 3D plastic, no thick outlined icon. Entire rectangular envelope fully visible, 6 percent transparent padding. Absolutely no bird, wing, feathers, strings, handles, backdrop, table, cast shadow, outer halo, text, lettering, watermark or second object. True alpha background and clean edges. This asset will be placed behind the unchanged original pigeon in its original scene."
+}

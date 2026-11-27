@@ -105,8 +105,10 @@
   --tarot-card-width: clamp(82px, 8.8vw, 116px);
   appearance: none;
   display: block;
-  width: var(--tarot-card-width);
-  aspect-ratio: 3 / 4;
+  width: min(var(--tarot-card-width), var(--tarot-max-card-width, 116px));
+  /* The 240 × 320 source canvases contain a 161 × 320 card, with black
+     padding outside it. Both paper faces use the actual card proportions. */
+  aspect-ratio: 161 / 320;
   padding: 0;
   border: 0;
   border-radius: 8px;
@@ -138,7 +140,7 @@
   left: 0;
   top: 0;
   width: var(--deck-card-width, 58px);
-  height: var(--deck-card-height, 77.333px);
+  height: var(--deck-card-height, 115.28px);
   border-radius: 4px;
   transform: translateY(0);
   transition: transform 230ms cubic-bezier(.2,.65,.25,1);
@@ -187,7 +189,19 @@
 }
 
 .tarot-card__front { transform: rotateY(180deg); background: #000; }
-.tarot-card__front img { display: block; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+.tarot-card__front img {
+  position: absolute;
+  display: block;
+  top: 0;
+  /* Every original PNG has 39 px of black padding on the left and 40 px
+     on the right. Clip only that padding; never stretch the printed face. */
+  left: -24.2236024845%; /* -39 / 161 */
+  width: 149.0683229814%; /* 240 / 161 */
+  max-width: none;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
 
 .tarot-card--ghost {
   position: absolute !important;

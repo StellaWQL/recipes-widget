@@ -1,0 +1,16 @@
+{
+  "version": 9,
+  "request": "Restore the exact old background from uploaded index(2).html and transplant the new interactive props.",
+  "background": {
+    "original": "paper-theatre.png",
+    "original_sha256": "2a162c50d6ad69fc584d9c7bbf9ac5c6079477e7b39c01babae9c70e64c8cdc7",
+    "clean": "paper-theatre-clean.png",
+    "clean_sha256": "025fbeca60d9b8e4e406fd2f67b28c3c4a642862b371b382cff2284ef475fd6f",
+    "preserved": "Original image files retained byte-for-byte. Only prop silhouettes and a small former-box cleanup region overlay them."
+  },
+  "existing_prop_source": "paper-props-scene-v8.png",
+  "local_floor_repair": {
+    "file": "paper-theatre-floor-repair.png",
+    "prompt": "Use case: precise-object-edit. The attached image is the EDIT TARGET, the exact older paper-theatre scene the user prefers. Create a clean plate for a very limited local repair.\n\nRemove ONLY the old open floral-patterned rectangular box on the floor near lower centre, approximately x509–814, y654–844 in this 1672×941 scene, and remove its cast/contact shadow. Continue the existing softly mottled mauve-grey paper floor behind and beneath where that box was. At its top edge, recover the thin adjoining stair/foliage continuation naturally. The ground should follow the original floor perspective with fine subdued matte paper fibres, NOT shiny crumpled paper, NOT sharp bright facets.\n\nPreserve every other object and ALL of the older background's exact colors and quiet fine texture as faithfully as possible: gray-blue sky, soft violet hills, city, old flowers, outer draped proscenium, old theatre arch, old empty theatre rear wall, basket, pears, book, stairs. Do not restyle, relight, brighten, warm, sharpen, add folds, or apply a new palette to the scene. This is an object-removal repair ONLY. No pigeon, envelope, playing cards, replacement box, bookmarks, text or UI. Keep the exact wide 1672×941 composition. In the final website only the small former-box region of your output will be used; the rest will remain the unchanged original background."
+  }
+}

@@ -1,13 +1,11 @@
-/* The raster illustration is cut into moving paper layers in the scene SVG. */
+/* Whole paper actors move behind fixed frame and basket contours. */
 .stage-frame {
   --paper-duration: 560ms;
   --paper-ease: cubic-bezier(.2,.65,.25,1);
   --bird-hover: 10px;
   --bird-max-pull: 75px;
   --bird-pull-threshold: 20px;
-  --bird-string-length: 137px;
-  --lid-lift: -82px;
-  --lid-turn: -4deg;
+  --bird-string-length: 166px;
   --cards-lift: -45px;
   --pear-lift: -26px;
   --curtain-open: 76px;
@@ -36,7 +34,7 @@
 .hotspot-letter { cursor: grab; touch-action: none; }
 .stage-frame.is-pulling .hotspot-letter { cursor: grabbing; }
 
-.scene-overlay :is(.scene-bird,.scene-string,.scene-lid,.scene-cards,.scene-pear,.scene-curtain-left,.scene-curtain-right,.scene-bookmark,.scene-petal) {
+.scene-overlay :is(.scene-bird,.scene-string,.scene-cards,.scene-pear,.scene-curtain-left,.scene-curtain-right,.scene-bookmark,.scene-petal) {
   transform-box: view-box;
   transition: transform var(--paper-duration) var(--paper-ease);
   pointer-events: none;
@@ -61,28 +59,24 @@
 .scene-city-light {
   opacity: 0;
   transition: opacity 560ms ease;
+  mix-blend-mode: screen;
   pointer-events: none;
 }
 .stage-frame[data-active="city"] .scene-city-light {
   opacity: 1;
 }
 
-.scene-lid {
-  transform-origin: var(--lid-origin,37% 76%);
-  transform: translateY(0) rotate(0);
-}
+/* The hinge module projects both painted lid faces around the same fixed rear edge. */
+.scene-hinged-lid { pointer-events: none; }
 .scene-overlay .scene-cards {
   opacity: 0;
   transform: translateY(0);
   transition: transform var(--paper-duration) var(--paper-ease), opacity 180ms ease;
 }
-.stage-frame[data-active="tarot"] .scene-lid {
-  transform: translateY(var(--lid-lift)) rotate(var(--lid-turn));
-}
 .stage-frame[data-active="tarot"] .scene-cards {
   opacity: 1;
   transform: translateY(var(--cards-lift));
-  transition-delay: 70ms;
+  transition-delay: 110ms;
 }
 
 .scene-pear {
@@ -92,7 +86,9 @@
   transform: translateY(var(--pear-lift));
 }
 
-.scene-curtain-left, .scene-curtain-right { transform: translateX(0); }
+.scene-curtain-left, .scene-curtain-right {
+  transform: translateX(0);
+}
 .stage-frame[data-active="movie"] .scene-curtain-left { transform: translateX(calc(-1 * var(--curtain-open))); }
 .stage-frame[data-active="movie"] .scene-curtain-right { transform: translateX(var(--curtain-open)); }
 

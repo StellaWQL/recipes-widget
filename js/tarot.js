@@ -2,6 +2,9 @@ const DEFAULT_STORAGE_KEY = 'raven.tarot.free-spread.v1';
 const DEFAULT_DECK_URL = new URL('../data/tarot-deck.json', import.meta.url);
 const CSS_URL = new URL('../styles/tarot.css', import.meta.url);
 const BACK_URL = new URL('../assets/art/tarot-back.png', import.meta.url);
+// Visible card bounds inside all 78 original 240 × 320 PNGs are
+// x = 39..199 and y = 0..319. Keep the paper, drag proxy and back this shape.
+const CARD_ASPECT = 161 / 320;
 
 const ICONS = {
   shuffle: '<svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M5 9h3c6 0 8 14 14 14h5M22 18l5 5-5 5M5 23h3c2.9 0 4.8-3.3 6.7-6.6M18.6 11.3C19.7 9.9 20.8 9 22 9h5M22 4l5 5-5 5"/></svg>',
@@ -191,6 +194,11 @@ export function mountTarot(container, options = {}) {
   }
 
   function layoutPlaced() {
+    // The taller card must still fit fully in the reading area on a short
+    // viewport. This same measured size is used for pointer drop geometry.
+    const maxWidth = Math.max(1, Math.min(placedLayer.clientWidth,
+      placedLayer.clientHeight * CARD_ASPECT));
+    root.style.setProperty('--tarot-max-card-width', `${maxWidth}px`);
     for (const cardElement of placedLayer.children) {
       const card = state.drawn.find(item => item.id === cardElement.dataset.cardId);
       if (card) positionCard(cardElement, card);
@@ -215,9 +223,9 @@ export function mountTarot(container, options = {}) {
     const bottom = 5;
     const preferredWidth = Math.min(narrow ? 56 : 82,
       Math.max(narrow ? 38 : 52, width / (deckColumns * .67)));
-    const cardHeight = Math.max(24, Math.min(preferredWidth * 4 / 3,
+    const cardHeight = Math.max(24, Math.min(preferredWidth / CARD_ASPECT,
       (dockHeight - top - bottom) / (1 + (rows - 1) * .72)));
-    const cardWidth = cardHeight * .75;
+    const cardWidth = cardHeight * CARD_ASPECT;
     const stepX = deckColumns > 1 ? Math.max(0, (width - cardWidth) / (deckColumns - 1)) : 0;
     const stepY = rows > 1 ? (dockHeight - top - bottom - cardHeight) / (rows - 1) : 0;
     const actualLift = Math.min(lift, cardHeight * .2);

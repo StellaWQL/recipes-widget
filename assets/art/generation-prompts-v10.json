@@ -1,0 +1,15 @@
+{
+  "version": 10,
+  "request": "Restore the genuine earliest muted matte backdrop and transplant the current interactive objects.",
+  "background": {
+    "file": "paper-theatre-original-muted.png",
+    "sha256": "0dbfc179a5951d7ba27f9f38eabe590623a9c81a75d8efa65df91374fb1ee460",
+    "verified_against": "Earliest full repository ZIP and earliest complete source ZIP",
+    "correction": "The previous replacement original and clean images were later brighter regenerations despite their filenames."
+  },
+  "new_props": "Existing v8 artwork kept as subject-only silhouette layers.",
+  "local_cleanup": {
+    "file": "paper-theatre-local-clean-v10.png",
+    "prompt": "Edit the ATTACHED ORIGINAL muted matte paper-theatre illustration to make a clean background plate for a website animation. Preserve its exact wide 1672 x 941 composition. CRUCIAL: this is the user's beloved ORIGINAL quiet gray-blue, dusty mauve, muted moss-green paper collage with very fine dry matte stippling. The sky, original architecture, flowers, scenery, floor and outer curtains must keep exactly this muted palette, brightness, hand-drawn shapes and finely granular paper texture. Do not brighten, saturate, turn orange, make shiny/faceted crumpled paper, or restyle anything.\n\nRemove only these old foreground animation objects, and paint their small previously concealed background areas naturally:\n1. The entire folded cream paper pigeon together with its envelope in the sky, approx x670–950 y180–340; also erase its fine vertical suspension line at x832 from y83 to y260. Recover continuous muted gray-blue sky/clouds.\n2. Only the green pear at the FRONT of the left wicker basket, approx x149–254 y550–670, so a new movable pear can be inserted later. Keep the basket, woven upper lip, basket handle, cloth, other fruits and all surrounding leaves exactly where and as they are. Recover the basket interior behind the removed pear. Do not add a black rectangular bar.\n3. The malformed loose pear ON THE FLOOR left of the box, approx x383–485 y720–849, including only its own contact shadow. Keep the nearby floor leaves.\n4. The complete old floral box (lid and body) approx x502–818 y637–845 and only its cast shadow. Recover the original finely textured quiet mauve/gray paper floor and any thin strip of vegetation at its rear edge.\n5. The closed purple book with botanical decoration AND its pink bookmark on the right stairs, approx x1167–1400 y477–684. Recover the original stone steps behind it, keeping the stair geometry, quiet color and delicate paper grain.\n6. The single small loose pink petal lying near x1010–1120 y780–825 on the front floor. Recover the existing matte floor below it.\n\nEverything not listed is protected. Do not remove the miniature theatre or its old curtains, do not change the flowers or city, do not add a new box, bird, book, fruit or icon. No text, UI, outlines, labels, masks or visible bounding boxes. We will only use tiny local regions of this result as repair patches; the full website background will be the unchanged original image. Keep texture continuity especially in the tiny repaired areas."
+  }
+}

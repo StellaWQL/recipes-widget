@@ -1,6 +1,7 @@
 import {icon} from './icons.js';
 import {loadWidgetData} from './data.js';
 import {initTheatreMotion} from './theatre-motion.js';
+import {initBoxHinge} from './box-hinge.js';
 
 const dialog=document.querySelector('#tool-dialog');
 const content=document.querySelector('#tool-content');
@@ -56,7 +57,7 @@ async function openTool(type,trigger=null){
       mountSelection(type,rows);
     }else if(type==='inspiration')mountInspiration();
     else if(type==='city'){
-      const {mountCity}=await import('./city.js?v=4');if(run!==generation)return;
+      const {mountCity}=await import('./city.js?v=5');if(run!==generation)return;
       content.replaceChildren();mounted=await mountCity(content);
     }else mountDirectory();
   }catch(e){console.error(e);if(run===generation)showError(()=>openTool(type));}
@@ -106,8 +107,9 @@ function mountDirectory(){
 document.querySelectorAll('[data-tool]').forEach(b=>b.addEventListener('click',()=>openTool(b.dataset.tool,b)));
 const stage=document.querySelector('.stage-frame');
 theatreMotion=initTheatreMotion(stage,{onActivate:openTool});
+initBoxHinge(stage);
 // Reveal the layered scene only after every painted component has decoded.
-Promise.all(['paper-theatre.png','paper-theatre-clean.png','paper-props.png','city-lit.png','tarot-back.png'].map(name=>{
+Promise.all(['paper-theatre-original-muted.png','paper-theatre-local-clean-v10.png','paper-theatre-micro-clean-v10.png','paper-props-scene-v8.png','paper-theatre-box-open.png','paper-theatre-box-closed.png','paper-props.png','tarot-back.png','pigeon-envelope.png','curtain-pair.png'].map(name=>{
   const image=new Image();image.src=new URL('../assets/art/'+name,import.meta.url).href;
   return image.decode();
 })).then(()=>stage.classList.add('is-art-ready')).catch(()=>{});

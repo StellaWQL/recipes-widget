@@ -1,56 +1,51 @@
-# 纸剧场插画
+# 纸剧场画面与互动图层
 
-使用内置图像生成与图像编辑，绘制完整修正版、背景补全层和独立纸片。SVG 只负责裁切、遮挡和定位，物件与牌背均使用绘制的位图。梨、帷幕和书签在互动时整片平移，不拉伸或变形。
+## 本版背景来源
 
-## 资源
+本版恢复最早的哑光灰调纸剧场原图。文件为 `paper-theatre-original-muted.png`，尺寸 1672 × 941，SHA256 为 `0dbfc179a5951d7ba27f9f38eabe590623a9c81a75d8efa65df91374fb1ee460`。
 
-- `paper-theatre.png`，完整修正版。1672 × 941。
-- `paper-theatre-clean.png`，移动物件背后的补全画面，1672 × 941。小剧场内的旧系带帘也已移除。
-- `paper-props.png`，1673 × 940 透明底纸片。包括完整梨、闭合的左右纸帘、留有隐藏上端的完整书签。
-- `tarot-back.png`，1086 × 1448 手绘牌背。花枝、纸剧场、月亮与飞蛾用于首页牌盒和抽牌页。
-- `city-lit.png`，1672 × 941 暖黄色亮灯画面。网页只叠加城市区域，不叠加其他物件。
-- `generation-prompts.json`，本次新增和修订资源使用的完整提示。
+已和最早的《THE_RAVEN_整仓库替换包.zip》及《THE_RAVEN_纸剧场_完整源码.zip》核对，两份包内保存的是同一张图片。图片的灰蓝天空、灰紫帷幔、低饱和花草和细密哑光纸纹全部保留。
 
-## 纸片动作与遮挡
+上一版误用了后来重绘的同名图片。`paper-theatre.png` 和 `paper-theatre-clean.png` 曾在不同轮次被替换，不能仅根据文件名或 HTML 路径判断图片来源。本版为真正原图使用独立文件名，首页底图、页面外围和工具窗底纹均明确引用它。兼容文件 `paper-theatre.png` 也已恢复为这张原图。
 
-- 梨沿垂直方向移动 26 个画面坐标单位，完整底部始终由固定篮沿和篮身遮挡。
-- 两片帷幕在静止时合拢，分别向左右移动 76 个画面坐标单位。木框与上方横帘固定，舞台开口固定。
-- 书签是连续的长纸片，隐藏上端也随可见部分一起移动。固定的书页缝隙遮住上端，移动量为向左 4、向下 14。
-- 灯光使用重新绘制的亮灯版本，包含暖黄色窗芯、琥珀色边缘和窗沿反光。
-- 鸽子及信封继续使用原有轮廓、绳线和实际下拉逻辑。
+## 移植物件
 
-## 完整画面编辑提示
+新版水果、翻盖牌盒、鸽子与信封、双层帷幕、爆米花墙绘和夜蛾书本继续使用已完成的绘制素材。静态物件按实际轮廓覆盖到旧背景上。旧藤篮、篮柄、篮布及其空隙保留，篮中水果和地面梨子换入新版。
 
-```text
-Use case: precise-object-edit.
-Asset type: full-screen artwork for an interactive paper theatre website, no interface text.
-Input 1 is the EDIT TARGET: the complete existing quiet pink-purple paper-theatre scene. Input 2 is ONLY an annotation guide: green rectangles indicate structures to repair, never reproduce green marks.
-Create a corrected version of Input 1. Preserve its composition, framing, object positions, delicate aged-paper texture, muted dusty rose / lavender / sage / blue-grey palette, soft even light, 16:9 canvas and calm handcrafted illustration. Keep all six entrance objects in the SAME places. Do not redesign the whole scene or turn it dark.
-Precise corrections:
-1. The huge flower at left: coherent flower anatomy, every petal joins the same central receptacle, fine stamens emerge naturally there, one attached stem. Repair the confusing folded/melted lower petal construction while retaining a beautiful open papery flower.
-2. The little distant bridge near centre-right: redraw it as a continuous credible SMALL TWO-ARCH STONE BRIDGE/VIADUCT. A thin consistent deck rests on two continuous arches and grounded piers, ends join the hills. No floating lintel, broken columns or unattached scalloped top.
-3. The foreground floral rectangular card box: geometrically consistent closed removable lid and rectangular base. Lid top, lid lip, side walls and corners share one perspective; lid fits the box with a small even overhang, a clean continuous seam. Paper floral pattern conforms to each flat plane. Keep the front corner and original footprint essentially unchanged, no extra objects.
-4. The pear on the floor beside basket: recognizable natural pear with a single short stem from its TOP indentation, coherent tapered neck and rounded base, resting with contact shadow. Remove the strange twig/leaf connection from its bottom. A separate fallen leaf may remain on the floor.
-5. Keep the origami pigeon and its envelope, a thin thread attached visibly to its upper back, and a believable small grip at the envelope corner. The thread ends at the overhead theatre structure.
-6. Keep the basket and its woven handle physically coherent, the front green pear clearly separate inside it. Keep the closed violet book and its single rose ribbon bookmark emerging between the pages at the bottom edge. Keep the central small stage framed by wood and its curtains closed.
-Preserve the entire original scene and subtle paper-cut layering outside these repairs. Same scale and placement, no new characters, no writing, no typography, no labels, no green lines, no borders added, no glow. Render polished cohesive original artwork, not a web mockup. Prefer landscape 2048x1152 while preserving the existing composition exactly.
-```
+`paper-theatre-local-clean-v10.png` 用于本版的局部清理。网页只使用旧物件原位置的局部区域，清除旧鸽子和信封、悬挂线、前侧活动绿梨、地面旧梨、旧花盒、旧书与书签、可动花瓣，避免移动时露出重影。这张清理底片不会作为整页背景。篮布旁的旧地梨顶梗以 `paper-theatre-micro-clean-v10.png` 的极小区域修复。地梨底部的细枝沿其轮廓取相邻干净地面覆盖，保留旁边篮布和地面叶片。
 
-## 初版补全层编辑记录
+鸽子和信封共用一个完整绘制对象。夜蛾纹样与书本一起绘制在书封上。爆米花图案和剧场后墙使用同一张完整绘制素材。牌盒内外盖、内衬、盒壁和底板均来自完整盒子绘制图。
 
-以下为初版记录。当前版本在该画面上继续移除了旧系带帘，替换为独立的左右纸片。最新编辑提示保存在 `generation-prompts.json`。
+## 当前使用的图片
 
-```text
-Use case: precise-object-edit.
-Asset type: clean background plate for a paper-theatre website with animated cutout actors.
-Input image 1 is the EDIT TARGET, the already corrected full illustration. Keep EXACT same canvas 1672 by 941, all coordinates, perspective, papery aged texture, dusty rose / sage / lavender / blue-gray colors and soft lighting. This must pixel-align with the input so extracted moving objects can be layered back on top. Make only the following localized removals/inpainting, do not rearrange or redesign the scene.
+| 资源 | 用途 |
+| --- | --- |
+| `paper-theatre-original-muted.png` | 真正最初的哑光灰调原图，整页底图与外围背景 |
+| `paper-theatre-local-clean-v10.png` | 旧物件原位置的局部清理底片 |
+| `paper-theatre-micro-clean-v10.png` | 篮布旁旧地梨顶梗的微小修补 |
+| `paper-props-scene-v8.png` | 新静态水果、盒身、剧场内墙和短帷幔、夜蛾书本，只沿物件轮廓显示 |
+| `paper-theatre-box-open.png` | 翻盖盒内盖和衬里来源 |
+| `paper-theatre-box-closed.png` | 翻盖盒外盖来源 |
+| `pigeon-envelope.png` | 一起绘制的鸽子与横向信封 |
+| `paper-props.png` | 完整活动绿梨与连续书签 |
+| `curtain-pair.png` | 左右拉开的两片下层纸帘 |
+| `tarot-back.png` | 按实际长窄牌面绘制的夜蛾牌背 |
+| `generation-prompts-v10.json` | 正确背景来源、上版来源纠正和本次清理提示词 |
 
-1. Remove the complete paper pigeon, envelope, and thin overhead hanging thread, at approx x675..946 y82..336. Reconstruct the same unobtrusive blue-gray cloudy paper background behind them, seamless with surrounding background.
-2. Remove ONLY the front green pear and its stem inside the left basket at approx x154..250 y563..666. Keep the basket weave, rim, handle, cloth, the yellow pear and the red fruits completely unchanged. Reveal a little dark basket interior/otherfruit behind the removed green pear. The separate pear on the floor remains unchanged.
-3. The small wooden theatre at approx x380..649 y325..660: REMOVE only the central dark rear drop-curtain visible between the two tied dusty-pink side curtains. Keep the wooden arched frame, top scalloped valance, both tied side curtains and their gold ties unchanged. Behind the removed central drop-curtain reveal a quiet recessed miniature empty lavender paper stage, simple worn muted backdrop and flat stage floor with no objects, no text. Precise existing opening and all borders unchanged.
-4. Remove ONLY the removable floral lid of the foreground rectangular box, approx x503..818 y638..760. Keep both floral box body walls and their corners at x508..814 y711..840 exactly unchanged. Reveal the box's top opening with a believable narrow cardboard rim and dark muted maroon interior, same perspective. Do not add cards; they will be an animated overlay.
-5. Remove ONLY the hanging rose bookmark ribbon at approx x1185..1238 y622..678. Keep the violet book, gold floral cover, pages, binding and steps exactly unchanged. Reconstruct the small portions of book bottom edge and stone step behind the ribbon naturally.
-6. Remove the one loose rose petal on the foreground floor at approx x1005..1119 y779..827, reconstruct same floor texture.
+历史轮次的其他图片和绘制记录保留用于追溯，当前首页不把它们作为整页背景。
 
-Everything else must remain unchanged including the corrected big left flower, solid two-arch bridge, static floor pear, buildings and dark windows, flowers, winding stairs, edge curtains, floor, vignette. Do not change outlines or add shadows outside localized edits. No words, UI, labels, borders, greenscreen, glow, new furniture or characters. The intended visible gaps are for real moving actors, not an overall new composition.
-```
+## 动作和遮挡
+
+- 绿色梨子以完整纸片向上移动 26 个画面单位，原藤篮前沿沿编织轮廓挡住下端。
+- 下方两片纸帘平时关闭，向左右各移动 76 个单位。上方短帷幔保持固定，并沿扇贝边缘投下柔和阴影。开帘后露出爆米花墙绘。
+- 鸽子和信封作为整体下拉。悬挂线从原顶幔下沿连接，并随拉动伸长，松开后恢复。
+- 盒盖由 `js/box-hinge.js` 绕后侧长边翻开，内外两面交替显露。铰接边两端固定，卡片从前沿后方露出。
+- 三张盒内卡片各为 64.4 × 128 个画面单位，保持实际卡面比例，上移 45 个单位。前壁固定遮挡下半部分。
+- 书签从书页中的固定出口向左 4、向下 14 个单位抽出。完整书签的隐藏尾部随它移动。
+- 城市窗户仅叠加暖黄灯芯、窗台反光与墙面柔光。使用 screen 混合，不替换天空或压暗周围。
+
+## 数据与验证
+
+原始 78 张牌面、12 本 EPUB、汇文明朝体字库、阅读组件和数据文件继续保留。78 张牌同时在屏幕内选择，所有抽出的牌统一正位。读取书源和其他工具功能沿用上一版。
+
+本次使用本地 SVG 静态渲染检查背景、物件轮廓、闭合画面与移动后的画面，另核对背景文件身份、局部区域外的像素、资源引用及 ZIP 完整性。翻盖动画代码和参数未改动，沿用此前已完成的铰接端点、快速反向、减少动态效果与清理验证。受当前预览环境限制，本次没有浏览器内互动复测。

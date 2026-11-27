@@ -7,62 +7,322 @@
   <meta name="description" content="THE RAVEN，藏在纸剧场里的日常。">
   <title>THE RAVEN.</title>
   <link rel="icon" type="image/svg+xml" href="./favicon.svg">
-  <link rel="stylesheet" href="./styles/theatre.css">
-  <link rel="stylesheet" href="./styles/motion.css">
+  <link rel="stylesheet" href="./styles/theatre.css?v=10">
+  <link rel="stylesheet" href="./styles/motion.css?v=10">
   <link rel="stylesheet" href="./styles/tarot.css">
   <link rel="stylesheet" href="./styles/reader.css">
 </head>
 <body>
   <main id="theatre" aria-label="纸剧场">
-    <div class="stage-frame">
-      <img class="stage-art" src="./assets/art/paper-theatre.png" alt="" fetchpriority="high" draggable="false">
+    <div class="stage-frame" data-box-hinge-origin="531 697" data-box-hinge-vector="205 -55" data-box-closed-depth="106 69" data-box-opening-rise="67.489509 -176.702788" data-box-open-angle="100">
+      <img class="stage-art" src="./assets/art/paper-theatre-original-muted.png" alt="" fetchpriority="high" draggable="false">
       <svg class="scene-overlay" viewBox="0 0 1672 941" aria-hidden="true" focusable="false">
         <defs>
-          <image id="scene-original" href="./assets/art/paper-theatre.png" width="1672" height="941"/>
-          <image id="scene-clean" href="./assets/art/paper-theatre-clean.png" width="1672" height="941"/>
+          <image id="scene-original" href="./assets/art/paper-theatre-original-muted.png" width="1672" height="941"/>
+          <image id="scene-matte" href="./assets/art/paper-theatre-original-muted.png" width="1672" height="941" preserveAspectRatio="none"/>
+          <image id="scene-props" href="./assets/art/paper-props-scene-v8.png" width="1672" height="941" preserveAspectRatio="none"/>
+          <image id="scene-local-clean" href="./assets/art/paper-theatre-local-clean-v10.png" width="1672" height="941" preserveAspectRatio="none"/>
+          <image id="scene-micro-clean" href="./assets/art/paper-theatre-micro-clean-v10.png" width="1672" height="941" preserveAspectRatio="none"/>
+          <image id="scene-box-open" href="./assets/art/paper-theatre-box-open.png" width="1672" height="941" preserveAspectRatio="none"/>
+          <image id="scene-box-closed" href="./assets/art/paper-theatre-box-closed.png" width="1672" height="941" preserveAspectRatio="none"/>
           <image id="paper-props" href="./assets/art/paper-props.png" width="1673" height="940"/>
-          <clipPath id="clip-bird"><path d="M675 191.5 L776.5 191.5 L825 238.5 L853.5 213.5 Q859 209 870 214 L882.5 227.5 L917.5 241.5 L880.5 234.5 L867 247 L846 283.5 L820 301 L811 297.5 L766 298.5 L732.5 333.5 L731 321 L717 328 L718.5 312 L704 308 L785 267 Q773 264 768 258 Q759 258 756 252 L757 249 Q745 250 741 246 Q739 244 741 239 L743 237 Q727 239 720 231 Q718 229 721 226 L723 224 Q708 226 697 217 Q693 214 696 211 L699 209 Q683 209 675 191.5 Z M844 259 L919 242 L944 302 L860 335 Z"/></clipPath>
-<clipPath id="clip-lid"><path d="M506 684 L683 638 L816 680 L815 709 L637 760 L506 714 Z"/></clipPath>
+          <image id="curtain-pair" href="./assets/art/curtain-pair.png" width="1190" height="1322"/>
+<clipPath id="clip-pigeon-envelope" clipPathUnits="userSpaceOnUse"><path d="M161.0 102.5 L229.0 109.5 L304.0 114.5 L324.0 114.5 L339.0 116.5 L416.0 119.5 L449.0 118.5 L478.0 120.5 L608.0 122.5 L720.0 126.5 L728.0 129.5 L743.0 141.5 L780.5 182.0 L829.5 246.0 L900.5 347.0 L937.0 395.5 L1049.5 279.0 L1067.0 263.5 L1075.0 257.5 L1082.0 254.5 L1107.0 253.5 L1141.0 259.5 L1154.0 263.5 L1161.0 267.5 L1168.5 274.0 L1184.5 294.0 L1220.5 345.0 L1220.5 347.0 L1278.0 387.5 L1287.0 394.5 L1296.0 404.5 L1615.0 458.5 L1618.5 461.0 L1620.5 465.0 L1619.5 478.0 L1596.5 582.0 L1579.5 672.0 L1577.5 677.0 L1574.0 679.5 L1539.0 675.5 L1528.0 672.5 L1438.0 658.5 L1433.0 656.5 L1386.0 649.5 L1358.0 643.5 L1326.0 639.5 L1270.0 628.5 L1212.0 619.5 L1203.5 615.0 L1202.5 606.0 L1247.5 399.0 L1238.0 394.5 L1218.0 388.5 L1181.0 379.5 L1143.0 401.5 L1118.0 414.5 L1108.5 422.0 L1030.5 594.0 L1024.5 604.0 L1020.0 607.5 L1006.0 614.5 L969.0 636.5 L963.0 641.5 L954.0 645.5 L946.0 651.5 L894.0 681.5 L838.0 673.5 L761.0 659.5 L726.0 660.5 L622.0 670.5 L612.0 669.5 L577.5 713.0 L530.5 764.0 L472.0 822.5 L468.0 825.5 L464.0 825.5 L460.5 817.0 L454.5 774.0 L450.0 753.5 L386.0 785.5 L374.0 790.5 L369.0 790.5 L367.5 789.0 L381.5 759.0 L406.5 713.0 L406.0 711.5 L398.0 715.5 L391.0 716.5 L310.0 705.5 L302.0 703.5 L300.5 699.0 L303.0 696.5 L318.0 689.5 L384.0 662.5 L421.0 645.5 L644.0 552.5 L686.0 533.5 L712.5 517.0 L684.0 506.5 L665.0 496.5 L657.5 488.0 L654.5 482.0 L654.0 472.5 L644.0 474.5 L621.0 473.5 L601.0 468.5 L585.0 460.5 L574.5 450.0 L572.5 446.0 L571.5 437.0 L573.0 431.5 L561.0 431.5 L539.0 428.5 L526.0 424.5 L509.0 416.5 L499.5 409.0 L489.5 396.0 L486.5 386.0 L486.5 380.0 L490.0 371.5 L458.0 368.5 L436.0 362.5 L417.0 353.5 L408.0 347.5 L394.5 334.0 L390.5 328.0 L386.5 320.0 L385.5 314.0 L389.0 301.5 L367.0 298.5 L342.0 291.5 L321.0 282.5 L302.0 270.5 L283.5 254.0 L270.5 236.0 L267.5 227.0 L267.5 217.0 L273.5 209.0 L244.0 198.5 L230.0 191.5 L203.0 171.5 L179.5 147.0 L159.5 120.0 L154.5 108.0 L158.0 103.5 L161.0 102.5 Z"/></clipPath>
+          <clipPath id="clip-curtain-left-edge"><path d="M101 82 H593 V1223 Q569 1241 541 1239 Q519 1239 501 1228 Q490 1224 480 1225 Q454 1241 431 1237 Q408 1237 381 1224 Q370 1223 359 1226 Q333 1240 311 1239 Q290 1239 270 1227 Q260 1222 250 1227 Q222 1238 201 1237 Q181 1237 165 1226 Q159 1221 150 1225 Q124 1235 107 1230 Q100 1226 100 1218 V93 Q100 84 101 82 Z"/></clipPath>
+          <clipPath id="clip-curtain-right-edge"><path d="M600 82 H1086 Q1092 84 1092 94 V1219 Q1092 1231 1077 1230 Q1060 1232 1048 1226 Q1039 1221 1031 1226 Q1009 1239 990 1234 Q969 1231 958 1225 Q946 1222 939 1225 Q915 1240 892 1238 Q866 1238 844 1224 Q834 1220 823 1226 Q796 1240 770 1239 Q742 1239 721 1229 Q710 1224 701 1226 Q677 1240 652 1238 Q624 1239 600 1224 Z"/></clipPath>
+          <!-- Both faces come from the newly painted full scenes and share the box's measured rear hinge. -->
+          <clipPath id="clip-box-outer-a"><path d="M523.620932 693.449967 L735.379641 635 L856.018537 697.449967 Z"/></clipPath>
+          <clipPath id="clip-box-outer-b"><path d="M523.631762 692.550033 L856.029367 696.550033 L635.259880 765 Z"/></clipPath>
+          <clipPath id="clip-box-outer-fit"><path d="M531 697 L736 642 L854 698 L637 766 Z"/></clipPath>
+          <clipPath id="clip-box-inner-a"><path d="M532.339509 696.662473 L755.904192 635 L788.646096 470.662473 Z"/></clipPath>
+          <clipPath id="clip-box-inner-b"><path d="M532.934742 697.337527 L789.241329 471.337527 L580.694611 511 Z"/></clipPath>
+          <clipPath id="clip-box-inner-fit"><path d="M531 697 L736 642 L769.039521 478 L579.057485 511 Z"/></clipPath>
+          <clipPath id="clip-box-front"><path d="M530.5 697 L637 763.8 L854.5 696.3 L854.4 775.2 L863.2 781.4 L637 858 L521.8 782.1 L529.9 779 Z"/></clipPath>
 <clipPath id="clip-petal"><path d="M1010 791 Q1016 785 1024 792 L1044 806 Q1060 796 1073 790 Q1097 779 1115 783 Q1107 790 1104 800 Q1098 814 1086 820 Q1059 828 1039 815 Q1028 810 1023 800 Z"/></clipPath>
-<clipPath id="clip-box-front"><path d="M510 703 L637 748 L811 694 L811 797 L638 841 L509 801 Z"/></clipPath>
-<clipPath id="clip-basket-front"><path d="M87 646 Q89 635 101 636 Q119 649 151 655 Q195 667 243 657 Q281 649 322 640 Q354 625 376 634 L405 850 H80 Z"/></clipPath>
-<clipPath id="clip-curtain-aperture"><path d="M407 416 H618 V653 H407 Z"/></clipPath>
-<clipPath id="clip-stage-frame"><path d="M375 319 H649 V422 H375 Z M375 410 H408 V667 H375 Z M618 410 H649 V667 H618 Z M390 653 H640 V667 H390 Z"/></clipPath>
+<!-- The fixed front rim hides the lower part of each complete, correctly proportioned card. -->
+          <clipPath id="clip-card-reveal"><path d="M520 440 H870 V696.3 L854.5 696.3 L637 763.8 L530.5 697 H520 Z"/></clipPath>
+<!-- The fixed wicker lip occludes the whole moving pear along its painted top contour. -->
+          <clipPath id="clip-basket-front"><path d="M140 653 C153 658 169 661 184 662 C197 663 212 663 225 662 C238 661 250 657 264 655 L272 720 H140 Z"/></clipPath>
+          <clipPath id="clip-pear-edge"><path d="M241 317 C232 317 225 321 227 329 L234 343 L242 389 C220 391 207 401 198 411 C181 429 176 445 172 465 L166 490 C161 515 146 536 129 556 C108 582 100 612 99 638 C97 675 109 709 128 732 C148 757 173 770 200 775 C224 780 240 773 257 775 C283 779 310 773 335 763 C366 750 388 721 399 687 C407 661 408 633 402 609 C396 579 379 556 361 533 C348 515 343 493 340 476 C337 450 326 427 307 414 C293 404 277 398 258 394 L256 327 Q254 317 241 317 Z"/></clipPath>
+<!-- Follow the painted valance scallops and the inner wooden jambs, not a rectangle. -->
+          <clipPath id="clip-curtain-aperture"><path d="M408 414 Q419 423 431 417 Q444 423 456 415 Q467 422 479 417 Q491 423 503 416 Q515 422 528 417 Q540 423 552 416 Q564 423 577 416 Q589 422 600 416 Q610 423 618 414 L619 648 Q616 653 609 653 H415 Q408 653 407 649 Z"/></clipPath>
 <clipPath id="clip-bookmark-exit"><path d="M1160 615 L1211 622 L1234 626 L1260 630 V725 H1160 Z"/></clipPath>
-          <filter id="city-mask-edge" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="4"/></filter>
-          <mask id="mask-city-light" maskUnits="userSpaceOnUse" x="1134" y="130" width="440" height="244">
-            <rect x="1148" y="146" width="410" height="214" rx="10" fill="white" filter="url(#city-mask-edge)"/>
+          <clipPath id="clip-bookmark-source"><rect x="1396" y="101" width="143" height="739"/></clipPath>
+
+  <radialGradient id="warm-window-spill"><stop stop-color="#bc752f" stop-opacity=".64"/><stop offset=".45" stop-color="#9d511e" stop-opacity=".24"/><stop offset="1" stop-color="#74330f" stop-opacity="0"/></radialGradient>
+  <linearGradient id="warm-window-core" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffe2a4"/><stop offset=".55" stop-color="#ffd28b"/><stop offset="1" stop-color="#d5974d"/></linearGradient>
+  <linearGradient id="warm-window-projection" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#c7853d" stop-opacity=".22"/><stop offset="1" stop-color="#a66028" stop-opacity="0"/></linearGradient>
+
+          <filter id="canopy-shadow" filterUnits="userSpaceOnUse" x="400" y="400" width="228" height="62">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur"/>
+            <feOffset in="blur" dx="0" dy="6" result="offset"/>
+            <feFlood flood-color="#4a303e" flood-opacity=".34" result="shade"/>
+            <feComposite in="shade" in2="offset" operator="in"/>
+          </filter>
+          <clipPath id="clip-transplant-box-body" clipPathUnits="userSpaceOnUse"><path d="M531 697 L736 642 L854 698 L854.4 775.2 L863.2 781.4 L637 858 L521.8 782.1 L529.9 779 Z"/></clipPath>
+          <clipPath id="clip-transplant-theatre-wall" clipPathUnits="userSpaceOnUse"><path d="M408 414 Q419 423 431 417 Q444 423 456 415 Q467 422 479 417 Q491 423 503 416 Q515 422 528 417 Q540 423 552 416 Q564 423 577 416 Q589 422 600 416 Q610 423 618 414 L619 648 Q616 653 609 653 H415 Q408 653 407 649 Z"/></clipPath>
+          <clipPath id="clip-transplant-canopy" clipPathUnits="userSpaceOnUse"><path d="M404 391 Q446 361 486 353 Q507 348 530 354 Q575 366 619 392 L619 414 Q610 423 600 416 Q589 422 577 416 Q564 423 552 416 Q540 423 528 417 Q515 422 503 416 Q491 423 479 417 Q467 422 456 415 Q444 423 431 417 Q419 423 408 414 L404 414 Z"/></clipPath>
+          <clipPath id="clip-transplant-book" clipPathUnits="userSpaceOnUse"><path d="M1268 485 L1388 500 L1385 518 L1393 538 L1331 657 Q1329 660 1325 659 L1185 644 Q1167 632 1178 607 L1268 485 Z"/></clipPath>
+          <clipPath id="clip-transplant-yellow-pear" clipPathUnits="userSpaceOnUse"><path d="M245 522 Q248 519 250 524 L251 541 C270 540 278 555 280 569 C282 583 299 592 300 606 C300 623 283 643 265 650 C247 661 222 657 207 645 C189 631 190 614 197 597 C204 584 216 579 218 563 C222 550 234 542 245 541 Z"/></clipPath>
+          <clipPath id="clip-transplant-left-fruit" clipPathUnits="userSpaceOnUse"><path d="M181 592 Q184 589 187 592 L184 604 L181 613 C191 600 201 599 210 606 C220 615 225 631 220 646 C218 655 208 661 197 663 L175 663 C159 662 139 658 134 650 C128 638 134 620 144 611 C156 602 170 598 181 603 L182 597 Z"/></clipPath>
+          <clipPath id="clip-transplant-right-pear" clipPathUnits="userSpaceOnUse"><path d="M324 586 Q329 584 328 589 C326 594 322 601 319 606 C330 606 337 615 339 630 L342 647 C326 651 286 659 254 661 C253 649 260 633 272 622 C284 614 287 602 301 599 Q310 599 317 603 Z"/></clipPath>
+          <clipPath id="clip-transplant-ground-pear" clipPathUnits="userSpaceOnUse"><path d="M428 720 Q432 720 430 724 Q420 737 419 750 C429 746 438 753 442 766 C445 775 458 780 468 794 C478 808 480 824 470 837 C457 853 433 857 416 854 C396 852 379 843 376 828 C372 811 380 795 389 782 C394 770 397 753 410 749 Q413 730 424 722 Z"/></clipPath>
+          <filter id="box-contact-shadow" filterUnits="userSpaceOnUse" x="500" y="760" width="390" height="124"><feGaussianBlur stdDeviation="3.2"/></filter>
+          <filter id="repair-edge-old-pigeon-and-envelope" filterUnits="userSpaceOnUse" x="612" y="127" width="398" height="271"><feGaussianBlur stdDeviation="6"/></filter>
+          <filter id="repair-edge-old-suspension-thread" filterUnits="userSpaceOnUse" x="820" y="80" width="24" height="170"><feGaussianBlur stdDeviation="0.7"/></filter>
+          <filter id="repair-edge-old-front-green-pear" filterUnits="userSpaceOnUse" x="145" y="551" width="115" height="121"><feGaussianBlur stdDeviation="1.0"/></filter>
+          <filter id="repair-edge-old-ground-pear" filterUnits="userSpaceOnUse" x="362" y="713" width="128" height="144"><feGaussianBlur stdDeviation="1.3"/></filter>
+          <filter id="repair-edge-old-ground-pear-bottom-twig" filterUnits="userSpaceOnUse" x="462" y="814" width="40" height="34"><feGaussianBlur stdDeviation="1.0"/></filter>
+          <filter id="repair-edge-old-flower-box-complete" filterUnits="userSpaceOnUse" x="493" y="625" width="336" height="228"><feGaussianBlur stdDeviation="2.8"/></filter>
+          <filter id="repair-edge-old-book" filterUnits="userSpaceOnUse" x="1159" y="471" width="249" height="199"><feGaussianBlur stdDeviation="1.7"/></filter>
+          <filter id="repair-edge-old-bookmark" filterUnits="userSpaceOnUse" x="1176" y="609" width="73" height="83"><feGaussianBlur stdDeviation="1.3"/></filter>
+          <filter id="repair-edge-old-ground-petal" filterUnits="userSpaceOnUse" x="990" y="768" width="143" height="70"><feGaussianBlur stdDeviation="1.8"/></filter>
+          <filter id="repair-box-shadow-edge" filterUnits="userSpaceOnUse" x="463" y="729" width="381" height="139"><feGaussianBlur stdDeviation="4.5"/></filter>
+          <filter id="repair-micro-edge" filterUnits="userSpaceOnUse" x="376" y="712" width="128" height="138"><feGaussianBlur stdDeviation="1.2"/></filter>
+          <mask id="mask-micro-stalk-cleanup" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="376" y="712" width="128" height="138">
+            <path d="M388 722 Q392 718 397 722 L409 749 L402 754 L387 733 Z" fill="white" stroke="white" stroke-width="4" stroke-linejoin="round" filter="url(#repair-micro-edge)"/>
           </mask>
-          <symbol id="paper-card-back" viewBox="0 0 3 4">
-            <image href="./assets/art/tarot-back.png" width="3" height="4"/>
+          <mask id="mask-floor-stalk-only" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="464" y="818" width="38" height="28">
+            <path d="M473 825 Q480 827 489 831 Q492 833 490 836 Q488 838 485 836 L473 832 Z" fill="white" stroke="white" stroke-width="5" stroke-linejoin="round" filter="url(#repair-micro-edge)"/>
+          </mask>
+          <filter id="fruit-stem-edge" filterUnits="userSpaceOnUse" x="236" y="510" width="105" height="108"><feGaussianBlur stdDeviation="1.1"/></filter>
+          <mask id="mask-fixed-fruit-stems" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="236" y="510" width="105" height="108">
+            <path d="M251 522 L252 542 M330 587 L328 606" fill="none" stroke="white" stroke-width="10" stroke-linecap="round" filter="url(#fruit-stem-edge)"/>
+          </mask>
+          <mask id="mask-original-object-cleanup" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="0" y="0" width="1672" height="941">
+            <path d="M503 745 Q489 754 481 773 Q482 797 504 810 L640 850 L823 807 L828 792 L642 826 L509 788 Z" fill="white" stroke="white" stroke-width="12" stroke-linejoin="round" filter="url(#repair-box-shadow-edge)"/>
+            <path d="M675 191 L777 193 Q807 218 832 239 L855 218 Q863 209 871 212 L879 214 L895 232 L920 243 L884 237 L854 274 L843 288 L817 301 L795 297 L769 296 L730 333 L727 319 L715 326 L722 310 L704 308 L794 266 Q782 267 776 259 Q762 261 757 251 Q743 254 737 242 Q721 243 713 231 Q699 233 689 218 Q680 210 675 194 Z M845 269 L922 245 L944 304 L860 334 Z" fill="white" stroke="white" stroke-width="60" stroke-linecap="round" stroke-linejoin="round" filter="url(#repair-edge-old-pigeon-and-envelope)"/>
+            <path d="M831.8 89.5 L832.2 240" fill="none" stroke="white" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round" filter="url(#repair-edge-old-suspension-thread)"/>
+            <path d="M198 563 Q205 560 207 565 L204 588 C222 589 232 600 238 617 C241 631 246 640 248 655 Q233 659 214 660 L188 659 L161 655 L157 650 C157 633 160 616 169 603 C177 591 185 588 197 588 L195 572 Q192 566 198 563 Z" fill="white" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" filter="url(#repair-edge-old-front-green-pear)"/>
+            <path d="M387 728 Q390 722 396 725 L407 746 C419 741 428 750 434 762 C441 768 455 773 462 786 C468 797 467 805 475 814 C482 823 475 834 465 839 C456 844 449 840 439 842 C421 849 401 842 390 835 C374 826 373 811 377 794 C382 782 380 770 385 758 Q391 749 399 747 Z" fill="white" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" filter="url(#repair-edge-old-ground-pear)"/>
+            <path d="M473 825 Q480 827 489 831 Q492 833 490 836 Q488 838 485 836 L473 832 Z" fill="white" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" filter="url(#repair-edge-old-ground-pear-bottom-twig)"/>
+            <path d="M510 679 L697 641 L812 679 L812 714 L810 796 L642 836 L512 798 L511 718 Z" fill="white" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" filter="url(#repair-edge-old-flower-box-complete)"/>
+            <path d="M1258 484 L1382 496 L1379 516 L1394 532 L1327 655 L1193 641 Q1174 639 1173 622 Q1173 611 1181 603 Z" fill="white" stroke="white" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" filter="url(#repair-edge-old-book)"/>
+            <path d="M1207 622 L1235 626 C1228 636 1228 653 1222 663 L1218 678 L1208 663 L1190 673 C1197 662 1201 650 1203 636 Z" fill="white" stroke="white" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" filter="url(#repair-edge-old-bookmark)"/>
+            <path d="M1005 796 Q1013 785 1022 791 C1034 799 1042 810 1054 804 C1066 798 1071 785 1087 782 Q1103 778 1112 786 L1119 785 Q1108 792 1105 801 C1099 815 1080 823 1063 823 C1043 822 1031 816 1023 807 Z" fill="white" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" filter="url(#repair-edge-old-ground-petal)"/>
+          </mask>
+          <filter id="small-object-contact-shadow" x="-25%" y="-100%" width="150%" height="300%"><feGaussianBlur stdDeviation="2.5"/></filter>
+          <symbol id="paper-card-back" viewBox="0 0 161 320">
+            <image href="./assets/art/tarot-back.png" width="161" height="320" preserveAspectRatio="xMidYMid slice"/>
           </symbol>
         </defs>
-        <use href="#scene-clean"/>
-        <!-- Painted light lives inside the windows, including warm sills and paper grain. -->
-        <image class="scene-city-light" href="./assets/art/city-lit.png" width="1672" height="941" mask="url(#mask-city-light)"/>
-        <g class="scene-string" style="--string-origin:832px 94px">
-          <path d="M832 94V231" fill="none" stroke="#b79d7d" stroke-width="1.3"/>
+        <!-- The genuine earliest matte background stays intact. Later brighter clean plates are never used as the scene base. -->
+        <use href="#scene-matte"/>
+        <use href="#scene-local-clean" mask="url(#mask-original-object-cleanup)"/>
+        <use href="#scene-micro-clean" mask="url(#mask-micro-stalk-cleanup)"/>
+        <!-- A tiny contour samples adjacent clean floor where the removed pear stalk overlapped a loose leaf. -->
+        <g mask="url(#mask-floor-stalk-only)"><use href="#scene-local-clean" transform="translate(0 34)"/></g>
+        <g class="scene-transplanted-props">
+          <use href="#scene-props" clip-path="url(#clip-transplant-theatre-wall)"/>
+          <use href="#scene-props" clip-path="url(#clip-transplant-canopy)"/>
+          <!-- Keep the original wicker, handle, cloth and every hole between them. -->
+          <use href="#scene-props" clip-path="url(#clip-transplant-yellow-pear)"/>
+          <use href="#scene-props" clip-path="url(#clip-transplant-left-fruit)"/>
+          <use href="#scene-props" clip-path="url(#clip-transplant-right-pear)"/>
+          <use href="#scene-props" mask="url(#mask-fixed-fruit-stems)"/>
+          <ellipse cx="429" cy="849" rx="45" ry="5" fill="#483c45" opacity=".22" filter="url(#small-object-contact-shadow)"/>
+          <use href="#scene-props" clip-path="url(#clip-transplant-ground-pear)"/>
+          <path d="M523 781 L637 854 L859 779 L869 786 L639 865 L516 789 Z" fill="#453b49" opacity=".26" filter="url(#box-contact-shadow)"/>
+          <use href="#scene-props" clip-path="url(#clip-transplant-box-body)"/>
+          <path d="M1178 639 L1330 654 L1341 649 L1334 664 L1187 650 Z" fill="#483c45" opacity=".20" filter="url(#small-object-contact-shadow)"/>
+          <use href="#scene-props" clip-path="url(#clip-transplant-book)"/>
         </g>
-        <g class="scene-bird" ><use href="#scene-original" clip-path="url(#clip-bird)"/></g>
+        <!-- Add warm emission only. The unlit city and sky are never replaced or dimmed. -->
+        <g class="scene-city-light" style="mix-blend-mode:screen">
+  <ellipse cx="1328" cy="203.4" rx="8.1" ry="13.65" fill="url(#warm-window-spill)"/>
+  <path d="M1325.12 209.9 L1330.88 209.9 L1335.2 220.04 L1320.8 220.04Z" fill="url(#warm-window-projection)"/>
+  <ellipse cx="1339.7" cy="203.6" rx="6.75" ry="13.65" fill="url(#warm-window-spill)"/>
+  <path d="M1337.3 210.1 L1342.1 210.1 L1345.7 220.24 L1333.7 220.24Z" fill="url(#warm-window-projection)"/>
+  <ellipse cx="1487.4" cy="227.4" rx="6.75" ry="7.35" fill="url(#warm-window-spill)"/>
+  <path d="M1485 230.9 L1489.8 230.9 L1493.4 236.36 L1481.4 236.36Z" fill="url(#warm-window-projection)"/>
+  <ellipse cx="1312.9" cy="232.1" rx="8.1" ry="11.55" fill="url(#warm-window-spill)"/>
+  <path d="M1310.02 237.6 L1315.78 237.6 L1320.1 246.18 L1305.7 246.18Z" fill="url(#warm-window-projection)"/>
+  <ellipse cx="1287.5" cy="248.9" rx="12.6" ry="13.65" fill="url(#warm-window-spill)"/>
+  <path d="M1284.14 255.4 L1290.86 255.4 L1295.9 265.54 L1279.1 265.54Z" fill="url(#warm-window-projection)"/>
+  <ellipse cx="1255.4" cy="250.1" rx="12.6" ry="13.65" fill="url(#warm-window-spill)"/>
+  <path d="M1252.04 256.6 L1258.76 256.6 L1263.8 266.74 L1247 266.74Z" fill="url(#warm-window-projection)"/>
+  <ellipse cx="1273.4" cy="249.4" rx="12.6" ry="12.6" fill="url(#warm-window-spill)"/>
+  <path d="M1270.04 255.4 L1276.76 255.4 L1281.8 264.76 L1265 264.76Z" fill="url(#warm-window-projection)"/>
+  <ellipse cx="1473.6" cy="250.5" rx="12.6" ry="12.6" fill="url(#warm-window-spill)"/>
+  <path d="M1470.24 256.5 L1476.96 256.5 L1482 265.86 L1465.2 265.86Z" fill="url(#warm-window-projection)"/>
+  <ellipse cx="1486.5" cy="250.3" rx="12.6" ry="12.6" fill="url(#warm-window-spill)"/>
+  <path d="M1483.14 256.3 L1489.86 256.3 L1494.9 265.66 L1478.1 265.66Z" fill="url(#warm-window-projection)"/>
+  <ellipse cx="1497.8" cy="250.3" rx="14.4" ry="12.6" fill="url(#warm-window-spill)"/>
+  <path d="M1493.96 256.3 L1501.64 256.3 L1507.4 265.66 L1488.2 265.66Z" fill="url(#warm-window-projection)"/>
+  <ellipse cx="1444.7" cy="250.7" rx="12.6" ry="11.55" fill="url(#warm-window-spill)"/>
+  <path d="M1441.34 256.2 L1448.06 256.2 L1453.1 264.78 L1436.3 264.78Z" fill="url(#warm-window-projection)"/>
+  <ellipse cx="1456" cy="250.1" rx="10.8" ry="10.5" fill="url(#warm-window-spill)"/>
+  <path d="M1453.12 255.1 L1458.88 255.1 L1463.2 262.9 L1448.8 262.9Z" fill="url(#warm-window-projection)"/>
+  <ellipse cx="1519.5" cy="251.7" rx="12.6" ry="12.6" fill="url(#warm-window-spill)"/>
+  <path d="M1516.14 257.7 L1522.86 257.7 L1527.9 267.06 L1511.1 267.06Z" fill="url(#warm-window-projection)"/>
+  <ellipse cx="1538.9" cy="252.2" rx="10.8" ry="8.4" fill="url(#warm-window-spill)"/>
+  <path d="M1536.02 256.2 L1541.78 256.2 L1546.1 262.44 L1531.7 262.44Z" fill="url(#warm-window-projection)"/>
+  <ellipse cx="1231.9" cy="267.6" rx="7.2" ry="7.35" fill="url(#warm-window-spill)"/>
+  <path d="M1229.98 271.1 L1233.82 271.1 L1236.7 276.56 L1227.1 276.56Z" fill="url(#warm-window-projection)"/>
+  <ellipse cx="1520.1" cy="277.7" rx="14.4" ry="15.75" fill="url(#warm-window-spill)"/>
+  <path d="M1516.26 285.2 L1523.94 285.2 L1529.7 296.9 L1510.5 296.9Z" fill="url(#warm-window-projection)"/>
+  <ellipse cx="1541.2" cy="276.3" rx="12.6" ry="13.65" fill="url(#warm-window-spill)"/>
+  <path d="M1537.84 282.8 L1544.56 282.8 L1549.6 292.94 L1532.8 292.94Z" fill="url(#warm-window-projection)"/>
+  <ellipse cx="1221.6" cy="277" rx="9" ry="8.4" fill="url(#warm-window-spill)"/>
+  <path d="M1219.2 281 L1224 281 L1227.6 287.24 L1215.6 287.24Z" fill="url(#warm-window-projection)"/>
+  <ellipse cx="1399.6" cy="282.9" rx="18" ry="13.65" fill="url(#warm-window-spill)"/>
+  <path d="M1394.8 289.4 L1404.4 289.4 L1411.6 299.54 L1387.6 299.54Z" fill="url(#warm-window-projection)"/>
+  <ellipse cx="1418.5" cy="282.3" rx="12.6" ry="12.6" fill="url(#warm-window-spill)"/>
+  <path d="M1415.14 288.3 L1421.86 288.3 L1426.9 297.66 L1410.1 297.66Z" fill="url(#warm-window-projection)"/>
+  <ellipse cx="1353.9" cy="284.6" rx="18" ry="14.7" fill="url(#warm-window-spill)"/>
+  <path d="M1349.1 291.6 L1358.7 291.6 L1365.9 302.52 L1341.9 302.52Z" fill="url(#warm-window-projection)"/>
+  <ellipse cx="1372.9" cy="284.2" rx="16.2" ry="14.7" fill="url(#warm-window-spill)"/>
+  <path d="M1368.58 291.2 L1377.22 291.2 L1383.7 302.12 L1362.1 302.12Z" fill="url(#warm-window-projection)"/>
+  <ellipse cx="1335.4" cy="284.5" rx="12.6" ry="13.65" fill="url(#warm-window-spill)"/>
+  <path d="M1332.04 291 L1338.76 291 L1343.8 301.14 L1327 301.14Z" fill="url(#warm-window-projection)"/>
+  <ellipse cx="1167" cy="294.8" rx="10.8" ry="11.55" fill="url(#warm-window-spill)"/>
+  <path d="M1164.12 300.3 L1169.88 300.3 L1174.2 308.88 L1159.8 308.88Z" fill="url(#warm-window-projection)"/>
+  <ellipse cx="1178" cy="294.2" rx="10.8" ry="10.5" fill="url(#warm-window-spill)"/>
+  <path d="M1175.12 299.2 L1180.88 299.2 L1185.2 307 L1170.8 307Z" fill="url(#warm-window-projection)"/>
+  <ellipse cx="1193.4" cy="294.6" rx="12.6" ry="11.55" fill="url(#warm-window-spill)"/>
+  <path d="M1190.04 300.1 L1196.76 300.1 L1201.8 308.68 L1185 308.68Z" fill="url(#warm-window-projection)"/>
+  <ellipse cx="1275.9" cy="309.2" rx="10.8" ry="10.5" fill="url(#warm-window-spill)"/>
+  <path d="M1273.02 314.2 L1278.78 314.2 L1283.1 322 L1268.7 322Z" fill="url(#warm-window-projection)"/>
+  <ellipse cx="1284.6" cy="309.1" rx="9" ry="10.5" fill="url(#warm-window-spill)"/>
+  <path d="M1282.2 314.1 L1287 314.1 L1290.6 321.9 L1278.6 321.9Z" fill="url(#warm-window-projection)"/>
+  <ellipse cx="1337" cy="315.5" rx="18" ry="23.1" fill="url(#warm-window-spill)"/>
+  <path d="M1332.2 326.5 L1341.8 326.5 L1349 343.66 L1325 343.66Z" fill="url(#warm-window-projection)"/>
+  <ellipse cx="1355.2" cy="312.9" rx="18" ry="21" fill="url(#warm-window-spill)"/>
+  <path d="M1350.4 322.9 L1360 322.9 L1367.2 338.5 L1343.2 338.5Z" fill="url(#warm-window-projection)"/>
+  <ellipse cx="1371.5" cy="308.7" rx="18" ry="10.5" fill="url(#warm-window-spill)"/>
+  <path d="M1366.7 313.7 L1376.3 313.7 L1383.5 321.5 L1359.5 321.5Z" fill="url(#warm-window-projection)"/>
+  <ellipse cx="1229" cy="310.7" rx="10.8" ry="11.55" fill="url(#warm-window-spill)"/>
+  <path d="M1226.12 316.2 L1231.88 316.2 L1236.2 324.78 L1221.8 324.78Z" fill="url(#warm-window-projection)"/>
+  <ellipse cx="1242" cy="310.9" rx="10.8" ry="12.6" fill="url(#warm-window-spill)"/>
+  <path d="M1239.12 316.9 L1244.88 316.9 L1249.2 326.26 L1234.8 326.26Z" fill="url(#warm-window-projection)"/>
+  <ellipse cx="1256.8" cy="311.1" rx="12.6" ry="12.6" fill="url(#warm-window-spill)"/>
+  <path d="M1253.44 317.1 L1260.16 317.1 L1265.2 326.46 L1248.4 326.46Z" fill="url(#warm-window-projection)"/>
+  <ellipse cx="1170" cy="321" rx="14.4" ry="15.75" fill="url(#warm-window-spill)"/>
+  <path d="M1166.16 328.5 L1173.84 328.5 L1179.6 340.2 L1160.4 340.2Z" fill="url(#warm-window-projection)"/>
+  <ellipse cx="1234.4" cy="335.9" rx="16.2" ry="13.65" fill="url(#warm-window-spill)"/>
+  <path d="M1230.08 342.4 L1238.72 342.4 L1245.2 352.54 L1223.6 352.54Z" fill="url(#warm-window-projection)"/>
+  <ellipse cx="1257" cy="338.1" rx="18" ry="18.9" fill="url(#warm-window-spill)"/>
+  <path d="M1252.2 347.1 L1261.8 347.1 L1269 361.14 L1245 361.14Z" fill="url(#warm-window-projection)"/>
+  <path d="M1325 209.9V199.9 Q1325 196.9 1328 196.9 Q1331 196.9 1331 199.9 V209.9Z" fill="url(#warm-window-core)" opacity=".88"/>
+  <ellipse cx="1328" cy="210.7" rx="5.1" ry="1.4" fill="url(#warm-window-spill)"/>
+  <path d="M1337.2 210.1V199.6 Q1337.2 197.1 1339.7 197.1 Q1342.2 197.1 1342.2 199.6 V210.1Z" fill="url(#warm-window-core)" opacity=".88"/>
+  <ellipse cx="1339.7" cy="210.9" rx="4.25" ry="1.4" fill="url(#warm-window-spill)"/>
+  <ellipse cx="1487.2" cy="226.9" rx="2.2" ry="3.4" transform="rotate(12 1487.2 226.9)" fill="url(#warm-window-core)" opacity=".88"/>
+  <ellipse cx="1487.4" cy="231.7" rx="4.25" ry="1.4" fill="url(#warm-window-spill)"/>
+  <ellipse cx="1313" cy="228.4" rx="2" ry="3.1" transform="rotate(12 1313 228.4)" fill="url(#warm-window-core)" opacity=".88"/>
+  <ellipse cx="1312.9" cy="238.4" rx="5.1" ry="1.4" fill="url(#warm-window-spill)"/>
+  <path d="M1284 255.4V245.9 Q1284 242.4 1287.5 242.4 Q1291 242.4 1291 245.9 V255.4Z" fill="url(#warm-window-core)" opacity=".88"/>
+  <ellipse cx="1287.5" cy="256.2" rx="5.95" ry="1.4" fill="url(#warm-window-spill)"/>
+  <path d="M1251.9 256.6V247.1 Q1251.9 243.6 1255.4 243.6 Q1258.9 243.6 1258.9 247.1 V256.6Z" fill="url(#warm-window-core)" opacity=".88"/>
+  <ellipse cx="1255.4" cy="257.4" rx="5.95" ry="1.4" fill="url(#warm-window-spill)"/>
+  <path d="M1269.9 255.4V246.9 Q1269.9 243.4 1273.4 243.4 Q1276.9 243.4 1276.9 246.9 V255.4Z" fill="url(#warm-window-core)" opacity=".88"/>
+  <ellipse cx="1273.4" cy="256.2" rx="5.95" ry="1.4" fill="url(#warm-window-spill)"/>
+  <path d="M1470.1 256.5V248 Q1470.1 244.5 1473.6 244.5 Q1477.1 244.5 1477.1 248 V256.5Z" fill="url(#warm-window-core)" opacity=".88"/>
+  <ellipse cx="1473.6" cy="257.3" rx="5.95" ry="1.4" fill="url(#warm-window-spill)"/>
+  <path d="M1483 256.3V247.8 Q1483 244.3 1486.5 244.3 Q1490 244.3 1490 247.8 V256.3Z" fill="url(#warm-window-core)" opacity=".88"/>
+  <ellipse cx="1486.5" cy="257.1" rx="5.95" ry="1.4" fill="url(#warm-window-spill)"/>
+  <path d="M1493.8 256.3V248.3 Q1493.8 244.3 1497.8 244.3 Q1501.8 244.3 1501.8 248.3 V256.3Z" fill="url(#warm-window-core)" opacity=".88"/>
+  <ellipse cx="1497.8" cy="257.1" rx="6.8" ry="1.4" fill="url(#warm-window-spill)"/>
+  <path d="M1441.2 256.2V248.7 Q1441.2 245.2 1444.7 245.2 Q1448.2 245.2 1448.2 248.7 V256.2Z" fill="url(#warm-window-core)" opacity=".88"/>
+  <ellipse cx="1444.7" cy="257" rx="5.95" ry="1.4" fill="url(#warm-window-spill)"/>
+  <path d="M1453 255.1V248.1 Q1453 245.1 1456 245.1 Q1459 245.1 1459 248.1 V255.1Z" fill="url(#warm-window-core)" opacity=".88"/>
+  <ellipse cx="1456" cy="255.9" rx="5.1" ry="1.4" fill="url(#warm-window-spill)"/>
+  <path d="M1516 257.7V249.2 Q1516 245.7 1519.5 245.7 Q1523 245.7 1523 249.2 V257.7Z" fill="url(#warm-window-core)" opacity=".88"/>
+  <ellipse cx="1519.5" cy="258.5" rx="5.95" ry="1.4" fill="url(#warm-window-spill)"/>
+  <path d="M1535.9 256.2V251.2 Q1535.9 248.2 1538.9 248.2 Q1541.9 248.2 1541.9 251.2 V256.2Z" fill="url(#warm-window-core)" opacity=".88"/>
+  <ellipse cx="1538.9" cy="257" rx="5.1" ry="1.4" fill="url(#warm-window-spill)"/>
+  <path d="M1229.9 271.1V266.1 Q1229.9 264.1 1231.9 264.1 Q1233.9 264.1 1233.9 266.1 V271.1Z" fill="url(#warm-window-core)" opacity=".88"/>
+  <ellipse cx="1231.9" cy="271.9" rx="3.4" ry="1.4" fill="url(#warm-window-spill)"/>
+  <path d="M1516.1 285.2V274.2 Q1516.1 270.2 1520.1 270.2 Q1524.1 270.2 1524.1 274.2 V285.2Z" fill="url(#warm-window-core)" opacity=".88"/>
+  <ellipse cx="1520.1" cy="286" rx="6.8" ry="1.4" fill="url(#warm-window-spill)"/>
+  <path d="M1537.7 282.8V273.3 Q1537.7 269.8 1541.2 269.8 Q1544.7 269.8 1544.7 273.3 V282.8Z" fill="url(#warm-window-core)" opacity=".88"/>
+  <ellipse cx="1541.2" cy="283.6" rx="5.95" ry="1.4" fill="url(#warm-window-spill)"/>
+  <path d="M1219.1 281V275.5 Q1219.1 273 1221.6 273 Q1224.1 273 1224.1 275.5 V281Z" fill="url(#warm-window-core)" opacity=".88"/>
+  <ellipse cx="1221.6" cy="281.8" rx="4.25" ry="1.4" fill="url(#warm-window-spill)"/>
+  <path d="M1394.6 289.4V281.4 Q1394.6 276.4 1399.6 276.4 Q1404.6 276.4 1404.6 281.4 V289.4Z" fill="url(#warm-window-core)" opacity=".88"/>
+  <ellipse cx="1399.6" cy="290.2" rx="8.5" ry="1.4" fill="url(#warm-window-spill)"/>
+  <path d="M1415 288.3V279.8 Q1415 276.3 1418.5 276.3 Q1422 276.3 1422 279.8 V288.3Z" fill="url(#warm-window-core)" opacity=".88"/>
+  <ellipse cx="1418.5" cy="289.1" rx="5.95" ry="1.4" fill="url(#warm-window-spill)"/>
+  <path d="M1348.9 291.6V282.6 Q1348.9 277.6 1353.9 277.6 Q1358.9 277.6 1358.9 282.6 V291.6Z" fill="url(#warm-window-core)" opacity=".88"/>
+  <ellipse cx="1353.9" cy="292.4" rx="8.5" ry="1.4" fill="url(#warm-window-spill)"/>
+  <path d="M1368.4 291.2V281.7 Q1368.4 277.2 1372.9 277.2 Q1377.4 277.2 1377.4 281.7 V291.2Z" fill="url(#warm-window-core)" opacity=".88"/>
+  <ellipse cx="1372.9" cy="292" rx="7.65" ry="1.4" fill="url(#warm-window-spill)"/>
+  <path d="M1331.9 291V281.5 Q1331.9 278 1335.4 278 Q1338.9 278 1338.9 281.5 V291Z" fill="url(#warm-window-core)" opacity=".88"/>
+  <ellipse cx="1335.4" cy="291.8" rx="5.95" ry="1.4" fill="url(#warm-window-spill)"/>
+  <path d="M1164 300.3V292.3 Q1164 289.3 1167 289.3 Q1170 289.3 1170 292.3 V300.3Z" fill="url(#warm-window-core)" opacity=".88"/>
+  <ellipse cx="1167" cy="301.1" rx="5.1" ry="1.4" fill="url(#warm-window-spill)"/>
+  <path d="M1175 299.2V292.2 Q1175 289.2 1178 289.2 Q1181 289.2 1181 292.2 V299.2Z" fill="url(#warm-window-core)" opacity=".88"/>
+  <ellipse cx="1178" cy="300" rx="5.1" ry="1.4" fill="url(#warm-window-spill)"/>
+  <path d="M1189.9 300.1V292.6 Q1189.9 289.1 1193.4 289.1 Q1196.9 289.1 1196.9 292.6 V300.1Z" fill="url(#warm-window-core)" opacity=".88"/>
+  <ellipse cx="1193.4" cy="300.9" rx="5.95" ry="1.4" fill="url(#warm-window-spill)"/>
+  <path d="M1272.9 314.2V307.2 Q1272.9 304.2 1275.9 304.2 Q1278.9 304.2 1278.9 307.2 V314.2Z" fill="url(#warm-window-core)" opacity=".88"/>
+  <ellipse cx="1275.9" cy="315" rx="5.1" ry="1.4" fill="url(#warm-window-spill)"/>
+  <path d="M1282.1 314.1V306.6 Q1282.1 304.1 1284.6 304.1 Q1287.1 304.1 1287.1 306.6 V314.1Z" fill="url(#warm-window-core)" opacity=".88"/>
+  <ellipse cx="1284.6" cy="314.9" rx="4.25" ry="1.4" fill="url(#warm-window-spill)"/>
+  <path d="M1332 326.5V309.5 Q1332 304.5 1337 304.5 Q1342 304.5 1342 309.5 V326.5Z" fill="url(#warm-window-core)" opacity=".88"/>
+  <ellipse cx="1337" cy="327.3" rx="8.5" ry="1.4" fill="url(#warm-window-spill)"/>
+  <path d="M1350.2 322.9V307.9 Q1350.2 302.9 1355.2 302.9 Q1360.2 302.9 1360.2 307.9 V322.9Z" fill="url(#warm-window-core)" opacity=".88"/>
+  <ellipse cx="1355.2" cy="323.7" rx="8.5" ry="1.4" fill="url(#warm-window-spill)"/>
+  <path d="M1366.5 313.7V308.7 Q1366.5 303.7 1371.5 303.7 Q1376.5 303.7 1376.5 308.7 V313.7Z" fill="url(#warm-window-core)" opacity=".88"/>
+  <ellipse cx="1371.5" cy="314.5" rx="8.5" ry="1.4" fill="url(#warm-window-spill)"/>
+  <path d="M1226 316.2V308.2 Q1226 305.2 1229 305.2 Q1232 305.2 1232 308.2 V316.2Z" fill="url(#warm-window-core)" opacity=".88"/>
+  <ellipse cx="1229" cy="317" rx="5.1" ry="1.4" fill="url(#warm-window-spill)"/>
+  <path d="M1239 316.9V307.9 Q1239 304.9 1242 304.9 Q1245 304.9 1245 307.9 V316.9Z" fill="url(#warm-window-core)" opacity=".88"/>
+  <ellipse cx="1242" cy="317.7" rx="5.1" ry="1.4" fill="url(#warm-window-spill)"/>
+  <path d="M1253.3 317.1V308.6 Q1253.3 305.1 1256.8 305.1 Q1260.3 305.1 1260.3 308.6 V317.1Z" fill="url(#warm-window-core)" opacity=".88"/>
+  <ellipse cx="1256.8" cy="317.9" rx="5.95" ry="1.4" fill="url(#warm-window-spill)"/>
+  <path d="M1166 328.5V317.5 Q1166 313.5 1170 313.5 Q1174 313.5 1174 317.5 V328.5Z" fill="url(#warm-window-core)" opacity=".88"/>
+  <ellipse cx="1170" cy="329.3" rx="6.8" ry="1.4" fill="url(#warm-window-spill)"/>
+  <path d="M1229.9 342.4V333.9 Q1229.9 329.4 1234.4 329.4 Q1238.9 329.4 1238.9 333.9 V342.4Z" fill="url(#warm-window-core)" opacity=".88"/>
+  <ellipse cx="1234.4" cy="343.2" rx="7.65" ry="1.4" fill="url(#warm-window-spill)"/>
+  <path d="M1252 347.1V334.1 Q1252 329.1 1257 329.1 Q1262 329.1 1262 334.1 V347.1Z" fill="url(#warm-window-core)" opacity=".88"/>
+  <ellipse cx="1257" cy="347.9" rx="8.5" ry="1.4" fill="url(#warm-window-spill)"/>
+</g>
+        <g class="scene-string" style="--string-origin:832px 90px">
+          <path d="M832 90V256" fill="none" stroke="#b79d7d" stroke-width="1.3"/>
+        </g>
+        <g class="scene-bird">
+          <!-- Bird and envelope were painted together and move as one complete paper actor. -->
+          <g transform="matrix(0.21013114 -0.01127347 0.01127347 0.21013114 641.035828 171.194892)">
+            <image href="./assets/art/pigeon-envelope.png" width="1774" height="887" clip-path="url(#clip-pigeon-envelope)"/>
+          </g>
+        </g>
         <!-- Both paper panels are closed at rest and slide laterally behind the wooden frame. -->
         <g clip-path="url(#clip-curtain-aperture)">
-          <g class="scene-curtain-left"><svg x="404" y="408" width="111" height="249" viewBox="506 103 391 738" preserveAspectRatio="none" overflow="hidden"><use href="#paper-props"/></svg></g>
-          <g class="scene-curtain-right"><svg x="514" y="408" width="109" height="249" viewBox="897 103 384 738" preserveAspectRatio="none" overflow="hidden"><use href="#paper-props"/></svg></g>
+          <g class="scene-curtain-left"><svg x="405" y="399" width="109" height="255" viewBox="99 79 496 1165" preserveAspectRatio="xMidYMid meet" overflow="visible"><use href="#curtain-pair" clip-path="url(#clip-curtain-left-edge)"/></svg></g>
+          <g class="scene-curtain-right"><svg x="514" y="399" width="109" height="255" viewBox="595 79 496 1165" preserveAspectRatio="xMidYMid meet" overflow="visible"><use href="#curtain-pair" clip-path="url(#clip-curtain-right-edge)"/></svg></g>
         </g>
-        <g class="" ><use href="#scene-clean" clip-path="url(#clip-stage-frame)"/></g>
-        <!-- The entire pear slides. Its complete base remains behind the fixed basket front. -->
-        <g class="scene-pear"><svg x="155" y="562" width="96" height="140" viewBox="92 310 324 472" preserveAspectRatio="none" overflow="hidden"><use href="#paper-props"/></svg></g>
-        <g class="" ><use href="#scene-clean" clip-path="url(#clip-basket-front)"/></g>
-        <g class="scene-cards">
-          <use href="#paper-card-back" x="564" y="715" width="75" height="100" transform="rotate(-12 602 765)"/>
-          <use href="#paper-card-back" x="624" y="704" width="75" height="100" transform="rotate(-3 662 754)"/>
-          <use href="#paper-card-back" x="683" y="698" width="75" height="100" transform="rotate(9 721 748)"/>
+        <!-- A fixed scalloped canopy casts onto both the moving curtains and the painted interior. -->
+        <g clip-path="url(#clip-curtain-aperture)">
+          <path d="M408 414 Q419 423 431 417 Q444 423 456 415 Q467 422 479 417 Q491 423 503 416 Q515 422 528 417 Q540 423 552 416 Q564 423 577 416 Q589 422 600 416 Q610 423 618 414 L618 350 H408 Z" fill="#000" filter="url(#canopy-shadow)"/>
         </g>
-        <g class="" ><use href="#scene-clean" clip-path="url(#clip-box-front)"/></g>
-        <g class="scene-lid" style="--lid-origin:675px 665px"><use href="#scene-original" clip-path="url(#clip-lid)"/></g>
+        <!-- Complete pear first, then the same painted wicker rim. No gap and no rectangular shadow. -->
+        <g class="scene-pear"><svg x="155" y="562" width="96" height="140" viewBox="92 310 324 472" preserveAspectRatio="xMidYMid meet" overflow="visible"><use href="#paper-props" clip-path="url(#clip-pear-edge)"/></svg></g>
+        <use href="#scene-matte" clip-path="url(#clip-basket-front)"/>
+        <!-- The rear hinge stays attached throughout the turn; the inner face was painted with the whole open box. -->
+        <g class="scene-hinged-lid" data-box-outer data-box-source-origin="531 697" data-box-source-hinge="205 -55" data-box-source-depth="106 69">
+          <g clip-path="url(#clip-box-outer-fit)">
+            <g transform="matrix(0.9715754675 -0.0080492598 0.0126604318 0.9188886678 13.4838075813 64.4249577157)"><use href="#scene-box-closed" clip-path="url(#clip-box-outer-a)"/></g>
+            <g transform="matrix(0.9721497568 -0.0086859912 -0.0350626652 0.9718006650 46.2552007844 28.0903529713)"><use href="#scene-box-closed" clip-path="url(#clip-box-outer-b)"/></g>
+          </g>
+        </g>
+        <g class="scene-hinged-lid" data-box-inner data-box-source-origin="531 697" data-box-source-hinge="205 -55" data-box-source-depth="48.057485 -186" opacity="0">
+          <g clip-path="url(#clip-box-inner-fit)">
+            <g transform="matrix(0.9133344346 0.0332105310 -0.0174596876 1.0066906100 56.6935741562 -22.3525169438)"><use href="#scene-box-open" clip-path="url(#clip-box-inner-a)"/></g>
+            <g transform="matrix(0.9077020766 0.0353688692 -0.0238473445 1.0091383812 64.1457739873 -25.2082245431)"><use href="#scene-box-open" clip-path="url(#clip-box-inner-b)"/></g>
+          </g>
+        </g>
+        <g clip-path="url(#clip-card-reveal)">
+          <g class="scene-cards">
+            <use href="#paper-card-back" x="594" y="728" width="64.4" height="128" transform="rotate(-8 626.2 792)"/>
+            <use href="#paper-card-back" x="655" y="717" width="64.4" height="128" transform="rotate(-1 687.2 781)"/>
+            <use href="#paper-card-back" x="714" y="710" width="64.4" height="128" transform="rotate(7 746.2 774)"/>
+          </g>
+        </g>
+        <use href="#scene-props" clip-path="url(#clip-box-front)"/>
         <!-- A single long ribbon passes through a fixed page slit; the concealed tail moves with it. -->
         <g clip-path="url(#clip-bookmark-exit)">
-          <g class="scene-bookmark"><g transform="rotate(16 1223 624)"><svg x="1209" y="536" width="28" height="145" viewBox="1396 101 143 739" preserveAspectRatio="none" overflow="hidden"><use href="#paper-props"/></svg></g></g>
+          <g class="scene-bookmark"><g transform="rotate(16 1223 624)"><g transform="matrix(0.195804195804 0 0 0.196211096076 935.657342657343 516.182679296346)"><use href="#paper-props" clip-path="url(#clip-bookmark-source)"/></g></g></g>
         </g>
         <g class="scene-petal" style="--petal-origin:1026px 805px"><use href="#scene-original" clip-path="url(#clip-petal)"/></g>
       </svg>
@@ -81,6 +341,6 @@
     </button>
     <div id="tool-content" class="tool-content"></div>
   </dialog>
-  <script type="module" src="./js/app.js?v=4"></script>
+  <script type="module" src="./js/app.js?v=10"></script>
 </body>
 </html>
