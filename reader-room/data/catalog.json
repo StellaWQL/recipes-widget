@@ -1,0 +1,150 @@
+{
+  "version": 1,
+  "source": "https://api.github.com/repos/StellaWQL/recipes-widget/contents/data/books?ref=practice",
+  "books": [
+    {
+      "key": "epub:半生缘.epub",
+      "filename": "半生缘.epub",
+      "title": "张爱玲：半生缘(电视剧《半生缘》原著小说，也许爱不是热情，也不是怀念，不过是岁月，年深月久成了生活的一部份)",
+      "author": "张爱玲",
+      "url": "https://raw.githubusercontent.com/StellaWQL/recipes-widget/practice/data/books/半生缘.epub",
+      "coverUrl": "../assets/covers/01.jpeg",
+      "coverWidth": 469,
+      "coverHeight": 751,
+      "language": "zh",
+      "shortTitle": "半生缘"
+    },
+    {
+      "key": "epub:倾城之恋.epub",
+      "filename": "倾城之恋.epub",
+      "title": "倾城之恋:张爱玲全集01",
+      "author": "张爱玲",
+      "url": "https://raw.githubusercontent.com/StellaWQL/recipes-widget/practice/data/books/倾城之恋.epub",
+      "coverUrl": "../assets/covers/02.jpeg",
+      "coverWidth": 1080,
+      "coverHeight": 1555,
+      "language": "zh",
+      "shortTitle": "倾城之恋"
+    },
+    {
+      "key": "epub:红玫瑰与白玫瑰.epub",
+      "filename": "红玫瑰与白玫瑰.epub",
+      "title": "红玫瑰与白玫瑰",
+      "author": "张爱玲",
+      "url": "https://raw.githubusercontent.com/StellaWQL/recipes-widget/practice/data/books/红玫瑰与白玫瑰.epub",
+      "coverUrl": "../assets/covers/03.jpeg",
+      "coverWidth": 705,
+      "coverHeight": 1128,
+      "language": "zh",
+      "shortTitle": "红玫瑰与白玫瑰"
+    },
+    {
+      "key": "epub:小团圆.epub",
+      "filename": "小团圆.epub",
+      "title": "小团圆",
+      "author": "张爱玲",
+      "url": "https://raw.githubusercontent.com/StellaWQL/recipes-widget/practice/data/books/小团圆.epub",
+      "coverUrl": "../assets/covers/04.jpg",
+      "coverWidth": 1184,
+      "coverHeight": 1600,
+      "language": "zh-CN",
+      "shortTitle": "小团圆"
+    },
+    {
+      "key": "epub:流言.epub",
+      "filename": "流言.epub",
+      "title": "张爱玲：流言（张爱玲自传性的散文，了解张爱玲创作的必读之作）",
+      "author": "张爱玲",
+      "url": "https://raw.githubusercontent.com/StellaWQL/recipes-widget/practice/data/books/流言.epub",
+      "coverUrl": "../assets/covers/05.jpg",
+      "coverWidth": 763,
+      "coverHeight": 1222,
+      "language": "zh",
+      "shortTitle": "流言"
+    },
+    {
+      "key": "epub:怨女.epub",
+      "filename": "怨女.epub",
+      "title": "怨女",
+      "author": "張愛玲",
+      "url": "https://raw.githubusercontent.com/StellaWQL/recipes-widget/practice/data/books/怨女.epub",
+      "coverUrl": "../assets/covers/06.jpg",
+      "coverWidth": 600,
+      "coverHeight": 838,
+      "language": "zh-TW",
+      "shortTitle": "怨女"
+    },
+    {
+      "key": "epub:流俗地 .epub",
+      "filename": "流俗地 .epub",
+      "title": "流俗地",
+      "author": "[马来西亚] 黎紫书",
+      "url": "https://raw.githubusercontent.com/StellaWQL/recipes-widget/practice/data/books/流俗地 .epub",
+      "coverUrl": "../assets/covers/07.jpg",
+      "coverWidth": 568,
+      "coverHeight": 800,
+      "language": "zh-CN",
+      "shortTitle": "流俗地"
+    },
+    {
+      "key": "epub:蛇结.epub",
+      "filename": "蛇结.epub",
+      "title": "蛇结",
+      "author": "弗朗索瓦·莫里亚克",
+      "url": "https://raw.githubusercontent.com/StellaWQL/recipes-widget/practice/data/books/蛇结.epub",
+      "coverUrl": "../assets/covers/08.jpg",
+      "coverWidth": 428,
+      "coverHeight": 591,
+      "language": "zh",
+      "shortTitle": "蛇结"
+    },
+    {
+      "key": "epub:忏悔录.epub",
+      "filename": "忏悔录.epub",
+      "title": "忏悔录",
+      "author": "奥古斯丁",
+      "url": "https://raw.githubusercontent.com/StellaWQL/recipes-widget/practice/data/books/忏悔录.epub",
+      "coverUrl": "../assets/covers/09.jpg",
+      "coverWidth": 1279,
+      "coverHeight": 1863,
+      "language": "zh-CN",
+      "shortTitle": "忏悔录"
+    },
+    {
+      "key": "epub:论三位一体.epub",
+      "filename": "论三位一体.epub",
+      "title": "论三位一体",
+      "author": "奥古斯丁",
+      "url": "https://raw.githubusercontent.com/StellaWQL/recipes-widget/practice/data/books/论三位一体.epub",
+      "coverUrl": "../assets/covers/10.jpeg",
+      "coverWidth": 435,
+      "coverHeight": 500,
+      "language": "zh",
+      "shortTitle": "论三位一体"
+    },
+    {
+      "key": "epub:The Yellow Wallpaper.epub",
+      "filename": "The Yellow Wallpaper.epub",
+      "title": "The Yellow Wallpaper and Other Writings",
+      "author": "Charlotte Perkins Gilman",
+      "url": "https://raw.githubusercontent.com/StellaWQL/recipes-widget/practice/data/books/The%20Yellow%20Wallpaper.epub",
+      "coverUrl": "../assets/covers/11.jpeg",
+      "coverWidth": 418,
+      "coverHeight": 686,
+      "language": "en",
+      "shortTitle": "The Yellow Wallpaper"
+    },
+    {
+      "key": "epub:The Collected Works of W.B. Yeats Volume I.epub",
+      "filename": "The Collected Works of W.B. Yeats Volume I.epub",
+      "title": "The Collected Works of W.B. Yeats Volume I: The Poems: Revised Second Edition",
+      "author": "William Butler Yeats",
+      "url": "https://raw.githubusercontent.com/StellaWQL/recipes-widget/practice/data/books/The%20Collected%20Works%20of%20W.B.%20Yeats%20Volume%20I.epub",
+      "coverUrl": "../assets/covers/12.jpeg",
+      "coverWidth": 825,
+      "coverHeight": 1173,
+      "language": "en",
+      "shortTitle": "The Collected Works of W.B. Yeats Volume I"
+    }
+  ]
+}

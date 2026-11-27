@@ -1,29 +1,18 @@
 <!doctype html>
 <html lang="zh-CN">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#aaa0b1">
-  <title>THE RAVEN · 阅读室</title>
-  <link rel="stylesheet" href="./styles/reader.css?v=16">
-  <style>
-    html, body { margin: 0; min-height: 100%; background: #aaa0b1; }
-    body { padding: clamp(0px, 2vw, 24px); box-sizing: border-box; }
-    #reader { height: calc(100svh - clamp(0px, 4vw, 48px)); max-width: 1320px; margin: 0 auto; }
-  </style>
-</head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>阅读室</title></head>
 <body>
-  <main id="reader"></main>
-  <script type="module">
-    import { mountReader } from './js/reader.js';
-    const query = new URLSearchParams(location.search);
-    const options = {
-      bookUrl: query.get('book') || undefined,
-      showClose: true,
-      onClose: () => location.assign(new URL('./', location.href).href),
-    };
-    if (query.has('catalog')) options.catalogUrl = query.get('catalog') || null;
-    mountReader(document.querySelector('#reader'), options);
-  </script>
+<script type="module">
+  // Optional compatibility replacement for the old repository-root reader.html.
+  const next = new URL('./reader-room/index.html', location.href);
+  const query = new URLSearchParams(location.search);
+  for (const name of ['book', 'catalog']) {
+    if (!query.has(name)) continue;
+    const raw = query.get(name) || '';
+    try { next.searchParams.set(name, raw ? new URL(raw, location.href).href : ''); }
+    catch { next.searchParams.set(name, raw); }
+  }
+  location.replace(next.href);
+</script>
 </body>
 </html>

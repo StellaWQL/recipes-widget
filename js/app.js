@@ -37,8 +37,22 @@ dialog.addEventListener('cancel',e=>{e.preventDefault();closeTool();});
 dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)closeTool();}});
 document.querySelector('#close-tool').addEventListener('click',closeTool);
 
+function openReaderPage({replace=false}={}){
+  const next=new URL('../reader-room/index.html',import.meta.url);
+  const query=new URLSearchParams(location.search);
+  for(const name of ['book','catalog']){
+    if(!query.has(name))continue;
+    const raw=query.get(name)||'';
+    try{next.searchParams.set(name,raw?new URL(raw,location.href).href:'');}
+    catch{next.searchParams.set(name,raw);}
+  }
+  if(replace)location.replace(next.href);
+  else location.assign(next.href);
+}
+
 async function openTool(type,trigger=null){
   if(!labels[type])return;
+  if(type==='reader'){openReaderPage();return;}
   theatreMotion?.reset();
   const run=++generation;mounted?.destroy?.();mounted=null;
   if(trigger)lastTrigger=trigger;
@@ -114,6 +128,7 @@ Promise.all(['paper-theatre-original-muted.png','paper-theatre-local-clean-v10.p
   return image.decode();
 })).then(()=>stage.classList.add('is-art-ready')).catch(()=>{});
 const initial=location.hash.slice(1);
-if(new URLSearchParams(location.search).has('book'))openTool('reader');else if(labels[initial])openTool(initial);
+if(new URLSearchParams(location.search).has('book')||initial==='reader')openReaderPage({replace:true});
+else if(labels[initial])openTool(initial);
 
 export {openTool,closeTool,SOURCE_ROOT};
