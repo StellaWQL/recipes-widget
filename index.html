@@ -7,8 +7,8 @@
   <meta name="description" content="THE RAVEN，藏在纸剧场里的日常。">
   <title>THE RAVEN.</title>
   <link rel="icon" type="image/svg+xml" href="./favicon.svg">
-  <link rel="stylesheet" href="./styles/theatre.css?v=10">
-  <link rel="stylesheet" href="./styles/motion.css?v=10">
+  <link rel="stylesheet" href="./styles/theatre.css?v=15">
+  <link rel="stylesheet" href="./styles/motion.css?v=15">
   <link rel="stylesheet" href="./styles/tarot.css">
   <link rel="stylesheet" href="./styles/reader.css">
 </head>
@@ -18,6 +18,67 @@
       <img class="stage-art" src="./assets/art/paper-theatre-original-muted.png" alt="" fetchpriority="high" draggable="false">
       <svg class="scene-overlay" viewBox="0 0 1672 941" aria-hidden="true" focusable="false">
         <defs>
+          <!-- V14 BOX EXTERIOR: generated floral paper, existing hinge and lining. -->
+          <image id="scene-box-exterior-v14" href="./assets/art/paper-theatre-local-repairs-v14.png" width="1672" height="941" preserveAspectRatio="none"/>
+          <clipPath id="clip-box-v14-lid-silhouette" clipPathUnits="userSpaceOnUse"><path d="M531 697 L736 642 L854 698 L637 766 Z"/></clipPath>
+          <clipPath id="clip-box-v14-wall-silhouette" clipPathUnits="userSpaceOnUse"><path d="M530.5 697 L637 763.8 L854.5 696.3 L854.4 775.2 L863.2 781.4 L637 858 L521.8 782.1 L529.9 779 Z"/></clipPath>
+          <clipPath id="clip-box-v14-lid-a" clipPathUnits="userSpaceOnUse"><path d="M526.875091214279 697.53723202045 L736.052960807993 641.416340178234 L856.457783305838 698.557611872127 Z"/></clipPath>
+          <clipPath id="clip-box-v14-lid-b" clipPathUnits="userSpaceOnUse"><path d="M529.138044789144 696.444232796898 L857.559294879023 697.461016852904 L636.91715472576 766.602332661299 Z"/></clipPath>
+          <clipPath id="clip-box-v14-wall-left-a" clipPathUnits="userSpaceOnUse"><path d="M528.638916635846 695.183435500788 L637.55 763.495739432482 L637.55 859.828359647536 Z"/></clipPath>
+          <clipPath id="clip-box-v14-wall-left-b" clipPathUnits="userSpaceOnUse"><path d="M530.109414109484 695.412632574313 L638.94112012872 859.937559044708 L521.218936716363 782.375807994379 Z"/></clipPath>
+          <clipPath id="clip-box-v14-wall-right-a" clipPathUnits="userSpaceOnUse"><path d="M634.095107952219 764.125640666699 L854.978802063299 695.575528701191 L863.814149827742 781.999447638446 Z"/></clipPath>
+          <clipPath id="clip-box-v14-wall-right-b" clipPathUnits="userSpaceOnUse"><path d="M636.45 763.205543683252 L865.919064502121 781.059900602958 L636.45 858.766931287584 Z"/></clipPath>
+          <!-- V14: local material and silhouette repairs; original muted matte stays untouched. -->
+          <image id="scene-v14-repairs" href="./assets/art/paper-theatre-local-repairs-v14.png" width="1672" height="941" preserveAspectRatio="none"/>
+          <image id="scene-v14-pear" href="./assets/art/paper-pear-v14.png" x="300" y="705" width="245" height="180" preserveAspectRatio="none"/>
+          <!-- V15: original stair geometry, with only the marked surplus left stone edge removed. -->
+          <image id="scene-v15-stair-trim" href="./assets/art/paper-theatre-stair-trim-v15.png" width="1672" height="941" preserveAspectRatio="none"/>
+          <filter id="repair-stair-trim-edge-v15" filterUnits="userSpaceOnUse" x="965" y="531" width="215" height="274"><feGaussianBlur stdDeviation="2.5"/></filter>
+          <mask id="mask-stair-trim-v15" maskUnits="userSpaceOnUse" x="965" y="531" width="215" height="274">
+            <path d="M1002 550 L1115 545 L1121 581 L1128 620 L1136 657 L1145 701 L1166 746 L1170 791 L978 791 L976 718 L976 615 Z" fill="white" stroke="white" stroke-width="5" stroke-linejoin="round" filter="url(#repair-stair-trim-edge-v15)"/>
+          </mask>
+          <filter id="repair-pear-edge-v14" filterUnits="userSpaceOnUse" x="300" y="705" width="245" height="180"><feGaussianBlur stdDeviation="3"/></filter>
+          <mask id="mask-pear-v14" maskUnits="userSpaceOnUse" x="300" y="705" width="245" height="180">
+            <path d="M389 717 Q414 711 451 716 L470 762 Q486 796 493 816 L536 830 L537 868 L311 871 L306 847 L336 820 L368 810 Q363 781 385 756 Z" fill="white" stroke="white" stroke-width="6" stroke-linejoin="round" filter="url(#repair-pear-edge-v14)"/>
+          </mask>
+
+          <!-- V13 bridge retained; its lower-right sampling boundary excludes the former stair rail. -->
+          <image id="scene-architecture-v13" href="./assets/art/paper-theatre-architecture-v13.png" width="1672" height="941" preserveAspectRatio="none"/>
+          <filter id="repair-bridge-edge-v13" filterUnits="userSpaceOnUse" x="778" y="343" width="371" height="207"><feGaussianBlur stdDeviation="5"/></filter>
+          <mask id="mask-bridge-v13" maskUnits="userSpaceOnUse" x="778" y="343" width="371" height="207"><path d="M798 410 Q815 387 861 369 Q931 346 1000 359 L1069 376 Q1107 388 1125 421 L1120 477 L1083 497 L1030 520 L971 535 L869 526 L810 494 L793 450 Z" fill="white" stroke="white" stroke-width="12" stroke-linejoin="round" filter="url(#repair-bridge-edge-v13)"/></mask>
+          <!-- V12 repairs are local; the original matte remains the base outside these silhouettes. -->
+          <image id="scene-local-repairs-v12" href="./assets/art/paper-theatre-local-repairs-v12.png" width="1672" height="941" preserveAspectRatio="none"/>
+          <filter id="repair-leaf-edge-v12" filterUnits="userSpaceOnUse" x="47" y="224" width="155" height="213"><feGaussianBlur stdDeviation="3"/></filter>
+          <mask id="mask-left-leaf-v12" maskUnits="userSpaceOnUse" x="47" y="224" width="155" height="213"><path d="M68 246 Q93 249 121 266 Q142 281 149 307 L158 294 Q173 312 179 342 L187 394 L178 422 Q160 410 146 400 L120 389 L92 377 L70 365 L59 342 L64 315 L67 284 Z" fill="white" stroke="white" stroke-width="8" stroke-linejoin="round" filter="url(#repair-leaf-edge-v12)"/></mask>
+          <filter id="repair-pear-edge-v12" filterUnits="userSpaceOnUse" x="291" y="702" width="268" height="180"><feGaussianBlur stdDeviation="3"/></filter>
+          <mask id="mask-floor-pear-v12" maskUnits="userSpaceOnUse" x="291" y="702" width="268" height="180"><path d="M376 718 Q416 709 450 719 L494 800 L547 826 L547 866 L309 872 L302 846 L322 820 L371 806 Q367 790 377 764 Z" fill="white" stroke="white" stroke-width="7" stroke-linejoin="round" filter="url(#repair-pear-edge-v12)"/></mask>
+          <filter id="repair-floor-feather-v12" filterUnits="userSpaceOnUse" x="974" y="761" width="179" height="94"><feGaussianBlur stdDeviation="5"/></filter>
+          <mask id="mask-floor-feather-v12" maskUnits="userSpaceOnUse" x="974" y="761" width="179" height="94"><path d="M994 783 Q1034 769 1081 773 L1127 787 L1135 818 L1115 842 L991 839 L985 808 Z" fill="white" stroke="white" stroke-width="8" stroke-linejoin="round" filter="url(#repair-floor-feather-v12)"/></mask>
+          <filter id="leaf-underpaint-edge-v12" filterUnits="userSpaceOnUse" x="1335" y="364" width="99" height="92"><feGaussianBlur stdDeviation="2"/></filter>
+          <mask id="mask-leaf-underpaint-v12" maskUnits="userSpaceOnUse" x="1335" y="364" width="99" height="92"><path d="M1377.0 380.5 L1378.0 380.5 L1379.0 380.5 L1380.0 380.5 L1380.5 381.0 L1381.0 381.5 L1382.0 381.5 L1383.0 381.5 L1384.0 381.5 L1385.0 381.5 L1386.0 381.5 L1386.5 382.0 L1387.0 382.5 L1388.0 382.5 L1389.0 382.5 L1390.0 382.5 L1390.5 383.0 L1391.0 383.5 L1392.0 383.5 L1392.5 384.0 L1393.0 384.5 L1393.5 385.0 L1394.0 385.5 L1395.0 385.5 L1395.5 386.0 L1395.5 387.0 L1396.0 387.5 L1397.0 387.5 L1397.5 388.0 L1398.0 388.5 L1398.5 389.0 L1399.0 389.5 L1399.5 390.0 L1400.0 390.5 L1400.5 391.0 L1401.0 391.5 L1401.5 392.0 L1402.0 392.5 L1402.5 393.0 L1403.0 393.5 L1403.5 394.0 L1404.0 394.5 L1404.5 395.0 L1404.5 396.0 L1405.0 396.5 L1405.5 397.0 L1405.5 398.0 L1406.0 398.5 L1406.5 399.0 L1406.5 400.0 L1406.5 401.0 L1407.0 401.5 L1407.5 402.0 L1407.5 403.0 L1408.0 403.5 L1408.5 404.0 L1408.5 405.0 L1409.0 405.5 L1409.5 406.0 L1409.5 407.0 L1410.0 407.5 L1410.5 408.0 L1410.5 409.0 L1411.0 409.5 L1411.5 410.0 L1411.5 411.0 L1411.0 411.5 L1410.5 411.0 L1410.0 410.5 L1409.5 411.0 L1409.0 411.5 L1408.0 411.5 L1407.5 411.0 L1407.0 410.5 L1406.0 410.5 L1405.5 410.0 L1405.0 409.5 L1404.5 410.0 L1404.5 411.0 L1405.0 411.5 L1405.5 412.0 L1405.0 412.5 L1404.5 413.0 L1404.5 414.0 L1404.5 415.0 L1404.5 416.0 L1404.0 416.5 L1403.5 417.0 L1403.5 418.0 L1404.0 418.5 L1404.5 419.0 L1404.0 419.5 L1403.5 420.0 L1403.5 421.0 L1403.0 421.5 L1402.5 422.0 L1402.0 422.5 L1401.5 423.0 L1401.0 423.5 L1400.5 423.0 L1400.5 422.0 L1400.0 421.5 L1399.0 421.5 L1398.5 421.0 L1398.5 420.0 L1398.0 419.5 L1397.5 419.0 L1397.0 418.5 L1396.5 419.0 L1396.0 419.5 L1395.5 419.0 L1395.0 418.5 L1394.0 418.5 L1393.0 418.5 L1392.5 418.0 L1392.0 417.5 L1391.0 417.5 L1390.0 417.5 L1389.5 417.0 L1389.0 416.5 L1388.5 416.0 L1388.0 415.5 L1387.5 415.0 L1387.0 414.5 L1386.5 414.0 L1386.5 413.0 L1386.5 412.0 L1386.5 411.0 L1387.0 410.5 L1387.5 410.0 L1387.5 409.0 L1388.0 408.5 L1388.5 408.0 L1388.5 407.0 L1388.0 406.5 L1387.5 406.0 L1387.0 405.5 L1386.0 405.5 L1385.0 405.5 L1384.0 405.5 L1383.5 405.0 L1383.0 404.5 L1382.0 404.5 L1381.5 404.0 L1381.0 403.5 L1380.5 403.0 L1380.0 402.5 L1379.5 402.0 L1379.5 401.0 L1379.5 400.0 L1379.0 399.5 L1378.5 399.0 L1378.5 398.0 L1378.0 397.5 L1377.5 397.0 L1377.5 396.0 L1377.5 395.0 L1377.0 394.5 L1376.5 394.0 L1376.0 393.5 L1375.0 393.5 L1374.0 393.5 L1373.0 393.5 L1372.5 393.0 L1372.0 392.5 L1371.0 392.5 L1370.0 392.5 L1369.5 393.0 L1369.0 393.5 L1368.0 393.5 L1367.0 393.5 L1366.5 394.0 L1366.0 394.5 L1365.0 394.5 L1364.0 394.5 L1363.5 395.0 L1363.0 395.5 L1362.0 395.5 L1361.0 395.5 L1360.5 396.0 L1360.0 396.5 L1359.5 397.0 L1359.0 397.5 L1358.5 398.0 L1358.0 398.5 L1357.5 399.0 L1357.0 399.5 L1356.5 400.0 L1356.5 401.0 L1356.0 401.5 L1355.5 402.0 L1355.0 402.5 L1354.5 403.0 L1354.0 403.5 L1353.5 404.0 L1353.0 404.5 L1352.0 404.5 L1351.5 404.0 L1351.5 403.0 L1351.5 402.0 L1351.5 401.0 L1352.0 400.5 L1352.5 400.0 L1352.0 399.5 L1351.5 399.0 L1351.5 398.0 L1352.0 397.5 L1352.5 397.0 L1352.5 396.0 L1352.5 395.0 L1353.0 394.5 L1353.5 394.0 L1353.5 393.0 L1354.0 392.5 L1354.5 392.0 L1355.0 391.5 L1355.5 391.0 L1355.5 390.0 L1356.0 389.5 L1356.5 389.0 L1357.0 388.5 L1357.5 388.0 L1358.0 387.5 L1358.5 387.0 L1359.0 386.5 L1360.0 386.5 L1360.5 386.0 L1361.0 385.5 L1362.0 385.5 L1362.5 385.0 L1363.0 384.5 L1364.0 384.5 L1364.5 384.0 L1365.0 383.5 L1365.5 383.0 L1366.0 382.5 L1367.0 382.5 L1368.0 382.5 L1368.5 382.0 L1369.0 381.5 L1370.0 381.5 L1371.0 381.5 L1372.0 381.5 L1373.0 381.5 L1374.0 381.5 L1375.0 381.5 L1376.0 381.5 L1376.5 381.0 L1377.0 380.5 Z" fill="white" stroke="white" stroke-width="7" stroke-linejoin="round" filter="url(#leaf-underpaint-edge-v12)"/></mask>
+          <filter id="leaf-paper-edge-v12" filterUnits="userSpaceOnUse" x="1340" y="368" width="88" height="82"><feGaussianBlur stdDeviation=".3"/></filter>
+          <mask id="mask-pink-leaf-v12" maskUnits="userSpaceOnUse" x="1340" y="368" width="88" height="82"><path d="M1377.0 380.5 L1378.0 380.5 L1379.0 380.5 L1380.0 380.5 L1380.5 381.0 L1381.0 381.5 L1382.0 381.5 L1383.0 381.5 L1384.0 381.5 L1385.0 381.5 L1386.0 381.5 L1386.5 382.0 L1387.0 382.5 L1388.0 382.5 L1389.0 382.5 L1390.0 382.5 L1390.5 383.0 L1391.0 383.5 L1392.0 383.5 L1392.5 384.0 L1393.0 384.5 L1393.5 385.0 L1394.0 385.5 L1395.0 385.5 L1395.5 386.0 L1395.5 387.0 L1396.0 387.5 L1397.0 387.5 L1397.5 388.0 L1398.0 388.5 L1398.5 389.0 L1399.0 389.5 L1399.5 390.0 L1400.0 390.5 L1400.5 391.0 L1401.0 391.5 L1401.5 392.0 L1402.0 392.5 L1402.5 393.0 L1403.0 393.5 L1403.5 394.0 L1404.0 394.5 L1404.5 395.0 L1404.5 396.0 L1405.0 396.5 L1405.5 397.0 L1405.5 398.0 L1406.0 398.5 L1406.5 399.0 L1406.5 400.0 L1406.5 401.0 L1407.0 401.5 L1407.5 402.0 L1407.5 403.0 L1408.0 403.5 L1408.5 404.0 L1408.5 405.0 L1409.0 405.5 L1409.5 406.0 L1409.5 407.0 L1410.0 407.5 L1410.5 408.0 L1410.5 409.0 L1411.0 409.5 L1411.5 410.0 L1411.5 411.0 L1411.0 411.5 L1410.5 411.0 L1410.0 410.5 L1409.5 411.0 L1409.0 411.5 L1408.0 411.5 L1407.5 411.0 L1407.0 410.5 L1406.0 410.5 L1405.5 410.0 L1405.0 409.5 L1404.5 410.0 L1404.5 411.0 L1405.0 411.5 L1405.5 412.0 L1405.0 412.5 L1404.5 413.0 L1404.5 414.0 L1404.5 415.0 L1404.5 416.0 L1404.0 416.5 L1403.5 417.0 L1403.5 418.0 L1404.0 418.5 L1404.5 419.0 L1404.0 419.5 L1403.5 420.0 L1403.5 421.0 L1403.0 421.5 L1402.5 422.0 L1402.0 422.5 L1401.5 423.0 L1401.0 423.5 L1400.5 423.0 L1400.5 422.0 L1400.0 421.5 L1399.0 421.5 L1398.5 421.0 L1398.5 420.0 L1398.0 419.5 L1397.5 419.0 L1397.0 418.5 L1396.5 419.0 L1396.0 419.5 L1395.5 419.0 L1395.0 418.5 L1394.0 418.5 L1393.0 418.5 L1392.5 418.0 L1392.0 417.5 L1391.0 417.5 L1390.0 417.5 L1389.5 417.0 L1389.0 416.5 L1388.5 416.0 L1388.0 415.5 L1387.5 415.0 L1387.0 414.5 L1386.5 414.0 L1386.5 413.0 L1386.5 412.0 L1386.5 411.0 L1387.0 410.5 L1387.5 410.0 L1387.5 409.0 L1388.0 408.5 L1388.5 408.0 L1388.5 407.0 L1388.0 406.5 L1387.5 406.0 L1387.0 405.5 L1386.0 405.5 L1385.0 405.5 L1384.0 405.5 L1383.5 405.0 L1383.0 404.5 L1382.0 404.5 L1381.5 404.0 L1381.0 403.5 L1380.5 403.0 L1380.0 402.5 L1379.5 402.0 L1379.5 401.0 L1379.5 400.0 L1379.0 399.5 L1378.5 399.0 L1378.5 398.0 L1378.0 397.5 L1377.5 397.0 L1377.5 396.0 L1377.5 395.0 L1377.0 394.5 L1376.5 394.0 L1376.0 393.5 L1375.0 393.5 L1374.0 393.5 L1373.0 393.5 L1372.5 393.0 L1372.0 392.5 L1371.0 392.5 L1370.0 392.5 L1369.5 393.0 L1369.0 393.5 L1368.0 393.5 L1367.0 393.5 L1366.5 394.0 L1366.0 394.5 L1365.0 394.5 L1364.0 394.5 L1363.5 395.0 L1363.0 395.5 L1362.0 395.5 L1361.0 395.5 L1360.5 396.0 L1360.0 396.5 L1359.5 397.0 L1359.0 397.5 L1358.5 398.0 L1358.0 398.5 L1357.5 399.0 L1357.0 399.5 L1356.5 400.0 L1356.5 401.0 L1356.0 401.5 L1355.5 402.0 L1355.0 402.5 L1354.5 403.0 L1354.0 403.5 L1353.5 404.0 L1353.0 404.5 L1352.0 404.5 L1351.5 404.0 L1351.5 403.0 L1351.5 402.0 L1351.5 401.0 L1352.0 400.5 L1352.5 400.0 L1352.0 399.5 L1351.5 399.0 L1351.5 398.0 L1352.0 397.5 L1352.5 397.0 L1352.5 396.0 L1352.5 395.0 L1353.0 394.5 L1353.5 394.0 L1353.5 393.0 L1354.0 392.5 L1354.5 392.0 L1355.0 391.5 L1355.5 391.0 L1355.5 390.0 L1356.0 389.5 L1356.5 389.0 L1357.0 388.5 L1357.5 388.0 L1358.0 387.5 L1358.5 387.0 L1359.0 386.5 L1360.0 386.5 L1360.5 386.0 L1361.0 385.5 L1362.0 385.5 L1362.5 385.0 L1363.0 384.5 L1364.0 384.5 L1364.5 384.0 L1365.0 383.5 L1365.5 383.0 L1366.0 382.5 L1367.0 382.5 L1368.0 382.5 L1368.5 382.0 L1369.0 381.5 L1370.0 381.5 L1371.0 381.5 L1372.0 381.5 L1373.0 381.5 L1374.0 381.5 L1375.0 381.5 L1376.0 381.5 L1376.5 381.0 L1377.0 380.5 Z" fill="white" filter="url(#leaf-paper-edge-v12)"/></mask>
+          <filter id="leaf-paper-shadow-v12" x="-12%" y="-15%" width="124%" height="135%"><feGaussianBlur in="SourceAlpha" stdDeviation="1.2" result="soft"/><feOffset in="soft" dx=".4" dy="1.2" result="offset"/><feFlood flood-color="#524b51" flood-opacity=".14" result="ink"/><feComposite in="ink" in2="offset" operator="in" result="shadow"/><feMerge><feMergeNode in="shadow"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+
+          <!-- Local original-bird and flower edits. The full scene base remains the untouched earliest raster. -->
+          <image id="scene-v11-revisions" href="./assets/art/paper-theatre-bird-flowers-v11.png" width="1672" height="941" preserveAspectRatio="none"/>
+          <image id="scene-v11-left-flower" href="./assets/art/paper-flower-left-v11.png" x="150" y="190" width="272" height="255" preserveAspectRatio="none"/>
+          <filter id="bird-paper-shadow-v11" filterUnits="userSpaceOnUse" x="661" y="179" width="328" height="175">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="2.2" result="soft"/>
+            <feOffset in="soft" dx="1.5" dy="3" result="offset"/>
+            <feFlood flood-color="#514953" flood-opacity=".20" result="ink"/>
+            <feComposite in="ink" in2="offset" operator="in" result="shadow"/>
+            <feMerge><feMergeNode in="shadow"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="bird-edge-v11" filterUnits="userSpaceOnUse" x="665" y="185" width="315" height="160"><feGaussianBlur stdDeviation="0.25"/></filter>
+          <mask id="mask-bird-v11" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="665" y="185" width="315" height="160"><path d="M675.0 191.5 L699.0 191.5 L700.0 192.5 L701.0 192.5 L702.0 191.5 L703.0 192.5 L720.0 192.5 L721.0 191.5 L740.0 191.5 L741.0 192.5 L754.0 192.5 L755.0 191.5 L756.0 192.5 L757.0 191.5 L761.0 191.5 L762.0 192.5 L776.0 192.5 L777.0 193.5 L780.0 194.5 L786.0 200.5 L787.0 200.5 L800.0 213.5 L801.0 213.5 L823.0 235.5 L824.0 235.5 L826.0 237.5 L827.0 236.5 L828.0 236.5 L830.5 234.0 L830.5 231.0 L831.0 230.5 L833.0 230.5 L833.5 231.0 L832.5 232.0 L833.0 232.5 L836.0 231.5 L843.5 224.0 L843.5 223.0 L855.0 211.5 L856.0 211.5 L857.0 210.5 L859.0 210.5 L860.0 211.5 L869.0 211.5 L870.0 212.5 L871.0 212.5 L873.5 215.0 L873.5 216.0 L881.5 224.0 L882.0 225.5 L887.0 227.5 L890.0 230.5 L893.0 231.5 L898.0 235.5 L901.0 236.5 L909.0 242.5 L912.0 242.5 L913.0 243.5 L916.0 243.5 L917.0 244.5 L920.0 244.5 L921.0 245.5 L923.0 245.5 L924.0 246.5 L928.0 246.5 L929.0 247.5 L931.0 247.5 L932.0 248.5 L936.0 248.5 L937.0 249.5 L941.0 249.5 L942.0 250.5 L945.0 250.5 L946.0 251.5 L948.0 251.5 L949.0 252.5 L951.0 252.5 L952.0 253.5 L955.0 253.5 L956.0 254.5 L959.0 254.5 L960.0 255.5 L964.0 255.5 L965.0 256.5 L967.5 257.0 L967.5 260.0 L966.5 261.0 L966.5 263.0 L965.5 264.0 L965.5 267.0 L964.5 268.0 L964.5 271.0 L963.5 272.0 L963.5 275.0 L961.5 278.0 L961.5 280.0 L960.5 281.0 L960.5 284.0 L959.5 285.0 L958.5 290.0 L957.0 291.5 L955.0 291.5 L954.0 290.5 L951.0 290.5 L950.0 289.5 L947.0 289.5 L946.0 288.5 L944.0 288.5 L943.0 287.5 L939.0 287.5 L938.0 286.5 L935.0 286.5 L934.0 285.5 L931.0 285.5 L930.0 284.5 L926.0 284.5 L925.0 283.5 L923.0 283.5 L922.0 282.5 L918.0 282.5 L917.0 281.5 L914.0 281.5 L913.0 280.5 L911.0 280.5 L910.0 279.5 L906.0 279.5 L905.0 278.5 L902.0 278.5 L901.0 277.5 L899.0 277.5 L898.0 276.5 L895.0 276.5 L893.5 275.0 L893.5 274.0 L894.5 273.0 L894.5 271.0 L895.5 270.0 L895.5 268.0 L896.5 267.0 L896.5 264.0 L897.5 263.0 L897.5 260.0 L898.5 259.0 L898.5 257.0 L899.5 256.0 L899.5 253.0 L900.5 252.0 L900.5 250.0 L901.5 249.0 L901.5 246.0 L902.5 245.0 L902.5 241.0 L900.0 239.5 L897.0 239.5 L896.0 238.5 L893.0 238.5 L892.0 237.5 L888.0 237.5 L887.0 236.5 L885.0 236.5 L884.0 235.5 L882.0 235.5 L881.0 234.5 L878.0 234.5 L877.0 235.5 L876.0 235.5 L873.0 238.5 L872.0 238.5 L869.0 241.5 L866.0 242.5 L864.5 244.0 L864.5 247.0 L863.5 248.0 L863.5 249.0 L862.5 250.0 L862.5 251.0 L861.5 252.0 L858.5 259.0 L856.5 261.0 L856.5 262.0 L855.5 263.0 L855.5 265.0 L853.5 267.0 L853.5 268.0 L852.5 269.0 L849.5 276.0 L847.5 278.0 L847.5 279.0 L846.5 280.0 L846.5 282.0 L843.0 285.5 L840.0 286.5 L838.0 288.5 L837.0 288.5 L835.0 290.5 L830.0 292.5 L828.0 294.5 L821.0 297.5 L819.0 299.5 L813.0 299.5 L812.0 298.5 L805.0 298.5 L804.0 297.5 L796.0 297.5 L795.0 296.5 L782.0 296.5 L781.0 297.5 L772.0 297.5 L771.0 298.5 L762.0 298.5 L761.5 300.0 L758.5 303.0 L758.5 304.0 L754.5 309.0 L754.5 310.0 L752.5 312.0 L752.5 313.0 L748.5 317.0 L747.5 320.0 L736.0 331.5 L735.0 331.5 L733.0 333.5 L732.0 333.5 L730.5 331.0 L730.5 324.0 L729.0 321.5 L727.0 321.5 L726.0 322.5 L725.0 322.5 L722.0 324.5 L720.0 324.5 L719.0 325.5 L715.0 325.5 L714.5 325.0 L714.5 324.0 L715.5 323.0 L715.5 321.0 L717.5 319.0 L719.5 314.0 L721.5 312.0 L720.0 310.5 L715.0 310.5 L714.0 309.5 L710.0 309.5 L709.0 308.5 L705.0 308.5 L704.5 307.0 L709.0 304.5 L710.0 304.5 L711.0 303.5 L712.0 303.5 L713.0 302.5 L714.0 302.5 L715.0 301.5 L716.0 301.5 L717.0 300.5 L718.0 300.5 L719.0 299.5 L720.0 299.5 L721.0 298.5 L722.0 298.5 L723.0 297.5 L724.0 297.5 L725.0 296.5 L726.0 296.5 L727.0 295.5 L728.0 295.5 L729.0 294.5 L731.0 294.5 L733.0 292.5 L734.0 292.5 L739.0 289.5 L741.0 289.5 L742.0 288.5 L747.0 286.5 L752.0 282.5 L753.0 282.5 L760.0 278.5 L762.0 278.5 L763.0 277.5 L770.0 274.5 L772.0 272.5 L775.0 271.5 L777.0 269.5 L780.0 268.5 L781.5 267.0 L780.0 265.5 L779.0 265.5 L776.0 263.5 L774.0 263.5 L773.0 262.5 L770.0 261.5 L767.5 259.0 L766.0 255.5 L761.0 255.5 L760.0 254.5 L758.0 254.5 L754.5 251.0 L754.5 248.0 L754.0 247.5 L748.0 247.5 L747.0 246.5 L745.0 246.5 L741.0 243.5 L740.0 243.5 L738.5 242.0 L738.5 240.0 L739.5 239.0 L739.5 238.0 L738.0 236.5 L729.0 236.5 L728.0 235.5 L725.0 235.5 L724.0 234.5 L723.0 234.5 L718.5 230.0 L718.5 228.0 L722.5 224.0 L722.0 223.5 L718.0 223.5 L717.0 222.5 L711.0 222.5 L710.0 221.5 L707.0 221.5 L705.0 219.5 L702.0 218.5 L695.5 213.0 L695.5 211.0 L697.5 209.0 L697.5 208.0 L696.0 206.5 L691.0 206.5 L690.0 205.5 L687.0 204.5 L685.0 202.5 L684.0 202.5 L675.5 194.0 L675.5 193.0 L674.5 192.0 L675.0 191.5 Z" fill="white" filter="url(#bird-edge-v11)"/></mask>
+          <filter id="flower-edge-left-v11" filterUnits="userSpaceOnUse" x="143" y="178" width="289" height="279"><feGaussianBlur stdDeviation="2.5"/></filter>
+          <mask id="mask-flower-left-v11" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="143" y="178" width="289" height="279"><path d="M165 260 Q161 252 174 243 Q174 232 190 238 Q187 226 201 218 Q214 209 225 216 Q230 214 235 223 Q239 211 253 204 Q262 199 269 200 Q273 192 284 198 Q294 193 302 201 Q311 198 317 207 Q329 208 330 220 Q333 230 323 239 Q338 234 347 239 Q360 240 365 252 Q375 247 383 260 Q390 265 384 275 Q391 282 388 295 Q399 294 407 299 Q415 299 417 308 Q425 314 414 322 Q419 328 410 336 Q411 343 403 348 Q405 356 397 362 Q397 369 387 369 Q386 376 373 375 L363 377 Q374 389 375 397 Q375 404 368 409 Q368 420 356 422 L349 420 Q350 431 339 433 Q333 439 325 432 Q315 437 306 428 L294 419 Q282 409 264 404 L244 395 Q227 386 214 380 Q217 369 219 356 Q222 339 213 326 Q205 322 200 313 Q190 306 190 301 Q180 302 178 293 Q169 291 173 279 Q163 280 165 270 Z" fill="white" stroke="white" stroke-width="6" stroke-linejoin="round" filter="url(#flower-edge-left-v11)"/></mask>
+          <filter id="flower-edge-right-v11" filterUnits="userSpaceOnUse" x="1393" y="281" width="211" height="185"><feGaussianBlur stdDeviation="2.5"/></filter>
+          <mask id="mask-flower-right-v11" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="1393" y="281" width="211" height="185"><path d="M1528.0 296.5 L1541.0 296.5 L1547.5 301.0 L1547.5 305.0 L1548.5 306.0 L1548.5 310.0 L1549.5 311.0 L1549.5 315.0 L1550.5 316.0 L1550.5 320.0 L1551.5 321.0 L1551.5 325.0 L1552.5 326.0 L1552.5 330.0 L1553.5 331.0 L1553.5 335.0 L1554.5 336.0 L1554.5 340.0 L1555.5 341.0 L1555.5 345.0 L1556.5 346.0 L1556.5 350.0 L1557.5 351.0 L1557.5 355.0 L1558.5 356.0 L1558.5 360.0 L1560.5 366.0 L1560.5 370.0 L1561.5 371.0 L1561.5 375.0 L1562.5 376.0 L1562.5 380.0 L1563.5 381.0 L1563.5 385.0 L1564.5 386.0 L1564.5 390.0 L1565.5 391.0 L1565.5 395.0 L1566.5 396.0 L1566.5 400.0 L1567.5 401.0 L1567.5 405.0 L1569.5 411.0 L1568.5 413.0 L1561.5 419.0 L1559.5 423.0 L1558.5 426.0 L1558.5 435.0 L1557.0 435.5 L1554.0 432.5 L1550.5 436.0 L1550.5 438.0 L1553.0 440.5 L1555.0 439.5 L1558.0 440.5 L1557.5 442.0 L1561.5 446.0 L1564.5 451.0 L1558.0 451.5 L1556.5 450.0 L1556.5 448.0 L1548.0 441.5 L1541.0 442.5 L1535.0 451.5 L1519.0 451.5 L1518.0 450.5 L1516.0 451.5 L1508.0 451.5 L1502.5 447.0 L1501.5 445.0 L1502.5 443.0 L1500.0 440.5 L1496.0 442.5 L1492.0 446.5 L1490.0 446.5 L1482.0 451.5 L1475.0 451.5 L1472.0 449.5 L1468.0 451.5 L1460.0 451.5 L1456.0 448.5 L1450.0 448.5 L1448.0 447.5 L1445.5 444.0 L1445.5 439.0 L1447.5 436.0 L1445.0 433.5 L1437.0 429.5 L1433.0 431.5 L1430.0 431.5 L1423.5 427.0 L1421.5 422.0 L1423.5 417.0 L1423.5 414.0 L1421.5 409.0 L1421.5 396.0 L1428.5 383.0 L1441.5 371.0 L1439.5 367.0 L1439.5 354.0 L1443.5 349.0 L1444.5 344.0 L1447.5 340.0 L1449.5 331.0 L1457.5 325.0 L1457.5 323.0 L1461.0 318.5 L1471.0 315.5 L1479.0 311.5 L1493.0 312.5 L1502.0 316.5 L1504.0 318.5 L1506.5 316.0 L1508.5 310.0 L1516.0 302.5 L1521.0 298.5 L1528.0 296.5 Z" fill="white" stroke="white" stroke-width="6" stroke-linejoin="round" filter="url(#flower-edge-right-v11)"/></mask>
+          <filter id="flower-edge-middle-v11" filterUnits="userSpaceOnUse" x="778" y="523" width="186" height="147"><feGaussianBlur stdDeviation="2.5"/></filter>
+          <mask id="mask-flower-middle-v11" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="778" y="523" width="186" height="147"><path d="M849.0 538.5 L854.0 540.5 L872.0 540.5 L874.0 541.5 L879.0 547.5 L882.0 547.5 L886.5 550.0 L892.5 559.0 L893.5 564.0 L896.0 566.5 L898.0 566.5 L902.0 563.5 L917.0 564.5 L921.0 567.5 L928.0 569.5 L930.5 573.0 L940.5 582.0 L944.5 593.0 L944.5 601.0 L939.5 611.0 L934.5 616.0 L934.5 619.0 L937.5 623.0 L937.5 627.0 L939.5 631.0 L939.5 633.0 L935.0 638.5 L929.0 640.5 L923.0 645.5 L917.0 647.5 L907.0 647.5 L898.0 655.5 L892.0 654.5 L885.0 651.5 L879.0 653.5 L869.0 653.5 L867.0 655.5 L862.0 655.5 L862.5 652.0 L857.0 647.5 L854.5 650.0 L854.5 655.0 L851.0 655.5 L850.5 653.0 L845.0 647.5 L842.0 646.5 L841.0 647.5 L833.0 647.5 L826.0 642.5 L819.0 642.5 L813.0 640.5 L810.5 638.0 L810.5 636.0 L806.5 630.0 L806.5 628.0 L804.0 625.5 L800.0 624.5 L798.5 621.0 L799.5 614.0 L804.5 607.0 L794.5 598.0 L792.5 594.0 L793.5 578.0 L794.5 576.0 L806.0 565.5 L809.0 564.5 L820.0 564.5 L822.0 565.5 L824.5 563.0 L824.5 561.0 L827.5 555.0 L840.0 543.5 L849.0 538.5 Z" fill="white" stroke="white" stroke-width="6" stroke-linejoin="round" filter="url(#flower-edge-middle-v11)"/></mask>
+
           <image id="scene-original" href="./assets/art/paper-theatre-original-muted.png" width="1672" height="941"/>
           <image id="scene-matte" href="./assets/art/paper-theatre-original-muted.png" width="1672" height="941" preserveAspectRatio="none"/>
           <image id="scene-props" href="./assets/art/paper-props-scene-v8.png" width="1672" height="941" preserveAspectRatio="none"/>
@@ -27,7 +88,6 @@
           <image id="scene-box-closed" href="./assets/art/paper-theatre-box-closed.png" width="1672" height="941" preserveAspectRatio="none"/>
           <image id="paper-props" href="./assets/art/paper-props.png" width="1673" height="940"/>
           <image id="curtain-pair" href="./assets/art/curtain-pair.png" width="1190" height="1322"/>
-<clipPath id="clip-pigeon-envelope" clipPathUnits="userSpaceOnUse"><path d="M161.0 102.5 L229.0 109.5 L304.0 114.5 L324.0 114.5 L339.0 116.5 L416.0 119.5 L449.0 118.5 L478.0 120.5 L608.0 122.5 L720.0 126.5 L728.0 129.5 L743.0 141.5 L780.5 182.0 L829.5 246.0 L900.5 347.0 L937.0 395.5 L1049.5 279.0 L1067.0 263.5 L1075.0 257.5 L1082.0 254.5 L1107.0 253.5 L1141.0 259.5 L1154.0 263.5 L1161.0 267.5 L1168.5 274.0 L1184.5 294.0 L1220.5 345.0 L1220.5 347.0 L1278.0 387.5 L1287.0 394.5 L1296.0 404.5 L1615.0 458.5 L1618.5 461.0 L1620.5 465.0 L1619.5 478.0 L1596.5 582.0 L1579.5 672.0 L1577.5 677.0 L1574.0 679.5 L1539.0 675.5 L1528.0 672.5 L1438.0 658.5 L1433.0 656.5 L1386.0 649.5 L1358.0 643.5 L1326.0 639.5 L1270.0 628.5 L1212.0 619.5 L1203.5 615.0 L1202.5 606.0 L1247.5 399.0 L1238.0 394.5 L1218.0 388.5 L1181.0 379.5 L1143.0 401.5 L1118.0 414.5 L1108.5 422.0 L1030.5 594.0 L1024.5 604.0 L1020.0 607.5 L1006.0 614.5 L969.0 636.5 L963.0 641.5 L954.0 645.5 L946.0 651.5 L894.0 681.5 L838.0 673.5 L761.0 659.5 L726.0 660.5 L622.0 670.5 L612.0 669.5 L577.5 713.0 L530.5 764.0 L472.0 822.5 L468.0 825.5 L464.0 825.5 L460.5 817.0 L454.5 774.0 L450.0 753.5 L386.0 785.5 L374.0 790.5 L369.0 790.5 L367.5 789.0 L381.5 759.0 L406.5 713.0 L406.0 711.5 L398.0 715.5 L391.0 716.5 L310.0 705.5 L302.0 703.5 L300.5 699.0 L303.0 696.5 L318.0 689.5 L384.0 662.5 L421.0 645.5 L644.0 552.5 L686.0 533.5 L712.5 517.0 L684.0 506.5 L665.0 496.5 L657.5 488.0 L654.5 482.0 L654.0 472.5 L644.0 474.5 L621.0 473.5 L601.0 468.5 L585.0 460.5 L574.5 450.0 L572.5 446.0 L571.5 437.0 L573.0 431.5 L561.0 431.5 L539.0 428.5 L526.0 424.5 L509.0 416.5 L499.5 409.0 L489.5 396.0 L486.5 386.0 L486.5 380.0 L490.0 371.5 L458.0 368.5 L436.0 362.5 L417.0 353.5 L408.0 347.5 L394.5 334.0 L390.5 328.0 L386.5 320.0 L385.5 314.0 L389.0 301.5 L367.0 298.5 L342.0 291.5 L321.0 282.5 L302.0 270.5 L283.5 254.0 L270.5 236.0 L267.5 227.0 L267.5 217.0 L273.5 209.0 L244.0 198.5 L230.0 191.5 L203.0 171.5 L179.5 147.0 L159.5 120.0 L154.5 108.0 L158.0 103.5 L161.0 102.5 Z"/></clipPath>
           <clipPath id="clip-curtain-left-edge"><path d="M101 82 H593 V1223 Q569 1241 541 1239 Q519 1239 501 1228 Q490 1224 480 1225 Q454 1241 431 1237 Q408 1237 381 1224 Q370 1223 359 1226 Q333 1240 311 1239 Q290 1239 270 1227 Q260 1222 250 1227 Q222 1238 201 1237 Q181 1237 165 1226 Q159 1221 150 1225 Q124 1235 107 1230 Q100 1226 100 1218 V93 Q100 84 101 82 Z"/></clipPath>
           <clipPath id="clip-curtain-right-edge"><path d="M600 82 H1086 Q1092 84 1092 94 V1219 Q1092 1231 1077 1230 Q1060 1232 1048 1226 Q1039 1221 1031 1226 Q1009 1239 990 1234 Q969 1231 958 1225 Q946 1222 939 1225 Q915 1240 892 1238 Q866 1238 844 1224 Q834 1220 823 1226 Q796 1240 770 1239 Q742 1239 721 1229 Q710 1224 701 1226 Q677 1240 652 1238 Q624 1239 600 1224 Z"/></clipPath>
           <!-- Both faces come from the newly painted full scenes and share the box's measured rear hinge. -->
@@ -38,7 +98,6 @@
           <clipPath id="clip-box-inner-b"><path d="M532.934742 697.337527 L789.241329 471.337527 L580.694611 511 Z"/></clipPath>
           <clipPath id="clip-box-inner-fit"><path d="M531 697 L736 642 L769.039521 478 L579.057485 511 Z"/></clipPath>
           <clipPath id="clip-box-front"><path d="M530.5 697 L637 763.8 L854.5 696.3 L854.4 775.2 L863.2 781.4 L637 858 L521.8 782.1 L529.9 779 Z"/></clipPath>
-<clipPath id="clip-petal"><path d="M1010 791 Q1016 785 1024 792 L1044 806 Q1060 796 1073 790 Q1097 779 1115 783 Q1107 790 1104 800 Q1098 814 1086 820 Q1059 828 1039 815 Q1028 810 1023 800 Z"/></clipPath>
 <!-- The fixed front rim hides the lower part of each complete, correctly proportioned card. -->
           <clipPath id="clip-card-reveal"><path d="M520 440 H870 V696.3 L854.5 696.3 L637 763.8 L530.5 697 H520 Z"/></clipPath>
 <!-- The fixed wicker lip occludes the whole moving pear along its painted top contour. -->
@@ -49,9 +108,41 @@
 <clipPath id="clip-bookmark-exit"><path d="M1160 615 L1211 622 L1234 626 L1260 630 V725 H1160 Z"/></clipPath>
           <clipPath id="clip-bookmark-source"><rect x="1396" y="101" width="143" height="739"/></clipPath>
 
-  <radialGradient id="warm-window-spill"><stop stop-color="#bc752f" stop-opacity=".64"/><stop offset=".45" stop-color="#9d511e" stop-opacity=".24"/><stop offset="1" stop-color="#74330f" stop-opacity="0"/></radialGradient>
-  <linearGradient id="warm-window-core" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffe2a4"/><stop offset=".55" stop-color="#ffd28b"/><stop offset="1" stop-color="#d5974d"/></linearGradient>
-  <linearGradient id="warm-window-projection" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#c7853d" stop-opacity=".22"/><stop offset="1" stop-color="#a66028" stop-opacity="0"/></linearGradient>
+          <!-- All city light layers use ordinary alpha. Fixed isolation avoids a different blend at opacity 1. -->
+          <!-- Original second warm-light artwork, taken verbatim from the 2026-11-25 archive. -->
+<image id="city-light-second-source" href="./assets/art/city-light-second-painted.png" width="1672" height="941"/>
+<mask id="mask-city-second-tower-front" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="1323.800" y="195.800" width="7.700" height="14.200"><path d="M1326 207.7 L1325.9 201 Q1325.9 198.1 1327.8 197.9 Q1329.3 198.3 1329.4 201 L1329.2 207.9 Z" fill="white" stroke="white" stroke-width="1.6" stroke-linejoin="round" filter="url(#city-second-edge)"/></mask>
+<mask id="mask-city-second-tower-side" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="1336.800" y="195.700" width="7.400" height="14.700"><path d="M1339.2 208.3 L1338.9 201 Q1338.9 198.1 1340.5 197.8 Q1342 198.7 1342.1 201.4 L1341.8 207.8 Z" fill="white" stroke="white" stroke-width="1.6" stroke-linejoin="round" filter="url(#city-second-edge)"/></mask>
+<mask id="mask-city-second-left-gable" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="1310.900" y="223.419" width="8.000" height="9.681"><path d="M1313 231 L1313.3 227.7 Q1313.9 225.1 1315.1 225.6 Q1316.8 227.1 1316.8 231 Z" fill="white" stroke="white" stroke-width="1.6" stroke-linejoin="round" filter="url(#city-second-edge)"/></mask>
+<mask id="mask-city-second-left-upper-west" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="1251.285" y="242.500" width="9.115" height="14.200"><path d="M1253.5 254.6 L1253.4 247.7 Q1253.2 244.9 1255.6 244.6 Q1258 244.7 1258.3 247.1 L1258.1 254.4 Z" fill="white" stroke="white" stroke-width="1.6" stroke-linejoin="round" filter="url(#city-second-edge)"/></mask>
+<mask id="mask-city-second-left-upper-centre" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="1268.500" y="240.200" width="9.300" height="15.800"><path d="M1270.6 253.9 L1270.6 246 Q1270.6 242.7 1272.7 242.3 Q1275.1 243 1275.5 246.2 L1275.7 253.8 Z" fill="white" stroke="white" stroke-width="1.6" stroke-linejoin="round" filter="url(#city-second-edge)"/></mask>
+<mask id="mask-city-second-left-upper-east" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="1283.100" y="242.000" width="9.000" height="14.400"><path d="M1285.2 254 L1285.4 247.4 Q1285.1 244.7 1287.6 244.1 Q1289.9 244.9 1290 247.7 L1289.9 254.3 Z" fill="white" stroke="white" stroke-width="1.6" stroke-linejoin="round" filter="url(#city-second-edge)"/></mask>
+<mask id="mask-city-second-rear-left-gable" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="1218.481" y="269.800" width="7.919" height="11.400"><path d="M1220.8 278.6 L1220.6 274.7 Q1220.4 272 1222.3 271.9 Q1224.2 272.2 1224.3 274.8 L1224.2 279.1 Z" fill="white" stroke="white" stroke-width="1.6" stroke-linejoin="round" filter="url(#city-second-edge)"/></mask>
+<mask id="mask-city-second-rear-left-tiny" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="1228.792" y="261.600" width="6.908" height="8.200"><path d="M1231 267.4 L1230.9 265 Q1230.8 263.8 1232 263.7 Q1233.3 264 1233.6 265.7 L1233.4 267.7 Z" fill="white" stroke="white" stroke-width="1.6" stroke-linejoin="round" filter="url(#city-second-edge)"/></mask>
+<mask id="mask-city-second-left-front-west" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="1165.200" y="286.900" width="7.800" height="12.700"><path d="M1167.6 297.5 L1167.3 292.2 Q1167.3 289.2 1169.2 289 Q1170.8 289.6 1170.9 292.1 L1170.9 297.5 Z" fill="white" stroke="white" stroke-width="1.6" stroke-linejoin="round" filter="url(#city-second-edge)"/></mask>
+<mask id="mask-city-second-left-front-centre" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="1174.695" y="286.700" width="7.505" height="11.900"><path d="M1177 296.5 L1176.8 291.6 Q1176.7 288.9 1178.5 288.8 Q1180 289 1180.1 291.6 L1179.7 296.3 Z" fill="white" stroke="white" stroke-width="1.6" stroke-linejoin="round" filter="url(#city-second-edge)"/></mask>
+<mask id="mask-city-second-left-front-east" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="1189.579" y="287.300" width="7.721" height="12.400"><path d="M1191.9 297.6 L1191.7 292.4 Q1191.5 289.8 1193.2 289.4 Q1195 290 1195.2 292.9 L1195.2 297.6 Z" fill="white" stroke="white" stroke-width="1.6" stroke-linejoin="round" filter="url(#city-second-edge)"/></mask>
+<mask id="mask-city-second-front-left-west" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="1224.900" y="304.100" width="8.900" height="13.000"><path d="M1227.2 315 L1227 309.7 Q1227 306.4 1229.2 306.2 Q1231.5 307 1231.5 310 L1231.7 315 Z" fill="white" stroke="white" stroke-width="1.6" stroke-linejoin="round" filter="url(#city-second-edge)"/></mask>
+<mask id="mask-city-second-front-left-centre" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="1238.100" y="303.900" width="8.800" height="13.900"><path d="M1240.4 315.6 L1240.2 309.2 Q1240.2 306.3 1242.3 306 Q1244.7 306.3 1244.8 309.8 L1244.7 315.7 Z" fill="white" stroke="white" stroke-width="1.6" stroke-linejoin="round" filter="url(#city-second-edge)"/></mask>
+<mask id="mask-city-second-front-left-east" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="1252.400" y="304.000" width="9.100" height="13.700"><path d="M1254.5 315.6 L1254.5 309.4 Q1254.6 306.4 1257 306.1 Q1259.3 306.7 1259.4 309.9 L1259.2 315.6 Z" fill="white" stroke="white" stroke-width="1.6" stroke-linejoin="round" filter="url(#city-second-edge)"/></mask>
+<mask id="mask-city-second-front-left-side-west" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="1273.400" y="302.600" width="7.300" height="12.000"><path d="M1275.5 312.5 L1275.7 306.6 Q1275.8 304.7 1277.2 304.7 Q1278.6 305.3 1278.6 307.2 L1278.6 312.5 Z" fill="white" stroke="white" stroke-width="1.6" stroke-linejoin="round" filter="url(#city-second-edge)"/></mask>
+<mask id="mask-city-second-front-left-side-east" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="1282.900" y="303.500" width="6.508" height="9.400"><path d="M1285 310.8 L1285.1 307.3 Q1285.2 305.7 1286.2 305.6 Q1287.4 306.3 1287.3 307.7 L1287.3 310.8 Z" fill="white" stroke="white" stroke-width="1.6" stroke-linejoin="round" filter="url(#city-second-edge)"/></mask>
+<mask id="mask-city-second-centre-west" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="1331.200" y="276.500" width="9.900" height="14.000"><path d="M1333.6 288.4 L1333.3 282.5 Q1333.3 279.1 1335.7 278.6 Q1338.6 279.2 1339 282.5 L1339 288.4 Z" fill="white" stroke="white" stroke-width="1.6" stroke-linejoin="round" filter="url(#city-second-edge)"/></mask>
+<mask id="mask-city-second-centre-middle" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="1350.200" y="276.300" width="10.000" height="14.300"><path d="M1352.5 288.5 L1352.3 281.9 Q1352.4 278.9 1355 278.4 Q1357.8 278.8 1358.1 282.3 L1358.1 288.4 Z" fill="white" stroke="white" stroke-width="1.6" stroke-linejoin="round" filter="url(#city-second-edge)"/></mask>
+<mask id="mask-city-second-centre-east" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="1369.500" y="276.200" width="9.400" height="13.900"><path d="M1371.7 287.9 L1371.6 281.8 Q1371.6 278.6 1374 278.3 Q1376.5 279.1 1376.8 282.2 L1376.8 288 Z" fill="white" stroke="white" stroke-width="1.6" stroke-linejoin="round" filter="url(#city-second-edge)"/></mask>
+<mask id="mask-city-second-centre-side-west" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="1394.496" y="275.000" width="9.104" height="13.300"><path d="M1396.6 286.1 L1396.6 280.5 Q1396.5 277.7 1398.7 277.1 Q1401 277.7 1401.4 280.6 L1401.5 286.2 Z" fill="white" stroke="white" stroke-width="1.6" stroke-linejoin="round" filter="url(#city-second-edge)"/></mask>
+<mask id="mask-city-second-centre-side-east" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="1415.900" y="275.000" width="9.100" height="13.400"><path d="M1418 286.3 L1418 280.1 Q1418 277.7 1420.1 277.1 Q1422.6 277.7 1422.8 280.6 L1422.9 286.1 Z" fill="white" stroke="white" stroke-width="1.6" stroke-linejoin="round" filter="url(#city-second-edge)"/></mask>
+<mask id="mask-city-second-right-gable" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="1482.900" y="221.900" width="8.200" height="10.200"><path d="M1485 229.9 L1485.2 226.4 Q1485.8 224 1487.2 224 Q1488.8 225.1 1489 227.5 L1489 230 Z" fill="white" stroke="white" stroke-width="1.6" stroke-linejoin="round" filter="url(#city-second-edge)"/></mask>
+<mask id="mask-city-second-right-wing-west" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="1440.700" y="243.300" width="8.400" height="13.900"><path d="M1442.8 255.1 L1442.9 248.8 Q1443 245.9 1444.7 245.4 Q1446.8 245.9 1447 248.8 L1446.6 254.8 Z" fill="white" stroke="white" stroke-width="1.6" stroke-linejoin="round" filter="url(#city-second-edge)"/></mask>
+<mask id="mask-city-second-right-wing-east" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="1451.600" y="243.200" width="8.100" height="13.400"><path d="M1453.8 254.5 L1453.7 248.1 Q1453.7 245.9 1455.3 245.3 Q1457.4 245.9 1457.6 248.5 L1457.3 254.3 Z" fill="white" stroke="white" stroke-width="1.6" stroke-linejoin="round" filter="url(#city-second-edge)"/></mask>
+<mask id="mask-city-second-right-gate-west" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="1469.695" y="242.200" width="8.805" height="13.900"><path d="M1471.8 253.9 L1471.8 246.5 Q1471.7 244.7 1473.6 244.3 Q1475.8 244.9 1476.3 247.5 L1476.4 254 Z" fill="white" stroke="white" stroke-width="1.6" stroke-linejoin="round" filter="url(#city-second-edge)"/></mask>
+<mask id="mask-city-second-right-gate-centre" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="1482.400" y="241.500" width="9.600" height="14.600"><path d="M1484.5 253.7 L1484.5 246.7 Q1484.5 244 1487 243.6 Q1489.4 244.4 1489.9 247.4 L1489.7 254 Z" fill="white" stroke="white" stroke-width="1.6" stroke-linejoin="round" filter="url(#city-second-edge)"/></mask>
+<mask id="mask-city-second-right-gate-east" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="1493.200" y="242.100" width="8.500" height="13.700"><path d="M1495.6 253.7 L1495.3 246.8 Q1495.4 244.7 1497.3 244.2 Q1499.3 244.8 1499.6 247.5 L1499.6 253.7 Z" fill="white" stroke="white" stroke-width="1.6" stroke-linejoin="round" filter="url(#city-second-edge)"/></mask>
+<mask id="mask-city-second-right-front-west" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="1515.600" y="244.500" width="8.700" height="12.500"><path d="M1517.9 254.9 L1517.7 249.5 Q1517.7 247 1519.6 246.6 Q1521.9 247.1 1522.2 249.8 L1522.1 254.8 Z" fill="white" stroke="white" stroke-width="1.6" stroke-linejoin="round" filter="url(#city-second-edge)"/></mask>
+<mask id="mask-city-second-right-front-east" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="1535.700" y="244.900" width="7.400" height="12.300"><path d="M1538.1 255.1 L1537.8 249.3 Q1538 247.5 1539.2 247 Q1540.8 247.3 1541 249.5 L1540.7 254.9 Z" fill="white" stroke="white" stroke-width="1.6" stroke-linejoin="round" filter="url(#city-second-edge)"/></mask>
+<mask id="mask-city-second-right-lower-west" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="1515.496" y="268.800" width="9.104" height="16.000"><path d="M1517.6 282.7 L1517.6 275.4 Q1517.5 271.5 1520.0 270.9 Q1522.4 271.6 1522.5 275.4 L1522.3 281.9 Z" fill="white" stroke="white" stroke-width="1.6" stroke-linejoin="round" filter="url(#city-second-edge)"/></mask>
+<mask id="mask-city-second-right-lower-east" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="1536.400" y="268.300" width="8.500" height="14.000"><path d="M1538.6 280.2 L1538.5 273.7 Q1538.7 270.9 1540.8 270.4 Q1542.8 271.0 1542.8 274.3 L1542.7 279.7 Z" fill="white" stroke="white" stroke-width="1.6" stroke-linejoin="round" filter="url(#city-second-edge)"/></mask>
+<filter id="city-second-edge" x="-60%" y="-35%" width="220%" height="170%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation=".42"/></filter>
 
           <filter id="canopy-shadow" filterUnits="userSpaceOnUse" x="400" y="400" width="228" height="62">
             <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur"/>
@@ -108,184 +199,77 @@
         </defs>
         <!-- The genuine earliest matte background stays intact. Later brighter clean plates are never used as the scene base. -->
         <use href="#scene-matte"/>
+        <!-- The full flower heads were repainted as coherent forms; silhouette masks preserve surrounding scenery. -->
+        <g class="scene-repaired-flowers">
+          <use href="#scene-v11-revisions" mask="url(#mask-flower-left-v11)"/>
+          <use href="#scene-v11-left-flower" mask="url(#mask-flower-left-v11)"/>
+          <use href="#scene-v11-revisions" mask="url(#mask-flower-right-v11)"/>
+          <use href="#scene-v11-revisions" mask="url(#mask-flower-middle-v11)"/>
+        </g>
         <use href="#scene-local-clean" mask="url(#mask-original-object-cleanup)"/>
         <use href="#scene-micro-clean" mask="url(#mask-micro-stalk-cleanup)"/>
         <!-- A tiny contour samples adjacent clean floor where the removed pear stalk overlapped a loose leaf. -->
         <g mask="url(#mask-floor-stalk-only)"><use href="#scene-local-clean" transform="translate(0 34)"/></g>
+        <g class="scene-local-repairs">
+          <use href="#scene-local-repairs-v12" mask="url(#mask-left-leaf-v12)"/>
+          <use href="#scene-architecture-v13" mask="url(#mask-bridge-v13)"/>
+          <use href="#scene-local-repairs-v12" mask="url(#mask-floor-feather-v12)"/>
+          <use href="#scene-v15-stair-trim" mask="url(#mask-stair-trim-v15)"/>
+          <use href="#scene-local-repairs-v12" mask="url(#mask-floor-pear-v12)"/>
+          <use href="#scene-v14-pear" mask="url(#mask-pear-v14)"/>
+          <use href="#scene-local-repairs-v12" mask="url(#mask-leaf-underpaint-v12)"/>
+        </g>
         <g class="scene-transplanted-props">
           <use href="#scene-props" clip-path="url(#clip-transplant-theatre-wall)"/>
-          <use href="#scene-props" clip-path="url(#clip-transplant-canopy)"/>
+          <use href="#scene-v14-repairs" clip-path="url(#clip-transplant-canopy)"/>
           <!-- Keep the original wicker, handle, cloth and every hole between them. -->
           <use href="#scene-props" clip-path="url(#clip-transplant-yellow-pear)"/>
           <use href="#scene-props" clip-path="url(#clip-transplant-left-fruit)"/>
           <use href="#scene-props" clip-path="url(#clip-transplant-right-pear)"/>
           <use href="#scene-props" mask="url(#mask-fixed-fruit-stems)"/>
-          <ellipse cx="429" cy="849" rx="45" ry="5" fill="#483c45" opacity=".22" filter="url(#small-object-contact-shadow)"/>
-          <use href="#scene-props" clip-path="url(#clip-transplant-ground-pear)"/>
-          <path d="M523 781 L637 854 L859 779 L869 786 L639 865 L516 789 Z" fill="#453b49" opacity=".26" filter="url(#box-contact-shadow)"/>
-          <use href="#scene-props" clip-path="url(#clip-transplant-box-body)"/>
           <path d="M1178 639 L1330 654 L1341 649 L1334 664 L1187 650 Z" fill="#483c45" opacity=".20" filter="url(#small-object-contact-shadow)"/>
           <use href="#scene-props" clip-path="url(#clip-transplant-book)"/>
         </g>
-        <!-- Add warm emission only. The unlit city and sky are never replaced or dimmed. -->
-        <g class="scene-city-light" style="mix-blend-mode:screen">
-  <ellipse cx="1328" cy="203.4" rx="8.1" ry="13.65" fill="url(#warm-window-spill)"/>
-  <path d="M1325.12 209.9 L1330.88 209.9 L1335.2 220.04 L1320.8 220.04Z" fill="url(#warm-window-projection)"/>
-  <ellipse cx="1339.7" cy="203.6" rx="6.75" ry="13.65" fill="url(#warm-window-spill)"/>
-  <path d="M1337.3 210.1 L1342.1 210.1 L1345.7 220.24 L1333.7 220.24Z" fill="url(#warm-window-projection)"/>
-  <ellipse cx="1487.4" cy="227.4" rx="6.75" ry="7.35" fill="url(#warm-window-spill)"/>
-  <path d="M1485 230.9 L1489.8 230.9 L1493.4 236.36 L1481.4 236.36Z" fill="url(#warm-window-projection)"/>
-  <ellipse cx="1312.9" cy="232.1" rx="8.1" ry="11.55" fill="url(#warm-window-spill)"/>
-  <path d="M1310.02 237.6 L1315.78 237.6 L1320.1 246.18 L1305.7 246.18Z" fill="url(#warm-window-projection)"/>
-  <ellipse cx="1287.5" cy="248.9" rx="12.6" ry="13.65" fill="url(#warm-window-spill)"/>
-  <path d="M1284.14 255.4 L1290.86 255.4 L1295.9 265.54 L1279.1 265.54Z" fill="url(#warm-window-projection)"/>
-  <ellipse cx="1255.4" cy="250.1" rx="12.6" ry="13.65" fill="url(#warm-window-spill)"/>
-  <path d="M1252.04 256.6 L1258.76 256.6 L1263.8 266.74 L1247 266.74Z" fill="url(#warm-window-projection)"/>
-  <ellipse cx="1273.4" cy="249.4" rx="12.6" ry="12.6" fill="url(#warm-window-spill)"/>
-  <path d="M1270.04 255.4 L1276.76 255.4 L1281.8 264.76 L1265 264.76Z" fill="url(#warm-window-projection)"/>
-  <ellipse cx="1473.6" cy="250.5" rx="12.6" ry="12.6" fill="url(#warm-window-spill)"/>
-  <path d="M1470.24 256.5 L1476.96 256.5 L1482 265.86 L1465.2 265.86Z" fill="url(#warm-window-projection)"/>
-  <ellipse cx="1486.5" cy="250.3" rx="12.6" ry="12.6" fill="url(#warm-window-spill)"/>
-  <path d="M1483.14 256.3 L1489.86 256.3 L1494.9 265.66 L1478.1 265.66Z" fill="url(#warm-window-projection)"/>
-  <ellipse cx="1497.8" cy="250.3" rx="14.4" ry="12.6" fill="url(#warm-window-spill)"/>
-  <path d="M1493.96 256.3 L1501.64 256.3 L1507.4 265.66 L1488.2 265.66Z" fill="url(#warm-window-projection)"/>
-  <ellipse cx="1444.7" cy="250.7" rx="12.6" ry="11.55" fill="url(#warm-window-spill)"/>
-  <path d="M1441.34 256.2 L1448.06 256.2 L1453.1 264.78 L1436.3 264.78Z" fill="url(#warm-window-projection)"/>
-  <ellipse cx="1456" cy="250.1" rx="10.8" ry="10.5" fill="url(#warm-window-spill)"/>
-  <path d="M1453.12 255.1 L1458.88 255.1 L1463.2 262.9 L1448.8 262.9Z" fill="url(#warm-window-projection)"/>
-  <ellipse cx="1519.5" cy="251.7" rx="12.6" ry="12.6" fill="url(#warm-window-spill)"/>
-  <path d="M1516.14 257.7 L1522.86 257.7 L1527.9 267.06 L1511.1 267.06Z" fill="url(#warm-window-projection)"/>
-  <ellipse cx="1538.9" cy="252.2" rx="10.8" ry="8.4" fill="url(#warm-window-spill)"/>
-  <path d="M1536.02 256.2 L1541.78 256.2 L1546.1 262.44 L1531.7 262.44Z" fill="url(#warm-window-projection)"/>
-  <ellipse cx="1231.9" cy="267.6" rx="7.2" ry="7.35" fill="url(#warm-window-spill)"/>
-  <path d="M1229.98 271.1 L1233.82 271.1 L1236.7 276.56 L1227.1 276.56Z" fill="url(#warm-window-projection)"/>
-  <ellipse cx="1520.1" cy="277.7" rx="14.4" ry="15.75" fill="url(#warm-window-spill)"/>
-  <path d="M1516.26 285.2 L1523.94 285.2 L1529.7 296.9 L1510.5 296.9Z" fill="url(#warm-window-projection)"/>
-  <ellipse cx="1541.2" cy="276.3" rx="12.6" ry="13.65" fill="url(#warm-window-spill)"/>
-  <path d="M1537.84 282.8 L1544.56 282.8 L1549.6 292.94 L1532.8 292.94Z" fill="url(#warm-window-projection)"/>
-  <ellipse cx="1221.6" cy="277" rx="9" ry="8.4" fill="url(#warm-window-spill)"/>
-  <path d="M1219.2 281 L1224 281 L1227.6 287.24 L1215.6 287.24Z" fill="url(#warm-window-projection)"/>
-  <ellipse cx="1399.6" cy="282.9" rx="18" ry="13.65" fill="url(#warm-window-spill)"/>
-  <path d="M1394.8 289.4 L1404.4 289.4 L1411.6 299.54 L1387.6 299.54Z" fill="url(#warm-window-projection)"/>
-  <ellipse cx="1418.5" cy="282.3" rx="12.6" ry="12.6" fill="url(#warm-window-spill)"/>
-  <path d="M1415.14 288.3 L1421.86 288.3 L1426.9 297.66 L1410.1 297.66Z" fill="url(#warm-window-projection)"/>
-  <ellipse cx="1353.9" cy="284.6" rx="18" ry="14.7" fill="url(#warm-window-spill)"/>
-  <path d="M1349.1 291.6 L1358.7 291.6 L1365.9 302.52 L1341.9 302.52Z" fill="url(#warm-window-projection)"/>
-  <ellipse cx="1372.9" cy="284.2" rx="16.2" ry="14.7" fill="url(#warm-window-spill)"/>
-  <path d="M1368.58 291.2 L1377.22 291.2 L1383.7 302.12 L1362.1 302.12Z" fill="url(#warm-window-projection)"/>
-  <ellipse cx="1335.4" cy="284.5" rx="12.6" ry="13.65" fill="url(#warm-window-spill)"/>
-  <path d="M1332.04 291 L1338.76 291 L1343.8 301.14 L1327 301.14Z" fill="url(#warm-window-projection)"/>
-  <ellipse cx="1167" cy="294.8" rx="10.8" ry="11.55" fill="url(#warm-window-spill)"/>
-  <path d="M1164.12 300.3 L1169.88 300.3 L1174.2 308.88 L1159.8 308.88Z" fill="url(#warm-window-projection)"/>
-  <ellipse cx="1178" cy="294.2" rx="10.8" ry="10.5" fill="url(#warm-window-spill)"/>
-  <path d="M1175.12 299.2 L1180.88 299.2 L1185.2 307 L1170.8 307Z" fill="url(#warm-window-projection)"/>
-  <ellipse cx="1193.4" cy="294.6" rx="12.6" ry="11.55" fill="url(#warm-window-spill)"/>
-  <path d="M1190.04 300.1 L1196.76 300.1 L1201.8 308.68 L1185 308.68Z" fill="url(#warm-window-projection)"/>
-  <ellipse cx="1275.9" cy="309.2" rx="10.8" ry="10.5" fill="url(#warm-window-spill)"/>
-  <path d="M1273.02 314.2 L1278.78 314.2 L1283.1 322 L1268.7 322Z" fill="url(#warm-window-projection)"/>
-  <ellipse cx="1284.6" cy="309.1" rx="9" ry="10.5" fill="url(#warm-window-spill)"/>
-  <path d="M1282.2 314.1 L1287 314.1 L1290.6 321.9 L1278.6 321.9Z" fill="url(#warm-window-projection)"/>
-  <ellipse cx="1337" cy="315.5" rx="18" ry="23.1" fill="url(#warm-window-spill)"/>
-  <path d="M1332.2 326.5 L1341.8 326.5 L1349 343.66 L1325 343.66Z" fill="url(#warm-window-projection)"/>
-  <ellipse cx="1355.2" cy="312.9" rx="18" ry="21" fill="url(#warm-window-spill)"/>
-  <path d="M1350.4 322.9 L1360 322.9 L1367.2 338.5 L1343.2 338.5Z" fill="url(#warm-window-projection)"/>
-  <ellipse cx="1371.5" cy="308.7" rx="18" ry="10.5" fill="url(#warm-window-spill)"/>
-  <path d="M1366.7 313.7 L1376.3 313.7 L1383.5 321.5 L1359.5 321.5Z" fill="url(#warm-window-projection)"/>
-  <ellipse cx="1229" cy="310.7" rx="10.8" ry="11.55" fill="url(#warm-window-spill)"/>
-  <path d="M1226.12 316.2 L1231.88 316.2 L1236.2 324.78 L1221.8 324.78Z" fill="url(#warm-window-projection)"/>
-  <ellipse cx="1242" cy="310.9" rx="10.8" ry="12.6" fill="url(#warm-window-spill)"/>
-  <path d="M1239.12 316.9 L1244.88 316.9 L1249.2 326.26 L1234.8 326.26Z" fill="url(#warm-window-projection)"/>
-  <ellipse cx="1256.8" cy="311.1" rx="12.6" ry="12.6" fill="url(#warm-window-spill)"/>
-  <path d="M1253.44 317.1 L1260.16 317.1 L1265.2 326.46 L1248.4 326.46Z" fill="url(#warm-window-projection)"/>
-  <ellipse cx="1170" cy="321" rx="14.4" ry="15.75" fill="url(#warm-window-spill)"/>
-  <path d="M1166.16 328.5 L1173.84 328.5 L1179.6 340.2 L1160.4 340.2Z" fill="url(#warm-window-projection)"/>
-  <ellipse cx="1234.4" cy="335.9" rx="16.2" ry="13.65" fill="url(#warm-window-spill)"/>
-  <path d="M1230.08 342.4 L1238.72 342.4 L1245.2 352.54 L1223.6 352.54Z" fill="url(#warm-window-projection)"/>
-  <ellipse cx="1257" cy="338.1" rx="18" ry="18.9" fill="url(#warm-window-spill)"/>
-  <path d="M1252.2 347.1 L1261.8 347.1 L1269 361.14 L1245 361.14Z" fill="url(#warm-window-projection)"/>
-  <path d="M1325 209.9V199.9 Q1325 196.9 1328 196.9 Q1331 196.9 1331 199.9 V209.9Z" fill="url(#warm-window-core)" opacity=".88"/>
-  <ellipse cx="1328" cy="210.7" rx="5.1" ry="1.4" fill="url(#warm-window-spill)"/>
-  <path d="M1337.2 210.1V199.6 Q1337.2 197.1 1339.7 197.1 Q1342.2 197.1 1342.2 199.6 V210.1Z" fill="url(#warm-window-core)" opacity=".88"/>
-  <ellipse cx="1339.7" cy="210.9" rx="4.25" ry="1.4" fill="url(#warm-window-spill)"/>
-  <ellipse cx="1487.2" cy="226.9" rx="2.2" ry="3.4" transform="rotate(12 1487.2 226.9)" fill="url(#warm-window-core)" opacity=".88"/>
-  <ellipse cx="1487.4" cy="231.7" rx="4.25" ry="1.4" fill="url(#warm-window-spill)"/>
-  <ellipse cx="1313" cy="228.4" rx="2" ry="3.1" transform="rotate(12 1313 228.4)" fill="url(#warm-window-core)" opacity=".88"/>
-  <ellipse cx="1312.9" cy="238.4" rx="5.1" ry="1.4" fill="url(#warm-window-spill)"/>
-  <path d="M1284 255.4V245.9 Q1284 242.4 1287.5 242.4 Q1291 242.4 1291 245.9 V255.4Z" fill="url(#warm-window-core)" opacity=".88"/>
-  <ellipse cx="1287.5" cy="256.2" rx="5.95" ry="1.4" fill="url(#warm-window-spill)"/>
-  <path d="M1251.9 256.6V247.1 Q1251.9 243.6 1255.4 243.6 Q1258.9 243.6 1258.9 247.1 V256.6Z" fill="url(#warm-window-core)" opacity=".88"/>
-  <ellipse cx="1255.4" cy="257.4" rx="5.95" ry="1.4" fill="url(#warm-window-spill)"/>
-  <path d="M1269.9 255.4V246.9 Q1269.9 243.4 1273.4 243.4 Q1276.9 243.4 1276.9 246.9 V255.4Z" fill="url(#warm-window-core)" opacity=".88"/>
-  <ellipse cx="1273.4" cy="256.2" rx="5.95" ry="1.4" fill="url(#warm-window-spill)"/>
-  <path d="M1470.1 256.5V248 Q1470.1 244.5 1473.6 244.5 Q1477.1 244.5 1477.1 248 V256.5Z" fill="url(#warm-window-core)" opacity=".88"/>
-  <ellipse cx="1473.6" cy="257.3" rx="5.95" ry="1.4" fill="url(#warm-window-spill)"/>
-  <path d="M1483 256.3V247.8 Q1483 244.3 1486.5 244.3 Q1490 244.3 1490 247.8 V256.3Z" fill="url(#warm-window-core)" opacity=".88"/>
-  <ellipse cx="1486.5" cy="257.1" rx="5.95" ry="1.4" fill="url(#warm-window-spill)"/>
-  <path d="M1493.8 256.3V248.3 Q1493.8 244.3 1497.8 244.3 Q1501.8 244.3 1501.8 248.3 V256.3Z" fill="url(#warm-window-core)" opacity=".88"/>
-  <ellipse cx="1497.8" cy="257.1" rx="6.8" ry="1.4" fill="url(#warm-window-spill)"/>
-  <path d="M1441.2 256.2V248.7 Q1441.2 245.2 1444.7 245.2 Q1448.2 245.2 1448.2 248.7 V256.2Z" fill="url(#warm-window-core)" opacity=".88"/>
-  <ellipse cx="1444.7" cy="257" rx="5.95" ry="1.4" fill="url(#warm-window-spill)"/>
-  <path d="M1453 255.1V248.1 Q1453 245.1 1456 245.1 Q1459 245.1 1459 248.1 V255.1Z" fill="url(#warm-window-core)" opacity=".88"/>
-  <ellipse cx="1456" cy="255.9" rx="5.1" ry="1.4" fill="url(#warm-window-spill)"/>
-  <path d="M1516 257.7V249.2 Q1516 245.7 1519.5 245.7 Q1523 245.7 1523 249.2 V257.7Z" fill="url(#warm-window-core)" opacity=".88"/>
-  <ellipse cx="1519.5" cy="258.5" rx="5.95" ry="1.4" fill="url(#warm-window-spill)"/>
-  <path d="M1535.9 256.2V251.2 Q1535.9 248.2 1538.9 248.2 Q1541.9 248.2 1541.9 251.2 V256.2Z" fill="url(#warm-window-core)" opacity=".88"/>
-  <ellipse cx="1538.9" cy="257" rx="5.1" ry="1.4" fill="url(#warm-window-spill)"/>
-  <path d="M1229.9 271.1V266.1 Q1229.9 264.1 1231.9 264.1 Q1233.9 264.1 1233.9 266.1 V271.1Z" fill="url(#warm-window-core)" opacity=".88"/>
-  <ellipse cx="1231.9" cy="271.9" rx="3.4" ry="1.4" fill="url(#warm-window-spill)"/>
-  <path d="M1516.1 285.2V274.2 Q1516.1 270.2 1520.1 270.2 Q1524.1 270.2 1524.1 274.2 V285.2Z" fill="url(#warm-window-core)" opacity=".88"/>
-  <ellipse cx="1520.1" cy="286" rx="6.8" ry="1.4" fill="url(#warm-window-spill)"/>
-  <path d="M1537.7 282.8V273.3 Q1537.7 269.8 1541.2 269.8 Q1544.7 269.8 1544.7 273.3 V282.8Z" fill="url(#warm-window-core)" opacity=".88"/>
-  <ellipse cx="1541.2" cy="283.6" rx="5.95" ry="1.4" fill="url(#warm-window-spill)"/>
-  <path d="M1219.1 281V275.5 Q1219.1 273 1221.6 273 Q1224.1 273 1224.1 275.5 V281Z" fill="url(#warm-window-core)" opacity=".88"/>
-  <ellipse cx="1221.6" cy="281.8" rx="4.25" ry="1.4" fill="url(#warm-window-spill)"/>
-  <path d="M1394.6 289.4V281.4 Q1394.6 276.4 1399.6 276.4 Q1404.6 276.4 1404.6 281.4 V289.4Z" fill="url(#warm-window-core)" opacity=".88"/>
-  <ellipse cx="1399.6" cy="290.2" rx="8.5" ry="1.4" fill="url(#warm-window-spill)"/>
-  <path d="M1415 288.3V279.8 Q1415 276.3 1418.5 276.3 Q1422 276.3 1422 279.8 V288.3Z" fill="url(#warm-window-core)" opacity=".88"/>
-  <ellipse cx="1418.5" cy="289.1" rx="5.95" ry="1.4" fill="url(#warm-window-spill)"/>
-  <path d="M1348.9 291.6V282.6 Q1348.9 277.6 1353.9 277.6 Q1358.9 277.6 1358.9 282.6 V291.6Z" fill="url(#warm-window-core)" opacity=".88"/>
-  <ellipse cx="1353.9" cy="292.4" rx="8.5" ry="1.4" fill="url(#warm-window-spill)"/>
-  <path d="M1368.4 291.2V281.7 Q1368.4 277.2 1372.9 277.2 Q1377.4 277.2 1377.4 281.7 V291.2Z" fill="url(#warm-window-core)" opacity=".88"/>
-  <ellipse cx="1372.9" cy="292" rx="7.65" ry="1.4" fill="url(#warm-window-spill)"/>
-  <path d="M1331.9 291V281.5 Q1331.9 278 1335.4 278 Q1338.9 278 1338.9 281.5 V291Z" fill="url(#warm-window-core)" opacity=".88"/>
-  <ellipse cx="1335.4" cy="291.8" rx="5.95" ry="1.4" fill="url(#warm-window-spill)"/>
-  <path d="M1164 300.3V292.3 Q1164 289.3 1167 289.3 Q1170 289.3 1170 292.3 V300.3Z" fill="url(#warm-window-core)" opacity=".88"/>
-  <ellipse cx="1167" cy="301.1" rx="5.1" ry="1.4" fill="url(#warm-window-spill)"/>
-  <path d="M1175 299.2V292.2 Q1175 289.2 1178 289.2 Q1181 289.2 1181 292.2 V299.2Z" fill="url(#warm-window-core)" opacity=".88"/>
-  <ellipse cx="1178" cy="300" rx="5.1" ry="1.4" fill="url(#warm-window-spill)"/>
-  <path d="M1189.9 300.1V292.6 Q1189.9 289.1 1193.4 289.1 Q1196.9 289.1 1196.9 292.6 V300.1Z" fill="url(#warm-window-core)" opacity=".88"/>
-  <ellipse cx="1193.4" cy="300.9" rx="5.95" ry="1.4" fill="url(#warm-window-spill)"/>
-  <path d="M1272.9 314.2V307.2 Q1272.9 304.2 1275.9 304.2 Q1278.9 304.2 1278.9 307.2 V314.2Z" fill="url(#warm-window-core)" opacity=".88"/>
-  <ellipse cx="1275.9" cy="315" rx="5.1" ry="1.4" fill="url(#warm-window-spill)"/>
-  <path d="M1282.1 314.1V306.6 Q1282.1 304.1 1284.6 304.1 Q1287.1 304.1 1287.1 306.6 V314.1Z" fill="url(#warm-window-core)" opacity=".88"/>
-  <ellipse cx="1284.6" cy="314.9" rx="4.25" ry="1.4" fill="url(#warm-window-spill)"/>
-  <path d="M1332 326.5V309.5 Q1332 304.5 1337 304.5 Q1342 304.5 1342 309.5 V326.5Z" fill="url(#warm-window-core)" opacity=".88"/>
-  <ellipse cx="1337" cy="327.3" rx="8.5" ry="1.4" fill="url(#warm-window-spill)"/>
-  <path d="M1350.2 322.9V307.9 Q1350.2 302.9 1355.2 302.9 Q1360.2 302.9 1360.2 307.9 V322.9Z" fill="url(#warm-window-core)" opacity=".88"/>
-  <ellipse cx="1355.2" cy="323.7" rx="8.5" ry="1.4" fill="url(#warm-window-spill)"/>
-  <path d="M1366.5 313.7V308.7 Q1366.5 303.7 1371.5 303.7 Q1376.5 303.7 1376.5 308.7 V313.7Z" fill="url(#warm-window-core)" opacity=".88"/>
-  <ellipse cx="1371.5" cy="314.5" rx="8.5" ry="1.4" fill="url(#warm-window-spill)"/>
-  <path d="M1226 316.2V308.2 Q1226 305.2 1229 305.2 Q1232 305.2 1232 308.2 V316.2Z" fill="url(#warm-window-core)" opacity=".88"/>
-  <ellipse cx="1229" cy="317" rx="5.1" ry="1.4" fill="url(#warm-window-spill)"/>
-  <path d="M1239 316.9V307.9 Q1239 304.9 1242 304.9 Q1245 304.9 1245 307.9 V316.9Z" fill="url(#warm-window-core)" opacity=".88"/>
-  <ellipse cx="1242" cy="317.7" rx="5.1" ry="1.4" fill="url(#warm-window-spill)"/>
-  <path d="M1253.3 317.1V308.6 Q1253.3 305.1 1256.8 305.1 Q1260.3 305.1 1260.3 308.6 V317.1Z" fill="url(#warm-window-core)" opacity=".88"/>
-  <ellipse cx="1256.8" cy="317.9" rx="5.95" ry="1.4" fill="url(#warm-window-spill)"/>
-  <path d="M1166 328.5V317.5 Q1166 313.5 1170 313.5 Q1174 313.5 1174 317.5 V328.5Z" fill="url(#warm-window-core)" opacity=".88"/>
-  <ellipse cx="1170" cy="329.3" rx="6.8" ry="1.4" fill="url(#warm-window-spill)"/>
-  <path d="M1229.9 342.4V333.9 Q1229.9 329.4 1234.4 329.4 Q1238.9 329.4 1238.9 333.9 V342.4Z" fill="url(#warm-window-core)" opacity=".88"/>
-  <ellipse cx="1234.4" cy="343.2" rx="7.65" ry="1.4" fill="url(#warm-window-spill)"/>
-  <path d="M1252 347.1V334.1 Q1252 329.1 1257 329.1 Q1262 329.1 1262 334.1 V347.1Z" fill="url(#warm-window-core)" opacity=".88"/>
-  <ellipse cx="1257" cy="347.9" rx="8.5" ry="1.4" fill="url(#warm-window-spill)"/>
+        <!-- Restore the second painted honey light through the real old window apertures. -->
+<g class="scene-city-light" data-light-version="second-painted-2026-11-25" style="mix-blend-mode:normal;isolation:isolate">
+  <g data-window="tower-front" mask="url(#mask-city-second-tower-front)"><use href="#city-light-second-source" transform="matrix(0.58333333 0 0 0.76923077 552.98333333 46.43846154)"/></g>
+  <g data-window="tower-side" mask="url(#mask-city-second-tower-side)"><use href="#city-light-second-source" transform="matrix(0.64000000 0 0 0.80769231 483.09200000 38.60384615)"/></g>
+  <g data-window="left-gable" mask="url(#mask-city-second-left-gable)"><use href="#city-light-second-source" transform="matrix(0.63333333 0 0 0.49824047 483.39666667 112.61806452)"/></g>
+  <g data-window="left-upper-west" mask="url(#mask-city-second-left-upper-west)"><use href="#city-light-second-source" transform="matrix(0.70219780 0 0 0.76923077 374.30318681 57.21538462)"/></g>
+  <g data-window="left-upper-centre" mask="url(#mask-city-second-left-upper-centre)"><use href="#city-light-second-source" transform="matrix(0.72857143 0 0 0.96666667 345.38714286 7.01333333)"/></g>
+  <g data-window="left-upper-east" mask="url(#mask-city-second-left-upper-east)"><use href="#city-light-second-source" transform="matrix(0.68571429 0 0 0.78461538 404.74285714 53.90923077)"/></g>
+  <g data-window="rear-left-gable" mask="url(#mask-city-second-rear-left-gable)"><use href="#city-light-second-source" transform="matrix(0.74380952 0 0 0.90000000 313.80276190 26.20000000)"/></g>
+  <g data-window="rear-left-tiny" mask="url(#mask-city-second-rear-left-tiny)"><use href="#city-light-second-source" transform="matrix(0.67692308 0 0 0.57142857 398.34461538 112.78571429)"/></g>
+  <g data-window="left-front-west" mask="url(#mask-city-second-left-front-west)"><use href="#city-light-second-source" transform="matrix(0.60000000 0 0 0.77272727 468.90000000 65.45000000)"/></g>
+  <g data-window="left-front-centre" mask="url(#mask-city-second-left-front-centre)"><use href="#city-light-second-source" transform="matrix(0.55087719 0 0 0.77000000 529.51403509 66.11600000)"/></g>
+  <g data-window="left-front-east" mask="url(#mask-city-second-left-front-east)"><use href="#city-light-second-source" transform="matrix(0.50300752 0 0 0.74545455 593.15030075 73.88909091)"/></g>
+  <g data-window="front-left-west" mask="url(#mask-city-second-front-left-west)"><use href="#city-light-second-source" transform="matrix(0.78333333 0 0 0.80000000 266.63333333 62.04000000)"/></g>
+  <g data-window="front-left-centre" mask="url(#mask-city-second-front-left-centre)"><use href="#city-light-second-source" transform="matrix(0.76666667 0 0 0.80833333 290.30000000 59.53916667)"/></g>
+  <g data-window="front-left-east" mask="url(#mask-city-second-front-left-east)"><use href="#city-light-second-source" transform="matrix(0.70000000 0 0 0.79166667 377.19000000 64.56250000)"/></g>
+  <g data-window="front-left-side-west" mask="url(#mask-city-second-front-left-side-west)"><use href="#city-light-second-source" transform="matrix(0.51666667 0 0 0.78000000 617.83500000 67.42400000)"/></g>
+  <g data-window="front-left-side-east" mask="url(#mask-city-second-front-left-side-east)"><use href="#city-light-second-source" transform="matrix(0.46153846 0 0 0.52000000 693.26153846 147.46800000)"/></g>
+  <g data-window="centre-west" mask="url(#mask-city-second-centre-west)"><use href="#city-light-second-source" transform="matrix(0.81428571 0 0 0.75384615 248.75285714 69.03076923)"/></g>
+  <g data-window="centre-middle" mask="url(#mask-city-second-centre-middle)"><use href="#city-light-second-source" transform="matrix(0.58000000 0 0 0.72142857 569.93800000 78.13142857)"/></g>
+  <g data-window="centre-east" mask="url(#mask-city-second-centre-east)"><use href="#city-light-second-source" transform="matrix(0.57777778 0 0 0.69285714 580.96888889 86.24000000)"/></g>
+  <g data-window="centre-side-west" mask="url(#mask-city-second-centre-side-west)"><use href="#city-light-second-source" transform="matrix(0.49043478 0 0 0.70000000 712.63530435 83.62000000)"/></g>
+  <g data-window="centre-side-east" mask="url(#mask-city-second-centre-side-east)"><use href="#city-light-second-source" transform="matrix(0.70000000 0 0 0.76666667 427.50000000 65.27000000)"/></g>
+  <g data-window="right-gable" mask="url(#mask-city-second-right-gable)"><use href="#city-light-second-source" transform="matrix(0.80000000 0 0 0.85714286 297.08000000 32.08571429)"/></g>
+  <g data-window="right-wing-west" mask="url(#mask-city-second-right-wing-west)"><use href="#city-light-second-source" transform="matrix(0.60000000 0 0 0.88181818 578.08000000 29.17818182)"/></g>
+  <g data-window="right-wing-east" mask="url(#mask-city-second-right-wing-east)"><use href="#city-light-second-source" transform="matrix(0.65000000 0 0 0.92000000 509.25000000 19.80800000)"/></g>
+  <g data-window="right-gate-west" mask="url(#mask-city-second-right-gate-west)"><use href="#city-light-second-source" transform="matrix(0.65785714 0 0 0.80833333 504.67921429 46.66250000)"/></g>
+  <g data-window="right-gate-centre" mask="url(#mask-city-second-right-gate-centre)"><use href="#city-light-second-source" transform="matrix(0.77142857 0 0 0.86666667 340.47142857 31.87333333)"/></g>
+  <g data-window="right-gate-east" mask="url(#mask-city-second-right-gate-east)"><use href="#city-light-second-source" transform="matrix(0.53750000 0 0 0.79166667 692.38250000 50.79583333)"/></g>
+  <g data-window="right-front-west" mask="url(#mask-city-second-right-front-west)"><use href="#city-light-second-source" transform="matrix(0.64285714 0 0 0.69166667 543.12857143 76.65750000)"/></g>
+  <g data-window="right-front-east" mask="url(#mask-city-second-right-front-east)"><use href="#city-light-second-source" transform="matrix(0.53333333 0 0 1.01250000 718.65333333 -4.30250000)"/></g>
+  <g data-window="right-lower-west" mask="url(#mask-city-second-right-lower-west)"><use href="#city-light-second-source" transform="matrix(0.61298077 0 0 0.78666667 588.25600962 58.34266667)"/></g>
+  <g data-window="right-lower-east" mask="url(#mask-city-second-right-lower-east)"><use href="#city-light-second-source" transform="matrix(0.61428571 0 0 0.75384615 593.91285714 67.01230769)"/></g>
 </g>
         <g class="scene-string" style="--string-origin:832px 90px">
           <path d="M832 90V256" fill="none" stroke="#b79d7d" stroke-width="1.3"/>
         </g>
         <g class="scene-bird">
-          <!-- Bird and envelope were painted together and move as one complete paper actor. -->
-          <g transform="matrix(0.21013114 -0.01127347 0.01127347 0.21013114 641.035828 171.194892)">
-            <image href="./assets/art/pigeon-envelope.png" width="1774" height="887" clip-path="url(#clip-pigeon-envelope)"/>
-          </g>
+          <!-- Original pigeon identity and corrected envelope were painted together, held directly at the beak. -->
+          <g filter="url(#bird-paper-shadow-v11)"><use href="#scene-v11-revisions" mask="url(#mask-bird-v11)"/></g>
         </g>
         <!-- Both paper panels are closed at rest and slide laterally behind the wooden frame. -->
         <g clip-path="url(#clip-curtain-aperture)">
@@ -299,11 +283,15 @@
         <!-- Complete pear first, then the same painted wicker rim. No gap and no rectangular shadow. -->
         <g class="scene-pear"><svg x="155" y="562" width="96" height="140" viewBox="92 310 324 472" preserveAspectRatio="xMidYMid meet" overflow="visible"><use href="#paper-props" clip-path="url(#clip-pear-edge)"/></svg></g>
         <use href="#scene-matte" clip-path="url(#clip-basket-front)"/>
+        <!-- The complete box shares one scale around its floor anchor, including the lid, cards and contact shadow. -->
+        <g id="scene-tarot-box" transform="matrix(0.75 0 0 0.75 173 214)">
+          <path d="M523 781 L637 854 L859 779 L869 786 L639 865 L516 789 Z" fill="#453b49" opacity=".26" filter="url(#box-contact-shadow)"/>
+          <use href="#scene-props" clip-path="url(#clip-transplant-box-body)"/>
         <!-- The rear hinge stays attached throughout the turn; the inner face was painted with the whole open box. -->
         <g class="scene-hinged-lid" data-box-outer data-box-source-origin="531 697" data-box-source-hinge="205 -55" data-box-source-depth="106 69">
-          <g clip-path="url(#clip-box-outer-fit)">
-            <g transform="matrix(0.9715754675 -0.0080492598 0.0126604318 0.9188886678 13.4838075813 64.4249577157)"><use href="#scene-box-closed" clip-path="url(#clip-box-outer-a)"/></g>
-            <g transform="matrix(0.9721497568 -0.0086859912 -0.0350626652 0.9718006650 46.2552007844 28.0903529713)"><use href="#scene-box-closed" clip-path="url(#clip-box-outer-b)"/></g>
+          <g clip-path="url(#clip-box-v14-lid-silhouette)">
+            <g clip-path="url(#clip-box-v14-lid-a)"><use href="#scene-box-exterior-v14" transform="matrix(1.166190218651 0.01220737078 -0.274202271498 1.187669010276 83.350652862551 -166.659970640501)"/></g>
+            <g clip-path="url(#clip-box-v14-lid-b)"><use href="#scene-box-exterior-v14" transform="matrix(1.167769242828 0.012227621884 -0.055902179025 1.190468725506 -75.026853738831 -168.69117416523)"/></g>
           </g>
         </g>
         <g class="scene-hinged-lid" data-box-inner data-box-source-origin="531 697" data-box-source-hinge="205 -55" data-box-source-depth="48.057485 -186" opacity="0">
@@ -319,12 +307,19 @@
             <use href="#paper-card-back" x="714" y="710" width="64.4" height="128" transform="rotate(7 746.2 774)"/>
           </g>
         </g>
-        <use href="#scene-props" clip-path="url(#clip-box-front)"/>
+        <g data-box-exterior-v14="front" clip-path="url(#clip-box-v14-wall-silhouette)">
+            <g clip-path="url(#clip-box-v14-wall-left-a)"><use href="#scene-box-exterior-v14" transform="matrix(1.139037433155 -0.007910402583 0 1.184905660377 -99.957219251337 -153.53102613258)"/></g>
+            <g clip-path="url(#clip-box-v14-wall-left-b)"><use href="#scene-box-exterior-v14" transform="matrix(1.205451761103 -0.003287391526 -0.045492598264 1.181738982474 -103.894640122512 -153.805104645227)"/></g>
+            <g clip-path="url(#clip-box-v14-wall-right-a)"><use href="#scene-box-exterior-v14" transform="matrix(1.200439431668 0.006840486304 0.03695620331 1.165284898198 -168.454716566574 -147.800087886334)"/></g>
+            <g clip-path="url(#clip-box-v14-wall-right-b)"><use href="#scene-box-exterior-v14" transform="matrix(1.203191489362 0.005379365717 0 1.184905660377 -141.464893617021 -162.129506222401)"/></g>
+        </g>
+        </g>
         <!-- A single long ribbon passes through a fixed page slit; the concealed tail moves with it. -->
         <g clip-path="url(#clip-bookmark-exit)">
           <g class="scene-bookmark"><g transform="rotate(16 1223 624)"><g transform="matrix(0.195804195804 0 0 0.196211096076 935.657342657343 516.182679296346)"><use href="#paper-props" clip-path="url(#clip-bookmark-source)"/></g></g></g>
         </g>
-        <g class="scene-petal" style="--petal-origin:1026px 805px"><use href="#scene-original" clip-path="url(#clip-petal)"/></g>
+        <!-- The former floor-feather entry now lives on the existing curled leaf beside the right flower. -->
+        <g class="scene-leaf" style="--leaf-origin:1410px 431px"><g filter="url(#leaf-paper-shadow-v12)"><use href="#scene-original" mask="url(#mask-pink-leaf-v12)"/></g></g>
       </svg>
       <button class="hotspot hotspot-food" data-tool="recipe" aria-label="菜谱"></button>
       <button class="hotspot hotspot-movie" data-tool="movie" aria-label="电影"></button>
@@ -332,7 +327,7 @@
       <button class="hotspot hotspot-city" data-tool="city" aria-label="四小时城市"></button>
       <button class="hotspot hotspot-book" data-tool="reader" aria-label="阅读"></button>
       <button class="hotspot hotspot-tarot" data-tool="tarot" aria-label="塔罗"></button>
-      <button class="hotspot hotspot-petal" data-tool="directory" aria-label="全部工具"></button>
+      <button class="hotspot hotspot-leaf" data-tool="directory" aria-label="全部工具"></button>
     </div>
   </main>
   <dialog id="tool-dialog" class="tool-dialog" aria-label="展开的工具">
@@ -341,6 +336,6 @@
     </button>
     <div id="tool-content" class="tool-content"></div>
   </dialog>
-  <script type="module" src="./js/app.js?v=10"></script>
+  <script type="module" src="./js/app.js?v=16"></script>
 </body>
 </html>

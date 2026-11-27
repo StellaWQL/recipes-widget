@@ -1,0 +1,381 @@
+{
+"base": "images/",
+"generated": "2026-11-27",
+"items": {
+"嘉善县": {
+"file": "web/01_嘉善.webp"
+},
+"平湖市": {
+"file": "web/02_平湖.webp"
+},
+"嘉兴市区": {
+"file": "web/03_嘉兴.webp"
+},
+"海盐县": {
+"file": "web/04_海盐.webp"
+},
+"海宁市": {
+"file": "web/05_海宁.webp"
+},
+"桐乡市": {
+"file": "web/06_桐乡.webp"
+},
+"南浔区": {
+"file": "web/07_南浔.webp"
+},
+"慈溪市": {
+"file": "web/08_慈溪.webp"
+},
+"杭州市区": {
+"file": "web/09_杭州.webp"
+},
+"湖州市区": {
+"file": "web/10_湖州.webp"
+},
+"柯桥区": {
+"file": "web/11_柯桥.webp"
+},
+"余姚市": {
+"file": "web/12_余姚.webp"
+},
+"富阳区": {
+"file": "web/13_富阳.webp"
+},
+"德清县（莫干山）": {
+"file": "web/14_德清.webp"
+},
+"长兴县": {
+"file": "web/15_长兴.webp"
+},
+"绍兴市区": {
+"file": "web/16_绍兴.webp"
+},
+"上虞区": {
+"file": "web/17_上虞.webp"
+},
+"诸暨市": {
+"file": "web/18_诸暨.webp"
+},
+"宁波市区": {
+"file": "web/19_宁波.webp"
+},
+"安吉县": {
+"file": "web/20_安吉.webp"
+},
+"桐庐县": {
+"file": "web/21_桐庐.webp"
+},
+"临安区": {
+"file": "web/22_临安.webp"
+},
+"义乌市": {
+"file": "web/23_义乌.webp"
+},
+"奉化区": {
+"file": "web/24_奉化.webp"
+},
+"嵊州市": {
+"file": "web/25_嵊州.webp"
+},
+"定海区": {
+"file": "web/26_定海.webp"
+},
+"金华市区": {
+"file": "web/27_金华.webp"
+},
+"浦江县": {
+"file": "web/28_浦江.webp"
+},
+"建德市": {
+"file": "web/29_建德.webp"
+},
+"新昌县": {
+"file": "web/30_新昌.webp"
+},
+"普陀区（朱家尖/普陀山）": {
+"file": "web/31_普陀.webp"
+},
+"东阳市（横店）": {
+"file": "web/32_东阳.webp"
+},
+"天台县": {
+"file": "web/33_天台.webp"
+},
+"宁海县": {
+"file": "web/34_宁海.webp"
+},
+"象山县": {
+"file": "web/35_象山.webp"
+},
+"淳安县（千岛湖）": {
+"file": "web/36_淳安.webp"
+},
+"兰溪市": {
+"file": "web/37_兰溪.webp"
+},
+"衢州市区": {
+"file": "web/38_衢州.webp"
+},
+"龙游县": {
+"file": "web/39_龙游.webp"
+},
+"永康市": {
+"file": "web/40_永康.webp"
+},
+"武义县": {
+"file": "web/41_武义.webp"
+},
+"三门县": {
+"file": "web/42_三门.webp"
+},
+"临海市": {
+"file": "web/43_临海.webp"
+},
+"岱山县": {
+"file": "web/44_岱山.webp"
+},
+"丽水市区（莲都）": {
+"file": "web/45_丽水.webp"
+},
+"缙云县": {
+"file": "web/46_缙云.webp"
+},
+"台州市区": {
+"file": "web/47_台州.webp"
+},
+"嵊泗县": {
+"file": "web/48_嵊泗.webp"
+},
+"江山市": {
+"file": "web/49_江山.webp"
+},
+"温岭市": {
+"file": "web/50_温岭.webp"
+},
+"仙居县": {
+"file": "web/51_仙居.webp"
+},
+"磐安县": {
+"file": "web/52_磐安.webp"
+},
+"永嘉县（楠溪江）": {
+"file": "web/53_永嘉.webp"
+},
+"乐清市（雁荡山）": {
+"file": "web/54_乐清.webp"
+},
+"昆山市": {
+"file": "web/55_昆山.webp"
+},
+"太仓市": {
+"file": "web/56_太仓.webp"
+},
+"启东市": {
+"file": "web/57_启东.webp"
+},
+"吴江区（盛泽）": {
+"file": "web/58_吴江.webp"
+},
+"苏州市区": {
+"file": "web/59_苏州.webp"
+},
+"常熟市": {
+"file": "web/60_常熟.webp"
+},
+"海门区": {
+"file": "web/61_海门.webp"
+},
+"南通市区": {
+"file": "web/62_南通.webp"
+},
+"无锡市区": {
+"file": "web/63_无锡.webp"
+},
+"张家港市": {
+"file": "web/64_张家港.webp"
+},
+"常州市区": {
+"file": "web/65_常州.webp"
+},
+"江阴市": {
+"file": "web/66_江阴.webp"
+},
+"丹阳市": {
+"file": "web/67_丹阳.webp"
+},
+"镇江市区": {
+"file": "web/68_镇江.webp"
+},
+"南京市区": {
+"file": "web/69_南京.webp"
+},
+"如东县": {
+"file": "web/70_如东.webp"
+},
+"如皋市": {
+"file": "web/71_如皋.webp"
+},
+"靖江市": {
+"file": "web/72_靖江.webp"
+},
+"金坛区": {
+"file": "web/73_金坛.webp"
+},
+"句容市": {
+"file": "web/74_句容.webp"
+},
+"宜兴市": {
+"file": "web/75_宜兴.webp"
+},
+"海安市": {
+"file": "web/76_海安.webp"
+},
+"泰兴市": {
+"file": "web/77_泰兴.webp"
+},
+"溧水区": {
+"file": "web/78_溧水.webp"
+},
+"溧阳市（天目湖）": {
+"file": "web/79_溧阳.webp"
+},
+"泰州市区": {
+"file": "web/80_泰州.webp"
+},
+"姜堰区": {
+"file": "web/81_姜堰.webp"
+},
+"扬州市区": {
+"file": "web/82_扬州.webp"
+},
+"东台市": {
+"file": "web/83_东台.webp"
+},
+"扬中市": {
+"file": "web/84_扬中.webp"
+},
+"高淳区": {
+"file": "web/85_高淳.webp"
+},
+"仪征市": {
+"file": "web/86_仪征.webp"
+},
+"高邮市": {
+"file": "web/87_高邮.webp"
+},
+"盐城市区": {
+"file": "web/88_盐城.webp"
+},
+"大丰区": {
+"file": "web/89_大丰.webp"
+},
+"宝应县": {
+"file": "web/90_宝应.webp"
+},
+"兴化市": {
+"file": "web/91_兴化.webp"
+},
+"建湖县": {
+"file": "web/92_建湖.webp"
+},
+"徐州市区": {
+"file": "web/93_徐州.webp"
+},
+"淮安市区": {
+"file": "web/94_淮安.webp"
+},
+"广德市": {
+"file": "web/95_广德.webp"
+},
+"郎溪县": {
+"file": "web/96_郎溪.webp"
+},
+"滁州市区": {
+"file": "web/97_滁州.webp"
+},
+"宣城市区": {
+"file": "web/98_宣城.webp"
+},
+"全椒县": {
+"file": "web/99_全椒.webp"
+},
+"马鞍山市区": {
+"file": "web/100_马鞍山.webp"
+},
+"来安县": {
+"file": "web/101_来安.webp"
+},
+"当涂县": {
+"file": "web/102_当涂.webp"
+},
+"芜湖市区": {
+"file": "web/103_芜湖.webp"
+},
+"湾沚区": {
+"file": "web/104_湾沚.webp"
+},
+"含山县": {
+"file": "web/105_含山.webp"
+},
+"泾县": {
+"file": "web/106_泾县.webp"
+},
+"定远县": {
+"file": "web/107_定远.webp"
+},
+"合肥市区": {
+"file": "web/108_合肥.webp"
+},
+"宁国市": {
+"file": "web/109_宁国.webp"
+},
+"无为市": {
+"file": "web/110_无为.webp"
+},
+"肥东县": {
+"file": "web/111_肥东.webp"
+},
+"繁昌区": {
+"file": "web/112_繁昌.webp"
+},
+"蚌埠市区": {
+"file": "web/113_蚌埠.webp"
+},
+"巢湖市": {
+"file": "web/114_巢湖.webp"
+},
+"天长市": {
+"file": "web/115_天长.webp"
+},
+"南陵县": {
+"file": "web/116_南陵.webp"
+},
+"肥西县": {
+"file": "web/117_肥西.webp"
+},
+"铜陵市区": {
+"file": "web/118_铜陵.webp"
+},
+"和县": {
+"file": "web/119_和县.webp"
+},
+"歙县": {
+"file": "web/120_歙县.webp"
+},
+"绩溪县": {
+"file": "web/121_绩溪.webp"
+},
+"黄山市区（屯溪）": {
+"file": "web/122_黄山.webp"
+},
+"休宁县": {
+"file": "web/123_休宁.webp"
+},
+"上饶市区": {
+"file": "web/124_上饶.webp"
+},
+"玉山县（三清山）": {
+"file": "web/125_玉山.webp"
+}
+}
+}

@@ -2,6 +2,8 @@ import {parseCSV} from './data.js';
 import {icon} from './icons.js';
 
 const CSV_URL = new URL('../shanghai_pudong_4h_cities.csv', import.meta.url);
+const IMAGE_MANIFEST_URL = new URL('../images/manifest.json', import.meta.url);
+const IMAGES_ROOT = new URL('../images/', import.meta.url);
 const STORE_KEY = 'raven.paper.city';
 const CITY_TEXT_KEYS = ['省份', '地级市', '目的地', '行政级别', '推荐方式', '最快门到门耗时(小时)', '高铁门到门预计耗时(小时)', '顺风车门到门预计耗时(小时)', '是否压线(约3.8-4h)', '主要出发站或高速路线', '特色与出行备注'];
 
@@ -36,6 +38,26 @@ function loadCities() {
     rowsPromise.catch(() => { rowsPromise = null; });
   }
   return rowsPromise;
+}
+
+let manifestPromise = null;
+function loadImageManifest() {
+  if (!manifestPromise) {
+    manifestPromise = fetch(IMAGE_MANIFEST_URL, {cache: 'no-cache'})
+      .then(response => {
+        if (!response.ok) throw new Error(`city images ${response.status}`);
+        return response.json();
+      })
+      .then(data => data && data.items ? data : null)
+      .catch(() => null);
+  }
+  return manifestPromise;
+}
+
+function imageURLFor(manifest, city) {
+  const entry = manifest && manifest.items && manifest.items[city['目的地']];
+  if (!entry || !entry.file) return '';
+  return new URL(entry.file, IMAGES_ROOT).href;
 }
 
 /* ---------- paper-theatre illustration ---------- */
@@ -423,6 +445,7 @@ export async function mountCity(container) {
     return;
   }
   if (!rows.length) return;
+  const manifest = await loadImageManifest();
 
   const sceneWrap = document.createElement('figure');
   sceneWrap.className = 'city-scene';
@@ -483,7 +506,20 @@ export async function mountCity(container) {
     badge.textContent = pressed ? '约 4 小时压线' : '';
     const query = [city['目的地'], city['地级市'], city['省份'], '中国'].filter(Boolean).join(' ');
     map.href = 'https://www.openstreetmap.org/search?query=' + encodeURIComponent(query);
-    art.innerHTML = cityScene(city);
+    const src = imageURLFor(manifest, city);
+    if (src) {
+      const photo = new Image();
+      photo.className = 'city-photo';
+      photo.alt = `${city['目的地'] || ''} 城市印象`;
+      photo.decoding = 'async';
+      photo.addEventListener('error', () => {
+        if (art.firstChild === photo) art.innerHTML = cityScene(city);
+      }, {once: true});
+      photo.src = src;
+      art.replaceChildren(photo);
+    } else {
+      art.innerHTML = cityScene(city);
+    }
   }
 
   refresh.addEventListener('click', () => { index = randomIndex(rows.length, index); render(); });

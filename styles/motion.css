@@ -10,7 +10,7 @@
   --pear-lift: -26px;
   --curtain-open: 76px;
   --bookmark-pull: 14px;
-  --petal-turn: -8deg;
+  --leaf-turn: 5deg;
 }
 
 .scene-overlay {
@@ -34,7 +34,7 @@
 .hotspot-letter { cursor: grab; touch-action: none; }
 .stage-frame.is-pulling .hotspot-letter { cursor: grabbing; }
 
-.scene-overlay :is(.scene-bird,.scene-string,.scene-cards,.scene-pear,.scene-curtain-left,.scene-curtain-right,.scene-bookmark,.scene-petal) {
+.scene-overlay :is(.scene-bird,.scene-string,.scene-cards,.scene-pear,.scene-curtain-left,.scene-curtain-right,.scene-bookmark,.scene-leaf) {
   transform-box: view-box;
   transition: transform var(--paper-duration) var(--paper-ease);
   pointer-events: none;
@@ -56,11 +56,16 @@
   transition: none;
 }
 
+/* Restore the second painted honey-light state with one normal-alpha 560ms fade. */
 .scene-city-light {
   opacity: 0;
+  isolation: isolate;
+  mix-blend-mode: normal;
   transition: opacity 560ms ease;
-  mix-blend-mode: screen;
   pointer-events: none;
+}
+.scene-city-light * {
+  mix-blend-mode: normal;
 }
 .stage-frame[data-active="city"] .scene-city-light {
   opacity: 1;
@@ -95,11 +100,11 @@
 .scene-bookmark { transform: translate(0,0); }
 .stage-frame[data-active="reader"] .scene-bookmark { transform: translate(-4px,var(--bookmark-pull)); }
 
-.scene-petal {
-  transform-origin: var(--petal-origin,64% 90%);
+.scene-leaf {
+  transform-origin: var(--leaf-origin,84.33% 45.80%);
   transform: rotate(0);
 }
-.stage-frame[data-active="directory"] .scene-petal { transform: rotate(var(--petal-turn)); }
+.stage-frame[data-active="directory"] .scene-leaf { transform: rotate(var(--leaf-turn)); }
 
 @media (prefers-reduced-motion: reduce) {
   .scene-overlay * { transition: none !important; }

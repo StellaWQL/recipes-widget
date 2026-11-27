@@ -57,7 +57,7 @@ async function openTool(type,trigger=null){
       mountSelection(type,rows);
     }else if(type==='inspiration')mountInspiration();
     else if(type==='city'){
-      const {mountCity}=await import('./city.js?v=5');if(run!==generation)return;
+      const {mountCity}=await import('./city.js?v=6');if(run!==generation)return;
       content.replaceChildren();mounted=await mountCity(content);
     }else mountDirectory();
   }catch(e){console.error(e);if(run===generation)showError(()=>openTool(type));}
@@ -109,7 +109,7 @@ const stage=document.querySelector('.stage-frame');
 theatreMotion=initTheatreMotion(stage,{onActivate:openTool});
 initBoxHinge(stage);
 // Reveal the layered scene only after every painted component has decoded.
-Promise.all(['paper-theatre-original-muted.png','paper-theatre-local-clean-v10.png','paper-theatre-micro-clean-v10.png','paper-props-scene-v8.png','paper-theatre-box-open.png','paper-theatre-box-closed.png','paper-props.png','tarot-back.png','pigeon-envelope.png','curtain-pair.png'].map(name=>{
+Promise.all(['paper-theatre-original-muted.png','paper-theatre-local-clean-v10.png','paper-theatre-micro-clean-v10.png','paper-props-scene-v8.png','paper-theatre-box-open.png','paper-theatre-box-closed.png','paper-props.png','tarot-back.png','paper-theatre-bird-flowers-v11.png','paper-flower-left-v11.png','paper-theatre-local-repairs-v12.png','paper-theatre-architecture-v13.png', 'paper-theatre-local-repairs-v14.png', 'paper-theatre-stair-trim-v15.png', 'paper-pear-v14.png','city-light-second-painted.png','curtain-pair.png'].map(name=>{
   const image=new Image();image.src=new URL('../assets/art/'+name,import.meta.url).href;
   return image.decode();
 })).then(()=>stage.classList.add('is-art-ready')).catch(()=>{});

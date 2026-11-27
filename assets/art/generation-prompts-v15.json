@@ -1,0 +1,29 @@
+{
+  "version": "v15",
+  "scope": "Restore the earliest original staircase; remove only the surplus curved stone projection indicated in the user's green rectangle.",
+  "asset": "paper-theatre-stair-trim-v15.png",
+  "source": "generated_images/exec-b6fa481d-b074-4adc-adf1-c9e1b02b527b.png",
+  "references": [
+    "Actual scene with v14 stairs overlay removed",
+    "User's green-marked original-stair crop"
+  ],
+  "prompt": "Make a tiny finishing correction to this exact existing paper-theatre scene. Preserve the full original composition, everything else, all colors, lighting, textures and dimensions.\n\nThe previous edit removed an unwanted curved stone side wall to the LEFT of the staircase. Now ONLY clean up the exposed left edge of the LOWER staircase, at x1020–1165, y630–800 in this 1672x941 image:\n1. There is a short dangling stone lip/tab projecting left at about x1030, y650–680. Eliminate that dangling lip. The first exposed tread around this height must start approximately x1050, and the solid stone side beneath it must be properly supported down to the ground. Make a simple believable stepped masonry side, without a railing or a raised wall.\n2. At the bottom step's left corner around x1115, y748–789 there is a strange overlapping/doubled stone piece from a splice. Make it one clean coherent stone corner. The lowest step's LEFTMOST solid edge must begin at x1118, not farther left. Keep the lowest step's broad front face, height, tread line, and right edge at their exact existing locations.\n3. Resolve the transitions of these two local corners into adjacent original stone surfaces, with consistent matte hand-painted stone texture and modest contact shadow.\n\nABSOLUTELY preserve the existing original stairs elsewhere: their upper run to the city, the small arch opening underneath, all existing stair tread front edges, wide lower steps, original path, width and proportions. Keep the moth-pattern book and bookmark exactly. This is only cleanup of small exposed left side corners. Do not re-route the stairs or redesign the scene, do not create a sweeping S curve or railing, do not move or enlarge the stairs, do not extend anything into the foreground. Preserve all other scene objects including small floral box, curtains, basket and pears, flowers, bird, sky, city and bridge. No annotation marks or text. Output one complete image in the same original wide format.",
+  "initial_pass": {
+    "version": "v15",
+    "scope": "Restore the earliest original staircase; remove only the surplus curved stone projection indicated in the user's green rectangle.",
+    "asset": "paper-theatre-stair-trim-v15.png",
+    "source": "generated_images/exec-645044f4-11f8-4064-9dee-f3057a371dc6.png",
+    "references": [
+      "Actual scene with v14 stairs overlay removed",
+      "User's green-marked original-stair crop"
+    ],
+    "prompt": "Perform an extremely localized restoration edit to the FIRST reference image, which is the actual full paper-theatre webpage scene with its ORIGINAL staircase restored. The SECOND reference is the user's small crop of those ORIGINAL stairs; its bright green rectangle marks ONLY the unwanted stone projection. This is NOT a request to redesign the staircase.\n\nOutput one complete image at the same wide aspect ratio and composition as the first reference. Keep the dusty muted mauve / gray-blue / sage palette, matte hand-painted layered-paper texture, original lighting and exact framing.\n\nTHE ONLY EDIT:\nAt the lower-left side of the staircase, remove the redundant curved raised stone strip / stub projecting left beyond the stair treads. In the first image's 1672 x 941 coordinate system the unwanted protrusion is around x 986–1065, y 560–752; the green rectangle in reference 2 indicates the corresponding part. Its thick curved stone top and the tall vertical wall beneath it should disappear. Let the existing exposed left ends of the original steps remain a tidy believable stepped silhouette, following their existing positions; repair only the tiny attachment area, with matching sage paper foliage behind and dusty mauve floor below where the redundant stone was removed. Do not leave a detached sliver of stone or a straight pasted-on rectangle. Gentle believable paper contact shadows only.\n\nPRESERVATION IS CRITICAL:\nKeep every stair tread's existing location, width, depth and horizontal front edge on the RIGHT of the removed projection. Preserve the original staircase's entire upper ascending run, its little arch opening, the lower broad steps, original curve and the exact overall size. Do not create an S-shaped new staircase, do not extend steps across the stage, do not widen, narrow, move, simplify, re-route, recolor or re-design the staircase. Preserve the book and its bookmark exactly, preserve all city and bridge, all flowers, the dove and envelope, closed pink theatre curtains, basket and pears, and the small closed floral tarot box exactly. No text or interface. Remove any annotation marks from the output; the green rectangle is a location guide only. This is a tiny subtractive correction of the original illustration, not a new scene."
+  },
+  "usage": "Native SVG samples only the exposed left stair edge. The rest of the original staircase remains the earliest background raster.",
+  "repair_bounds": {
+    "x": 965,
+    "y": 531,
+    "width": 215,
+    "height": 274
+  }
+}
