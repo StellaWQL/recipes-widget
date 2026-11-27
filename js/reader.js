@@ -3,7 +3,7 @@ export const DEFAULT_CATALOG_URL = 'https://api.github.com/repos/StellaWQL/recip
 
 const MODULE_ROOT = new URL('../', import.meta.url);
 const STORAGE_KEY = 'raven.reader.v1';
-const FONT_URL = new URL('assets/fonts/huiwen-mincho.woff2', MODULE_ROOT).href;
+const FONT_URL = new URL('assets/fonts/huiwen-mincho.woff2?v=2', MODULE_ROOT).href;
 const ICONS = {
   shelf: '<path d="M4 5v15M9 5v15M14 5v15M18 6l3 13M3 20h19"/>',
   upload: '<path d="M4 8h6l2 2h8v10H4zM12 15V3m-4 4 4-4 4 4"/>',
@@ -513,7 +513,7 @@ export function mountReader(container, options = {}) {
       }
     }
     const fontCss = `
-      @font-face { font-family: HuiwenMincho; src: url("${FONT_URL}") format("woff2"); font-display: swap; }
+      @font-face { font-family: HuiwenMincho; src: local("Huiwen-MinchoGBK"), local("汇文明朝体GBK"), local("匯文明朝體GBK"), url("${FONT_URL}") format("woff2"); font-display: swap; }
       html, body { background: transparent !important; color: #443846 !important; }
       body { font-family: HuiwenMincho, serif !important; font-size: ${state.fontSize}px !important; line-height: 1.9 !important; padding: 12px 26px !important; }
       body * { font-family: HuiwenMincho, serif !important; }

@@ -1,6 +1,6 @@
 @font-face {
   font-family: HuiwenMincho;
-  src: url('../assets/fonts/huiwen-mincho.woff2') format('woff2');
+  src: local('Huiwen-MinchoGBK'), local('汇文明朝体GBK'), local('匯文明朝體GBK'), url('../assets/fonts/huiwen-mincho.woff2?v=2') format('woff2');
   font-display: swap;
 }
 
