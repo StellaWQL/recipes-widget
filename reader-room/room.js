@@ -1,7 +1,7 @@
 import { config } from './config.js?v=import4';
 import { loadCatalog, resolveCover, revokeCover } from './catalog.js';
 import { createBookEngine } from './epub-engine.js?v=import4';
-import { inspectEpubImport } from './epub-import.js?v=import4';
+import { inspectEpubImport, epubFromDirectoryEntry } from './epub-import.js?v=import4fix1';
 import { mountObjectMotion, READER_OBJECTS, LIBRARY_OBJECTS, IMPORT_OBJECTS } from './object-motion.js?v=import4';
 
 const $ = selector => document.querySelector(selector);
@@ -20,7 +20,6 @@ const els = {
   importMessage: $('#import-message'), importDetail: $('#import-detail'),
   titleLeft: $('#running-left'), titleRight: $('#running-right'),
   folioLeft: $('#folio-left'), folioRight: $('#folio-right'), fontSize: $('#font-size-value'),
-  shelfPager: $('#shelf-pager'), shelfPage: $('#shelf-page'),
 };
 let books = [];
 let current = null;
@@ -38,8 +37,7 @@ let view = 'library';
 let importing = 0;
 let importBusy = false;
 let dragDepth = 0;
-let shelfPage = 0;
-let shelfPageCount = 1;
+let shelfScrollFrame = 0;
 let lastError = '';
 const files = new Map();
 const coverUrls = new Set();
@@ -60,6 +58,10 @@ const state = {
   fontSize: Math.max(16, Math.min(34, saved.typographyVersion >= 4 ? Number(saved.fontSize) || config.defaultFontSize : config.defaultFontSize)),
   scrollFontSize: Math.max(16, Math.min(30, saved.typographyVersion >= 4 ? Number(saved.scrollFontSize) || config.defaultScrollFontSize : config.defaultScrollFontSize)),
   imported: Array.isArray(saved.imported) ? saved.imported : [],
+  shelfPosition: saved.shelfPosition?.key ? {
+    key: saved.shelfPosition.key,
+    fraction: Math.max(0, Math.min(1, Number(saved.shelfPosition.fraction) || 0)),
+  } : null,
 };
 // Legacy local files remain in the original IndexedDB; references are migrated, not erased.
 for (const entry of Array.isArray(legacy.recent) ? legacy.recent : []) {
@@ -136,6 +138,7 @@ function closeDialogs() {
 }
 function setView(next) {
   closeDialogs();
+  if (view === 'library' && next !== 'library') rememberShelfPosition();
   if (view === 'import' && next !== 'import') { importing += 1; importBusy = false; dragDepth = 0; }
   view = next;
   document.body.dataset.view = next;
@@ -172,7 +175,7 @@ function showLibrary({ route = true } = {}) {
   setView('library');
   status();
   if (route) writeRoute(null);
-  renderBooks();
+  renderBooks({ rememberCurrent: false });
   controls();
 }
 function importMessage(text = '轻点纸函，放入一本 EPUB', detail = '也可以把书拖到这里', state = 'idle') {
@@ -196,21 +199,33 @@ function allBooks() {
   for (const entry of [...books, ...state.imported]) if (entry.key) map.set(entry.key, entry);
   return [...map.values()];
 }
-function renderBooks() {
+function rememberShelfPosition() {
+  if (view !== 'library' || els.library.hidden || !els.grid.clientHeight) return;
+  const rows = [...els.grid.children];
+  const row = rows.slice().reverse().find(item => item.offsetTop <= els.grid.scrollTop + 1) || rows[0];
+  const key = row?.querySelector('.cover-book')?.dataset.key;
+  if (!key || !row.offsetHeight) return;
+  state.shelfPosition = {
+    key,
+    fraction: Math.max(0, Math.min(1, (els.grid.scrollTop - row.offsetTop) / row.offsetHeight)),
+  };
+}
+function restoreShelfPosition() {
+  if (view !== 'library' || els.library.hidden) return;
+  const position = state.shelfPosition;
+  const book = [...els.grid.querySelectorAll('.cover-book')].find(item => item.dataset.key === position?.key);
+  const row = book?.parentElement;
+  els.grid.scrollTop = row ? row.offsetTop + row.offsetHeight * position.fraction : 0;
+}
+function renderBooks({ rememberCurrent = true } = {}) {
+  if (rememberCurrent) rememberShelfPosition();
   coverObserver?.disconnect();
   const matches = allBooks();
   els.grid.replaceChildren();
   els.empty.hidden = matches.length > 0;
   els.empty.textContent = '书架正等着第一本书。轻点收书纸函，放入 EPUB。';
   let row;
-  const pageSize = columnCount() * 3;
-  shelfPageCount = Math.max(1, Math.ceil(matches.length / pageSize));
-  shelfPage = Math.max(0, Math.min(shelfPage, shelfPageCount - 1));
-  els.shelfPager.hidden = shelfPageCount === 1;
-  els.shelfPage.textContent = `${shelfPage + 1} / ${shelfPageCount}`;
-  $('[data-action="shelf-previous"]').disabled = shelfPage === 0;
-  $('[data-action="shelf-next"]').disabled = shelfPage >= shelfPageCount - 1;
-  matches.slice(shelfPage * pageSize, (shelfPage + 1) * pageSize).forEach((entry, index) => {
+  matches.forEach((entry, index) => {
     if (index % columnCount() === 0) {
       row = document.createElement('div'); row.className = 'shelf-row';
       els.grid.append(row);
@@ -243,11 +258,12 @@ function renderBooks() {
             if (found) void loadCover(found, item.target);
             coverObserver.unobserve(item.target);
           }
-        }, { rootMargin: '160px' });
+        }, { root: els.grid, rootMargin: '160px 0px' });
         coverObserver.observe(button);
       } else void loadCover(entry, button);
     }
   });
+  restoreShelfPosition();
 }
 async function loadCover(entry, button) {
   if (pendingCovers.has(entry.key)) return;
@@ -273,7 +289,13 @@ function applyCover(entry, url) {
   for (const button of $$('.cover-book')) {
     if (button.dataset.key !== entry.key) continue;
     const image = button.querySelector('img');
-    if (image) image.src = url;
+    if (image) {
+      image.src = url;
+      // A hidden lazy image has no visible box and may never start loading.
+      image.hidden = false;
+      const fallback = button.querySelector('.cover-fallback');
+      if (fallback) fallback.hidden = true;
+    }
   }
 }
 
@@ -458,21 +480,25 @@ async function restoreRoute() {
   } else if (query.get('view') === 'import') showImport({ route: false });
   else showLibrary({ route: false });
 }
-async function importBook(file) {
-  if (!file || view !== 'import' || importBusy) return;
+async function importBook(input) {
+  if (!input || view !== 'import' || importBusy) return;
   const operation = ++importing;
   importBusy = true;
-  importMessage('正在整理这册新书…', file.name, 'receiving');
-  const key = `file:${file.name}:${file.size}:${file.lastModified || 0}`;
+  importMessage('正在整理这册新书…', input.name, 'receiving');
   try {
-    const metadata = await inspectEpubImport(file);
+    const file = input.isDirectory ? await epubFromDirectoryEntry(input) : input;
     if (operation !== importing || view !== 'import') return;
-    const committed = await storedFile(key, file);
+    const { source, ...metadata } = await inspectEpubImport(file);
+    if (operation !== importing || view !== 'import') return;
+    // Keep the original import identity, but store and render the usable EPUB.
+    // Never spread the binary source into the JSON catalogue in localStorage.
+    const key = `file:${file.name}:${file.size}:${file.lastModified || 0}`;
+    const committed = await storedFile(key, source);
     if (!committed) throw new Error('这册书还没能保存。请检查浏览器存储空间后再放入。');
-    files.set(key, file);
+    files.set(key, source);
     const previous = state.imported;
     const existing = previous.find(item => item.key === key);
-    const entry = { ...existing, key, kind:'file', imported:true, filename:file.name, ...metadata };
+    const entry = { ...existing, key, kind:'file', imported:true, filename:source.name, ...metadata };
     state.imported = [entry, ...previous.filter(item => item.key !== key)];
     if (!persist()) {
       state.imported = previous;
@@ -485,7 +511,7 @@ async function importBook(file) {
   } catch (error) {
     if (operation === importing && view === 'import') {
       importBusy = false;
-      importMessage(error.message || '这册书暂时无法放入。', '轻点纸函，重新选择 EPUB', 'error');
+      importMessage(error.message || '这册书暂时无法放入。', '轻点纸函，选择 EPUB 或单本书的 ZIP', 'error');
     }
   } finally {
     if (operation === importing) {
@@ -507,8 +533,6 @@ document.addEventListener('click', event => {
     case 'import-room': showImport(); break;
     case 'previous': void turn(-1); break;
     case 'next': void turn(1); break;
-    case 'shelf-previous': shelfPage = Math.max(0, shelfPage - 1); renderBooks(); break;
-    case 'shelf-next': shelfPage = Math.min(shelfPageCount - 1, shelfPage + 1); renderBooks(); break;
     case 'close-dialog': closeDialogs(); break;
     case 'import': if (!importBusy && view === 'import') els.importFile.click(); break;
     case 'retry': if (current) void openEntry(current, { route: false, force: true }); break;
@@ -544,6 +568,19 @@ els.importRoom.addEventListener('dragleave', event => {
 els.importRoom.addEventListener('drop', event => {
   event.preventDefault(); dragDepth = 0;
   if (importBusy) return;
+  // macOS may expose a Books EPUB package as a directory when it is dragged.
+  // Capture granted entries while the drop event still owns the file access.
+  const items = [...(event.dataTransfer?.items || [])].filter(item => item.kind === 'file');
+  const entries = items.map(item => {
+    try { return item.webkitGetAsEntry?.(); } catch { return null; }
+  });
+  if (entries.some(entry => entry?.isDirectory)) {
+    if (items.length !== 1 || !entries[0]?.isDirectory) {
+      importMessage('请一次放入一本书', '选好一本 EPUB，再放进纸函', 'error'); return;
+    }
+    void importBook(entries[0]);
+    return;
+  }
   const incoming = [...(event.dataTransfer?.files || [])];
   if (incoming.length !== 1) { importMessage('请一次放入一本书', '选好一本 EPUB，再放进纸函', 'error'); return; }
   void importBook(incoming[0]);
@@ -584,7 +621,13 @@ const updateNarrow = () => {
   void syncResponsiveReader();
 };
 narrow.addEventListener('change', updateNarrow, { signal: life.signal });
-shelfSmall.addEventListener('change', () => { shelfPage = 0; renderBooks(); }, { signal: life.signal });
+shelfSmall.addEventListener('change', () => {
+  if (view === 'library') renderBooks({ rememberCurrent: false });
+}, { signal: life.signal });
+els.grid.addEventListener('scroll', () => {
+  if (shelfScrollFrame) return;
+  shelfScrollFrame = requestAnimationFrame(() => { shelfScrollFrame = 0; rememberShelfPosition(); });
+}, { passive: true, signal: life.signal });
 updateNarrow(); controls();
 
 // The exact same full font is reused by the outer controls and EPUB iframes.
@@ -639,6 +682,7 @@ async function start() {
 }
 void start().catch(error => { showLibrary({ route: false }); status(error.message || '书库暂时无法载入。'); });
 window.addEventListener('pagehide', event => {
+  rememberShelfPosition();
   persist();
   if (event.persisted) return;
   life.abort(); opening += 1; engine?.destroy(); coverObserver?.disconnect();

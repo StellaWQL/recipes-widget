@@ -59,11 +59,26 @@
 .room .library-home { left:87.5%; top:11.5%; width:10.3%; height:31%; }
 .room .library-import { left:84.8%; top:61%; width:13%; height:23%; }
 .room .library-heading { position:absolute; z-index:2; left:40%; right:42%; top:3.5%; margin:0; color:#805560; font-size:clamp(22px,2.4vw,40px); line-height:1.6; text-align:center; font-weight:400; letter-spacing:.28em; text-indent:.28em; }
-.room .library-grid { position:absolute; inset:0; z-index:2; pointer-events:none; }
-.room .shelf-row { position:absolute; left:15%; right:19.5%; height:21.4%; min-height:0; display:grid; grid-template-rows:minmax(0,1fr); grid-template-columns:repeat(4,minmax(0,1fr)); align-items:end; justify-items:center; column-gap:6%; }
-.room .shelf-row:nth-child(1) { bottom:64.8%; }
-.room .shelf-row:nth-child(2) { bottom:40.8%; }
-.room .shelf-row:nth-child(3) { bottom:16.9%; }
+/* The cabinet stays in the original painting. Its inner rows, including their
+   painted shelf boards, move together in one continuous native scroll area. */
+.room .library-grid {
+  position:absolute; z-index:2; left:13.1%; right:17.4%; top:13.6%; bottom:14.98%;
+  overflow-x:hidden; overflow-y:auto; overscroll-behavior:contain; touch-action:pan-y;
+  scrollbar-width:none;
+  outline-offset:3px; overflow-anchor:none;
+}
+.room .library-grid:focus-visible { outline:1px dashed #795463; }
+.room .library-grid::-webkit-scrollbar { display:none; }
+.room .shelf-row {
+  position:relative; height:calc(var(--scene-height) * 224 / 941); min-height:0;
+  display:grid; grid-template-rows:minmax(0,1fr); grid-template-columns:repeat(4,minmax(0,1fr));
+  align-items:end; justify-items:center; column-gap:6%;
+  padding:calc(var(--scene-height) * 3 / 941) calc(var(--scene-width) * 32 / 1672) calc(var(--scene-height) * 20 / 941);
+  background-image:url('./assets/library-scene-v4.png');
+  background-size:var(--scene-width) var(--scene-height);
+  background-position:calc(var(--scene-width) * -.131) calc(var(--scene-height) * -352 / 941);
+  background-repeat:no-repeat;
+}
 /* Actual embedded covers remain untouched. Only a very faint paper texture lies above each one. */
 .room .cover-book { position:relative; display:flex; align-items:flex-end; justify-content:center; width:100%; height:100%; min-height:0; min-width:0; padding:0; border:0; border-radius:0; background:transparent; outline-offset:4px; pointer-events:auto; transition:transform 180ms ease; }
 .room .cover-plate { position:relative; display:block; height:100%; max-height:100%; min-height:0; width:auto; max-width:100%; min-width:0; aspect-ratio:var(--cover-ratio,.67); isolation:isolate; overflow:hidden; background:transparent; }
@@ -72,9 +87,6 @@
 .room .cover-fallback { display:grid; place-items:center; width:100%; height:100%; min-width:65px; padding:12px 8px; border:1px solid var(--quiet-line); background:#ecd9d1; color:var(--reader-ink); font-size:clamp(14px,1.2vw,20px); line-height:1.7; text-align:center; overflow-wrap:anywhere; }
 .room .cover-book:focus-visible { outline:2px solid #795463; }
 .room .library-empty { position:absolute; z-index:2; top:21%; left:24%; right:26%; margin:0; color:var(--reader-ink); font-size:20px; line-height:1.8; text-align:center; }
-.room .shelf-pager { position:absolute; z-index:3; bottom:6.5%; left:30%; right:32%; display:flex; justify-content:center; align-items:center; gap:22px; color:var(--reader-ink); font-size:16px; line-height:1.5; }
-.room .shelf-pager button { padding:5px; border:0; border-bottom:1px solid rgba(120,81,91,.3); background:transparent; }
-.room .shelf-pager button:disabled { opacity:.35; }
 .room .mobile-tools { display:none; }
 .room .import-mobile-scene { display:none; }
 /* The receiving folio and its props are one complete painting. Only the ink is live HTML. */
@@ -277,13 +289,21 @@
 @media (max-width:700px) {
   .room .library { padding-bottom:64px; }
   .room .library-scene { --scene-width:100vw; --scene-height:calc(100svh - 64px); height:var(--scene-height); }
-  .room .library-scene .scene-image { object-fit:cover; }
+  /* Keep the painted cabinet posts around the narrow shelf window. The wide
+     painting's side props sit outside this crop; the existing mobile tools remain. */
+  .room .library-scene .scene-image { object-fit:fill; width:calc(100vw * 1672 / 1235); left:calc(-100vw * 185 / 1235); }
   .room .library-scene .scene-canvas, .room .library-scene .scene-hotspot { display:none; }
-  .room .library-heading { left:25%; right:25%; top:4%; font-size:26px; }
-  .room .shelf-row { left:12%; right:12%; grid-template-columns:repeat(2,minmax(0,1fr)); column-gap:12%; height:21%; }
+  .room .library-heading { left:25%; right:25%; top:3.5%; font-size:26px; }
+  .room .library-grid { left:calc(100vw * 34 / 1235); right:calc(100vw * 39 / 1235); top:13.6%; bottom:8%; }
+  .room .shelf-row {
+    --shelf-height:clamp(190px, 50vw, 280px);
+    height:var(--shelf-height); grid-template-columns:repeat(2,minmax(0,1fr)); column-gap:12%;
+    padding:12px 7% 18px;
+    background-size:calc(100vw * 1672 / 1235) calc(var(--shelf-height) * 941 / 224);
+    background-position:calc(-100vw * 219 / 1235) calc(var(--shelf-height) * -352 / 224);
+  }
   .room .cover-plate { max-width:100%; }
   .room .library-empty { left:15%; right:15%; font-size:18px; }
-  .room .shelf-pager { left:12%; right:12%; bottom:7.2%; gap:14px; font-size:14px; }
   .room .library-mobile-tools { display:flex; }
   .room .paper-dialog { padding:28px 22px; }
   .room .paper-dialog h2 { font-size:24px; }

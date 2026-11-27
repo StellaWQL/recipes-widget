@@ -8,10 +8,10 @@
   <meta name="darkreader-lock">
   <meta name="description" content="THE RAVEN 的书库与阅读室。">
   <title>THE RAVEN · 阅读室</title>
-  <link rel="stylesheet" href="./room.css?v=import4">
+  <link rel="stylesheet" href="./room.css?v=reader4fix1">
   <script src="./vendor/jszip.min.js" defer></script>
   <script src="./vendor/epub.min.js" defer></script>
-  <script src="./room.js?v=import4" type="module"></script>
+  <script src="./room.js?v=reader4fix1" type="module"></script>
 </head>
 <body class="room">
   <main class="room-app">
@@ -22,15 +22,10 @@
         <img id="library-scene-image" class="scene-image" src="./assets/library-scene-v4.png" alt="旧玫瑰色纸制书架，旁边放着钥匙和收书纸函" draggable="false" fetchpriority="high">
         <canvas id="library-scene-canvas" class="scene-canvas" aria-hidden="true"></canvas>
         <h2 class="library-heading">藏书</h2>
-        <div id="library-grid" class="library-grid" aria-label="藏书"></div>
+        <div id="library-grid" class="library-grid" role="region" aria-label="藏书" tabindex="0"></div>
         <p id="library-empty" class="library-empty" hidden>书架正等着第一本书。</p>
         <button class="scene-hotspot library-home" type="button" data-action="home" data-motion="key" aria-label="回到纸剧场主页"></button>
         <button class="scene-hotspot library-import" type="button" data-action="import-room" data-motion="newbook" aria-label="打开收书函，导入 EPUB" aria-controls="import-view"></button>
-        <nav id="shelf-pager" class="shelf-pager" aria-label="书架翻页" hidden>
-          <button type="button" data-action="shelf-previous" aria-label="上一架">上一架</button>
-          <output id="shelf-page" aria-live="polite"></output>
-          <button type="button" data-action="shelf-next" aria-label="下一架">下一架</button>
-        </nav>
       </div>
       <nav class="mobile-tools library-mobile-tools" aria-label="书库工具">
         <button type="button" data-action="home">主页</button>
@@ -92,6 +87,6 @@
     <nav id="chapter-list" class="chapter-list" aria-label="书籍章节"></nav>
   </dialog>
 
-  <input id="import-file" type="file" accept=".epub,application/epub+zip" hidden>
+  <input id="import-file" type="file" accept=".epub,.zip,application/epub+zip,application/zip,application/x-zip-compressed" hidden>
 </body>
 </html>
