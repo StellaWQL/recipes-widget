@@ -5,6 +5,8 @@ export const config = Object.freeze({
   catalogUrl: 'https://api.github.com/repos/StellaWQL/recipes-widget/contents/data/books?ref=practice',
   fallbackUrl: new URL('data/catalog.json', here).href,
   localBooksBase: new URL('../data/books/', here).href,
+  // Point this to the deployed upload service. Never put a GitHub token here.
+  repositorySync: Object.freeze({ endpoint: new URL('../api/library/', here).href }),
   // Reuse the existing local Huiwen Mincho font (already subset by the site); v=2 busts the old cache.
   fontUrl: new URL('../assets/fonts/huiwen-mincho.woff2?v=2', here).href,
   defaultFontSize: 17,

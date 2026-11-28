@@ -1,8 +1,9 @@
-import { config } from './config.js?v=import4';
+import { config } from './config.js?v=import4_2';
 import { loadCatalog, resolveCover, revokeCover } from './catalog.js';
+import { createRepositoryLibrary } from './library-sync.js?v=import4_2';
 import { createBookEngine } from './epub-engine.js?v=import4';
 import { inspectEpubImport, epubFromDirectoryEntry } from './epub-import.js?v=import4fix1';
-import { mountObjectMotion, READER_OBJECTS, LIBRARY_OBJECTS, IMPORT_OBJECTS } from './object-motion.js?v=import4';
+import { mountObjectMotion, READER_OBJECTS, LIBRARY_OBJECTS, IMPORT_OBJECTS } from './object-motion.js?v=import4_2';
 
 const $ = selector => document.querySelector(selector);
 const $$ = selector => [...document.querySelectorAll(selector)];
@@ -18,10 +19,19 @@ const els = {
   status: $('#room-status'), statusMessage: $('#status-message'),
   importFile: $('#import-file'), importRoom: $('#import-view'), importZone: $('#import-dropzone'),
   importMessage: $('#import-message'), importDetail: $('#import-detail'),
+  syncMessage: $('#sync-message'), syncForm: $('#sync-connect'), syncKey: $('#sync-key'),
   titleLeft: $('#running-left'), titleRight: $('#running-right'),
   folioLeft: $('#folio-left'), folioRight: $('#folio-right'), fontSize: $('#font-size-value'),
 };
 let books = [];
+let repositoryBooks = [];
+let repository;
+let syncQueue;
+let syncProbe;
+let lastSyncError = '';
+let lastImportedKey = '';
+let lastRepositoryRefresh = 0;
+let repositoryRefresh;
 let current = null;
 let engine;
 let enginePromise;
@@ -44,6 +54,7 @@ const coverUrls = new Set();
 const pendingCovers = new Set();
 const sceneMotions = [];
 let coverObserver;
+let shelfSizeObserver;
 let databasePromise;
 
 function readStorage(key) {
@@ -65,10 +76,16 @@ const state = {
 };
 // Legacy local files remain in the original IndexedDB; references are migrated, not erased.
 for (const entry of Array.isArray(legacy.recent) ? legacy.recent : []) {
-  if (entry.kind === 'file' && entry.key && !state.imported.some(item => item.key === entry.key)) {
+  if (entry.kind === 'file' && entry.key && !state.imported.some(item => item.key === entry.key || item.localKey === entry.key)) {
     state.imported.push({ ...entry, shortTitle: entry.title, filename: entry.fileName, imported: true });
   }
 }
+
+for (const entry of state.imported) {
+  if (entry.kind === 'file' && entry.sync?.status === 'syncing') entry.sync.status = 'pending';
+}
+try { repository = createRepositoryLibrary({ endpoint: config.repositorySync?.endpoint, signal: life.signal }); }
+catch (error) { lastSyncError = error.message; }
 
 function persist() {
   try {
@@ -153,9 +170,13 @@ function setView(next) {
 function writeRoute(entry, replace = false, roomView = '') {
   const url = new URL(location.href);
   url.hash = '';
-  if (entry?.url) url.searchParams.set('book', entry.url);
+  url.searchParams.delete('repo');
+  if (entry?.kind === 'repository') {
+    url.searchParams.set('repo', entry.repositoryId); url.searchParams.delete('book'); url.searchParams.delete('local');
+  } else if (entry?.url) url.searchParams.set('book', entry.url);
   else if (entry?.kind === 'file') url.searchParams.set('local', entry.key);
   else { url.searchParams.delete('book'); url.searchParams.delete('local'); }
+  if (entry?.kind === 'repository') url.searchParams.delete('book');
   if (entry?.url) url.searchParams.delete('local');
   if (entry?.kind === 'file') url.searchParams.delete('book');
   if (roomView === 'import') url.searchParams.set('view', 'import');
@@ -188,20 +209,24 @@ function importMessage(text = '轻点纸函，放入一本 EPUB', detail = '也�
 function showImport({ route = true } = {}) {
   cancelOpening();
   importing += 1; importBusy = false; dragDepth = 0;
-  setView('import'); status(); importMessage();
+  setView('import'); status(); importMessage(); updateSyncInk();
+  void prepareRepository();
   if (route) writeRoute(null, false, 'import');
 }
 
 function title(entry) { return entry.shortTitle || entry.title || entry.filename?.replace(/\.epub$/i, '') || '未命名图书'; }
 function columnCount() { return shelfSmall.matches ? 2 : 4; }
 function allBooks() {
+  const remoteNames = new Set([...repositoryBooks, ...state.imported.filter(entry => entry.kind === 'repository')].map(entry => entry.filename));
   const map = new Map();
-  for (const entry of [...books, ...state.imported]) if (entry.key) map.set(entry.key, entry);
+  for (const entry of [...books.filter(entry => !remoteNames.has(entry.filename)), ...repositoryBooks, ...state.imported]) {
+    if (entry.key) map.set(entry.key, entry);
+  }
   return [...map.values()];
 }
 function rememberShelfPosition() {
   if (view !== 'library' || els.library.hidden || !els.grid.clientHeight) return;
-  const rows = [...els.grid.children];
+  const rows = [...els.grid.children].filter(row => row.querySelector('.cover-book'));
   const row = rows.slice().reverse().find(item => item.offsetTop <= els.grid.scrollTop + 1) || rows[0];
   const key = row?.querySelector('.cover-book')?.dataset.key;
   if (!key || !row.offsetHeight) return;
@@ -263,15 +288,39 @@ function renderBooks({ rememberCurrent = true } = {}) {
       } else void loadCover(entry, button);
     }
   });
+  fillEmptyShelfRows();
   restoreShelfPosition();
+}
+function fillEmptyShelfRows() {
+  if (!els.grid.clientHeight) return;
+  for (const row of els.grid.querySelectorAll('.shelf-row-empty')) row.remove();
+  const add = () => {
+    const row = document.createElement('div'); row.className = 'shelf-row shelf-row-empty';
+    row.setAttribute('aria-hidden', 'true'); els.grid.append(row); return row;
+  };
+  if (!els.grid.children.length) add();
+  const rowHeight = els.grid.firstElementChild.getBoundingClientRect().height;
+  const minimum = shelfSmall.matches && rowHeight > 0
+    ? Math.max(1, Math.ceil((els.grid.clientHeight - rowHeight * 62 / 224) / rowHeight)) : 3;
+  while (els.grid.children.length < minimum) add();
+}
+async function localOrRepositoryFile(entry) {
+  let blob = files.get(entry.key) || await storedFile(entry.key);
+  if (!blob && entry.localKey) blob = files.get(entry.localKey) || await storedFile(entry.localKey);
+  if (!blob && entry.kind === 'repository') {
+    if (!repository?.authenticated) throw new Error('请到收书函盖上书库钥印，再打开这本书。');
+    blob = await repository.content(entry.repositoryId);
+    if (blob) { files.set(entry.key, blob); await storedFile(entry.key, blob); }
+  }
+  return blob;
 }
 async function loadCover(entry, button) {
   if (pendingCovers.has(entry.key)) return;
   pendingCovers.add(entry.key);
   try {
     let source = entry;
-    if (entry.kind === 'file') {
-      const blob = files.get(entry.key) || await storedFile(entry.key);
+    if (entry.kind === 'file' || entry.kind === 'repository') {
+      const blob = await localOrRepositoryFile(entry);
       if (!blob) return;
       source = { ...entry, blob };
     }
@@ -285,7 +334,7 @@ function applyCover(entry, url) {
   entry.coverUrl = url;
   if (url.startsWith('blob:')) coverUrls.add(url);
   // A catalogue refresh can replace both the entry and its DOM button.
-  for (const item of [...books, ...state.imported]) if (item.key === entry.key) item.coverUrl = url;
+  for (const item of [...books, ...repositoryBooks, ...state.imported]) if (item.key === entry.key) item.coverUrl = url;
   for (const button of $$('.cover-book')) {
     if (button.dataset.key !== entry.key) continue;
     const image = button.querySelector('img');
@@ -394,8 +443,8 @@ async function openEntry(entry, { route = true, force = false } = {}) {
     const active = await getEngine();
     if (operation !== opening) return;
     let source = entry;
-    if (entry.kind === 'file') {
-      source = files.get(entry.key) || await storedFile(entry.key);
+    if (entry.kind === 'file' || entry.kind === 'repository') {
+      source = await localOrRepositoryFile(entry);
       if (!source) throw new Error('请从书库的收书纸函重新放入这本 EPUB。');
     }
     await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
@@ -470,8 +519,13 @@ function externalEntry(raw) {
 }
 async function restoreRoute() {
   const query = new URLSearchParams(location.search);
-  if (query.get('local')) {
-    const entry = state.imported.find(item => item.key === query.get('local'));
+  if (query.get('repo')) {
+    if (repository?.authenticated) await refreshRepository();
+    const entry = allBooks().find(item => item.repositoryId === query.get('repo'));
+    if (entry) await openEntry(entry, { route: false });
+    else { showImport({ route: false }); importMessage('请先连接书库', '盖上书库钥印后，这本书会回到书架上'); }
+  } else if (query.get('local')) {
+    const entry = state.imported.find(item => item.key === query.get('local') || item.localKey === query.get('local'));
     if (entry) await openEntry(entry, { route: false });
     else { showImport({ route: false }); importMessage('这本书需要重新放入', '轻点纸函，选择原来的 EPUB'); }
   } else if (query.get('book')) {
@@ -480,6 +534,129 @@ async function restoreRoute() {
   } else if (query.get('view') === 'import') showImport({ route: false });
   else showLibrary({ route: false });
 }
+function pendingImports() {
+  return state.imported.filter(entry => entry.kind === 'file' && entry.sync?.status !== 'synced');
+}
+function updateSyncInk() {
+  const pending = pendingImports().length;
+  const configured = repository?.configured;
+  const connected = configured && repository.authenticated;
+  els.syncForm.hidden = !configured || !!repository?.authenticated;
+  $('[data-action="sync-retry"]').hidden = !pending || (!!configured && !repository.authenticated);
+  $('[data-action="read-import"]').hidden = !lastImportedKey;
+  if (syncQueue && connected) els.syncMessage.textContent = '正在把待入藏的书逐册存入仓库…';
+  else if (lastSyncError) els.syncMessage.textContent = lastSyncError;
+  else if (!configured) els.syncMessage.textContent = pending
+    ? `${pending} 本书暂存本机，书库服务尚未接入。` : '书库服务尚未接入，放入的书会先保留在本机。';
+  else if (!connected) els.syncMessage.textContent = pending
+    ? `${pending} 本书等待入藏。盖上钥印后便会同步。` : '盖上书库钥印，在其他设备也能取阅藏书。';
+  else if (pending) els.syncMessage.textContent = `${pending} 本书等待继续入藏，本机文件已经保留。`;
+  else els.syncMessage.textContent = '书库已连接，新书会保存到仓库。';
+}
+function acceptRepositoryBooks(entries) {
+  rememberShelfPosition();
+  repositoryBooks = entries;
+  // Public GitHub catalogue entries and authenticated entries refer to the same file.
+  for (const entry of entries) {
+    const previous = books.find(book => book.filename === entry.filename);
+    if (previous) {
+      entry.title = previous.title || entry.title; entry.shortTitle = previous.shortTitle;
+      entry.author = previous.author || entry.author; entry.coverUrl = previous.coverUrl;
+      entry.coverWidth = previous.coverWidth; entry.coverHeight = previous.coverHeight;
+      if (!state.positions[entry.key] && state.positions[previous.key]) state.positions[entry.key] = state.positions[previous.key];
+      if (state.shelfPosition?.key === previous.key) state.shelfPosition.key = entry.key;
+    }
+  }
+  persist();
+  if (view === 'library') renderBooks({ rememberCurrent: false });
+}
+async function refreshRepository({ force = false } = {}) {
+  if (!repository?.hasCredentials || !repository.configured) return;
+  if (repositoryRefresh) return repositoryRefresh;
+  if (!force && Date.now() - lastRepositoryRefresh < 30000) return;
+  repositoryRefresh = (async () => {
+    try {
+      acceptRepositoryBooks(await repository.listBooks());
+      lastRepositoryRefresh = Date.now(); lastSyncError = '';
+    } catch (error) { lastSyncError = error.message; }
+    finally { repositoryRefresh = null; updateSyncInk(); }
+  })();
+  return repositoryRefresh;
+}
+async function prepareRepository({ refresh = false } = {}) {
+  if (!repository) { updateSyncInk(); return; }
+  if (syncProbe) return syncProbe;
+  syncProbe = (async () => {
+    await repository.probe();
+    if (repository.configured) {
+      lastSyncError = '';
+      if (repository.hasCredentials) await refreshRepository({ force: refresh });
+    }
+    updateSyncInk();
+  })().finally(() => { syncProbe = null; });
+  return syncProbe;
+}
+function rememberRepositoryWrite(entry, receipt) {
+  const oldKey = entry.key;
+  const synced = {
+    ...entry, ...receipt.book,
+    title: entry.title || receipt.book.title, shortTitle: entry.shortTitle,
+    author: entry.author || receipt.book.author, coverUrl: entry.coverUrl,
+    localKey: oldKey, imported: true,
+    sync: { status: 'synced', verifiedAt: Date.now(), commitSha: receipt.commitSha, alreadyPresent: receipt.alreadyPresent },
+  };
+  const index = state.imported.findIndex(item => item.key === oldKey);
+  if (index < 0) return synced;
+  state.imported.splice(index, 1, synced);
+  state.imported = state.imported.filter((item, position, array) => array.findIndex(other => other.key === item.key) === position);
+  if (state.positions[oldKey]) state.positions[synced.key] = state.positions[oldKey];
+  if (state.shelfPosition?.key === oldKey) state.shelfPosition.key = synced.key;
+  const local = files.get(oldKey);
+  if (local) files.set(synced.key, local);
+  if (current?.key === oldKey) {
+    current = synced;
+    if (view === 'reader') writeRoute(synced, true);
+  }
+  persist();
+  return synced;
+}
+async function flushSyncQueue({ retry = false } = {}) {
+  if (syncQueue) return syncQueue;
+  if (!repository?.configured || !repository.authenticated) { updateSyncInk(); return; }
+  syncQueue = (async () => {
+    const attempted = new Set();
+    lastSyncError = '';
+    while (!life.signal.aborted && repository.authenticated) {
+      const entry = pendingImports().find(item => !attempted.has(item.key));
+      if (!entry) break;
+      attempted.add(entry.key);
+      entry.sync = { ...entry.sync, status: 'syncing', attemptedAt: Date.now(), error: '' };
+      persist(); updateSyncInk();
+      try {
+        const original = files.get(entry.key) || await storedFile(entry.key);
+        if (!original) throw new Error('一本待入藏的书已不在本机缓存中，请重新放入原来的 EPUB。');
+        // Older imports may still contain a macOS package ZIP. Upload the normalized EPUB.
+        const sourceFile = original.name ? original : new File([original], entry.filename || '新书.epub', { type: 'application/epub+zip' });
+        const { source } = await inspectEpubImport(sourceFile);
+        files.set(entry.key, source);
+        await storedFile(entry.key, source);
+        const receipt = await repository.upload(source, source.name || entry.filename);
+        rememberRepositoryWrite(entry, receipt);
+        if (view === 'library') renderBooks();
+      } catch (error) {
+        entry.sync = { ...entry.sync, status: 'pending', error: error.message, code: error.code || 'SYNC_FAILED' };
+        lastSyncError = error.message;
+        persist();
+        // Do not repeatedly send an unauthorized/offline queue. The next online or user retry resumes it.
+        if (['AUTH_REQUIRED', 'NOT_CONFIGURED', 'NETWORK_ERROR', 'GITHUB_UNAVAILABLE', 'GITHUB_RATE_LIMIT'].includes(error.code)) break;
+      }
+    }
+    await refreshRepository({ force: true });
+  })().finally(() => { syncQueue = null; updateSyncInk(); });
+  updateSyncInk();
+  return syncQueue;
+}
+
 async function importBook(input) {
   if (!input || view !== 'import' || importBusy) return;
   const operation = ++importing;
@@ -498,7 +675,7 @@ async function importBook(input) {
     files.set(key, source);
     const previous = state.imported;
     const existing = previous.find(item => item.key === key);
-    const entry = { ...existing, key, kind:'file', imported:true, filename:source.name, ...metadata };
+    const entry = { ...existing, key, kind:'file', imported:true, filename:source.name, ...metadata, sync: { status: 'pending' } };
     state.imported = [entry, ...previous.filter(item => item.key !== key)];
     if (!persist()) {
       state.imported = previous;
@@ -506,8 +683,19 @@ async function importBook(input) {
     }
     if (operation !== importing || view !== 'import') { if (view === 'library') renderBooks(); return; }
     importBusy = false;
-    importMessage('已经收好，正在翻开…', metadata.title, 'received');
-    await openEntry(entry);
+    lastImportedKey = key;
+    importMessage('正在把这本书收入书库…', metadata.title, 'receiving');
+    await prepareRepository();
+    await flushSyncQueue();
+    if (operation !== importing || view !== 'import') return;
+    const stored = state.imported.find(item => item.key === key || item.localKey === key);
+    if (stored?.sync?.status === 'synced') {
+      importMessage('已存入书库，正在翻开…', metadata.title, 'received');
+      await openEntry(stored);
+    } else {
+      importMessage('已存本机，等待同步到书库', metadata.title, 'received');
+      updateSyncInk();
+    }
   } catch (error) {
     if (operation === importing && view === 'import') {
       importBusy = false;
@@ -522,6 +710,32 @@ async function importBook(input) {
   }
 }
 
+els.syncForm.addEventListener('submit', async event => {
+  event.preventDefault();
+  if (!repository) return;
+  const button = els.syncForm.querySelector('button');
+  button.disabled = true;
+  try {
+    await repository.probe();
+    if (!repository.configured) throw new Error('书库服务尚未接入，书已保留在本机。');
+    acceptRepositoryBooks(await repository.connect(els.syncKey.value));
+    els.syncKey.value = ''; lastSyncError = ''; updateSyncInk();
+    await flushSyncQueue({ retry: true });
+    const query = new URLSearchParams(location.search);
+    if (query.get('repo')) {
+      const found = allBooks().find(entry => entry.repositoryId === query.get('repo'));
+      if (found) await openEntry(found);
+    }
+  } catch (error) { lastSyncError = error.message; }
+  finally { button.disabled = false; updateSyncInk(); }
+}, { signal: life.signal });
+window.addEventListener('online', () => {
+  void prepareRepository({ refresh: true }).then(() => flushSyncQueue());
+}, { signal: life.signal });
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden && repository?.authenticated) void refreshRepository().then(() => flushSyncQueue());
+}, { signal: life.signal });
+
 document.addEventListener('keydown', keydown, { capture: true, signal: life.signal });
 document.addEventListener('click', event => {
   const button = event.target.closest?.('[data-action]');
@@ -535,6 +749,11 @@ document.addEventListener('click', event => {
     case 'next': void turn(1); break;
     case 'close-dialog': closeDialogs(); break;
     case 'import': if (!importBusy && view === 'import') els.importFile.click(); break;
+    case 'sync-retry': void prepareRepository({ refresh: true }).then(() => flushSyncQueue({ retry: true })); break;
+    case 'read-import': {
+      const entry = state.imported.find(item => item.key === lastImportedKey || item.localKey === lastImportedKey);
+      if (entry) void openEntry(entry); break;
+    }
     case 'retry': if (current) void openEntry(current, { route: false, force: true }); break;
     case 'smaller': case 'larger': {
       const field = narrow.matches ? 'scrollFontSize' : 'fontSize';
@@ -628,6 +847,15 @@ els.grid.addEventListener('scroll', () => {
   if (shelfScrollFrame) return;
   shelfScrollFrame = requestAnimationFrame(() => { shelfScrollFrame = 0; rememberShelfPosition(); });
 }, { passive: true, signal: life.signal });
+if ('ResizeObserver' in window) {
+  let previousShelfHeight = 0;
+  shelfSizeObserver = new ResizeObserver(() => {
+    if (view !== 'library' || !els.grid.clientHeight || previousShelfHeight === els.grid.clientHeight) return;
+    previousShelfHeight = els.grid.clientHeight;
+    fillEmptyShelfRows();
+  });
+  shelfSizeObserver.observe(els.grid);
+}
 updateNarrow(); controls();
 
 // The exact same full font is reused by the outer controls and EPUB iframes.
@@ -661,7 +889,7 @@ function attachScene(id, objects, smallScreen, version = 3) {
   }
 }
 attachScene('reader', READER_OBJECTS, narrow);
-attachScene('library', LIBRARY_OBJECTS, shelfSmall, 4);
+attachScene('library', LIBRARY_OBJECTS, shelfSmall, 42);
 attachScene('import', IMPORT_OBJECTS, narrow, 4);
 
 async function start() {
@@ -678,6 +906,9 @@ async function start() {
     onUpdate: entries => { books = entries; if (view === 'library') renderBooks(); },
   });
   renderBooks();
+  const repositoryReady = prepareRepository();
+  if (query.has('repo')) await repositoryReady;
+  void repositoryReady.then(() => flushSyncQueue());
   await restoreRoute();
 }
 void start().catch(error => { showLibrary({ route: false }); status(error.message || '书库暂时无法载入。'); });
@@ -685,7 +916,7 @@ window.addEventListener('pagehide', event => {
   rememberShelfPosition();
   persist();
   if (event.persisted) return;
-  life.abort(); opening += 1; engine?.destroy(); coverObserver?.disconnect();
+  life.abort(); opening += 1; engine?.destroy(); coverObserver?.disconnect(); shelfSizeObserver?.disconnect();
   for (const motion of sceneMotions) motion.destroy();
   for (const url of coverUrls) { revokeCover(url); URL.revokeObjectURL(url); }
   void databasePromise?.then(db => db?.close());

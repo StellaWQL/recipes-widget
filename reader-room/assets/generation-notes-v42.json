@@ -1,0 +1,16 @@
+{
+  "version": "4.2",
+  "date": "2026-11-28",
+  "assets": [
+    {
+      "file": "library-scene-v42.png",
+      "purpose": "Whole-scene library painting with matte paper-cut key, flat ribbon and layered paper tassel. Existing shelf composition preserved."
+    },
+    {
+      "file": "library-clean-v42.png",
+      "purpose": "Matched whole-scene clean plate used only beneath physical movement of the paper tassel and protruding import card."
+    }
+  ],
+  "motion": "Sample the same scene artwork into masked local shapes. The tassel pivots gently while the scene remains fixed. No separately generated key sticker.",
+  "scroll": "Cabinet frame stays fixed. The shelves and final shelf support move together inside one native vertical scrolling viewport. Top shadow is outside the scrolling content."
+}

@@ -1,0 +1,135 @@
+{
+  "version": "4.2",
+  "files": [
+    {
+      "path": "安装与改动说明.md",
+      "bytes": 5845,
+      "sha256": "f155f0b3dba59eae74d07834546485dab0da2a34e21ac08c52606263be8dfbf0"
+    },
+    {
+      "path": "网站覆盖文件/library-sync-server/.env.example",
+      "bytes": 620,
+      "sha256": "f00843dd07a7352724dae63c8cde68d7a6234fc4b9d5f68943e8b0865826d936"
+    },
+    {
+      "path": "网站覆盖文件/library-sync-server/.gitignore",
+      "bytes": 46,
+      "sha256": "8cb362932f27990fd925040d9b37faa5017494cc53d0ccf0387e2e8198039419"
+    },
+    {
+      "path": "网站覆盖文件/library-sync-server/README.md",
+      "bytes": 7974,
+      "sha256": "108de9d0745cb3399ae868b71aff76cc7e7a8a12c3a805d373f3925e7a352536"
+    },
+    {
+      "path": "网站覆盖文件/library-sync-server/epub-validation.mjs",
+      "bytes": 8509,
+      "sha256": "51a7e44ce17432fe30c7038cfacd733f28bd9930a385c5678c05db57d3e0bf6e"
+    },
+    {
+      "path": "网站覆盖文件/library-sync-server/errors.mjs",
+      "bytes": 325,
+      "sha256": "879232cfd58d9d3b32f86e49cde23a73440bfedd6e1316cb855c925576c1a420"
+    },
+    {
+      "path": "网站覆盖文件/library-sync-server/github-repository.mjs",
+      "bytes": 10198,
+      "sha256": "27b3345ae016ce583da9a7bc88661748b7d05a5a4e839516bfc73ebc74b003e0"
+    },
+    {
+      "path": "网站覆盖文件/library-sync-server/package.json",
+      "bytes": 223,
+      "sha256": "916fd7c1bf7c3dbc862ef179e4164949812dd2b2b2f7f30c144e5c04f945366b"
+    },
+    {
+      "path": "网站覆盖文件/library-sync-server/server.mjs",
+      "bytes": 10381,
+      "sha256": "e07989e5878ec808b7c518fe1b3525dae9e5ecfd05ca0d259c1bd6733cbadacd"
+    },
+    {
+      "path": "网站覆盖文件/library-sync-server/test/client.test.mjs",
+      "bytes": 6657,
+      "sha256": "1833ab1b6dffad142b2420b1dba607810f350864b40a2f0c2083c0d6dad61800"
+    },
+    {
+      "path": "网站覆盖文件/library-sync-server/test/sync.test.mjs",
+      "bytes": 15127,
+      "sha256": "08ce25be28694559e94f34f857aff1296ee48612f37b52bb9752b526b4b0eb3e"
+    },
+    {
+      "path": "网站覆盖文件/library-sync-server/vendor/sax.LICENSE",
+      "bytes": 1552,
+      "sha256": "8a1af140fdfbf5afd3df27f7e662f989c5b963a300020dfafce42033cae9e004"
+    },
+    {
+      "path": "网站覆盖文件/library-sync-server/vendor/sax.cjs",
+      "bytes": 50818,
+      "sha256": "1cdc1270d987cb0f6ee66dd8efb01c50511aa14d17b6163bbbffb21df8cf1c06"
+    },
+    {
+      "path": "网站覆盖文件/reader-room/assets/generation-notes-v42.json",
+      "bytes": 802,
+      "sha256": "32c8d57ca5166110e46e724018743cb09904dae875c3da60a5f0abeb36819751"
+    },
+    {
+      "path": "网站覆盖文件/reader-room/assets/library-clean-v42.png",
+      "bytes": 2167326,
+      "sha256": "05b2f68d00da3aeabb3173e395a2b20f26cf2746275171fda0754a41c0a08292"
+    },
+    {
+      "path": "网站覆盖文件/reader-room/assets/library-scene-v42.png",
+      "bytes": 2237912,
+      "sha256": "0c1cee5e379453442209cad11aa15744c8fc4c55d09910baac89deff020bf51c"
+    },
+    {
+      "path": "网站覆盖文件/reader-room/config.js",
+      "bytes": 872,
+      "sha256": "f9e64f501dc5c3245df34d174ac52758a716c3912cefb924ad1923cc79c0a13f"
+    },
+    {
+      "path": "网站覆盖文件/reader-room/epub-import.js",
+      "bytes": 10870,
+      "sha256": "4203f99eada40095576bbb6a5aecb60a6a63ecd8158b848afbc017f9d4b3d0fe"
+    },
+    {
+      "path": "网站覆盖文件/reader-room/index.html",
+      "bytes": 7391,
+      "sha256": "d29bce770f9081e7ea99ea3016bf3a12dc26195c33627278a78db402ee54b847"
+    },
+    {
+      "path": "网站覆盖文件/reader-room/library-sync.js",
+      "bytes": 7079,
+      "sha256": "ff7ca9f5084ee28f8f3ec19fa12a5d14e13eb682e9464d140eac70af73259eeb"
+    },
+    {
+      "path": "网站覆盖文件/reader-room/object-motion.js",
+      "bytes": 24021,
+      "sha256": "7fdb63524b1b15dcd08cd22ac26e182cb93ab13abec165efb7d3c4d214e39f60"
+    },
+    {
+      "path": "网站覆盖文件/reader-room/room.css",
+      "bytes": 21926,
+      "sha256": "f6c9282a736ea9dbbcb6e45e534f7c341adcd00a35666744b1e286c4fd70fc09"
+    },
+    {
+      "path": "网站覆盖文件/reader-room/room.js",
+      "bytes": 44745,
+      "sha256": "febfd9617a375a80990187174f9da466f4693e09ff78f065e6ec32e54b42ada2"
+    },
+    {
+      "path": "网站覆盖文件/reader-room/vendor/jszip.LICENSE",
+      "bytes": 33753,
+      "sha256": "566c953c6090b1218ca6217dd7359d45dde46581968586dc607d59a78af6a9c4"
+    },
+    {
+      "path": "网站覆盖文件/reader-room/vendor/jszip.min.js",
+      "bytes": 97630,
+      "sha256": "acc7e41455a80765b5fd9c7ee1b8078a6d160bbbca455aeae854de65c947d59e"
+    },
+    {
+      "path": "验证记录.md",
+      "bytes": 2320,
+      "sha256": "12a7c3317ba14cac4443ee01c069e9b958bc9a5848252846dd20e15dec61613b"
+    }
+  ]
+}

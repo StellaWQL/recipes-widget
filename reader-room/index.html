@@ -8,10 +8,10 @@
   <meta name="darkreader-lock">
   <meta name="description" content="THE RAVEN 的书库与阅读室。">
   <title>THE RAVEN · 阅读室</title>
-  <link rel="stylesheet" href="./room.css?v=reader4fix1">
+  <link rel="stylesheet" href="./room.css?v=reader4_2">
   <script src="./vendor/jszip.min.js" defer></script>
   <script src="./vendor/epub.min.js" defer></script>
-  <script src="./room.js?v=reader4fix1" type="module"></script>
+  <script src="./room.js?v=reader4_2" type="module"></script>
 </head>
 <body class="room">
   <main class="room-app">
@@ -19,7 +19,7 @@
 
     <section id="library-view" class="library room-view" aria-label="书库">
       <div id="library-scene" class="scene-frame library-scene">
-        <img id="library-scene-image" class="scene-image" src="./assets/library-scene-v4.png" alt="旧玫瑰色纸制书架，旁边放着钥匙和收书纸函" draggable="false" fetchpriority="high">
+        <img id="library-scene-image" class="scene-image" src="./assets/library-scene-v42.png" alt="旧玫瑰色纸制书架，旁边放着剪纸钥匙和收书纸函" draggable="false" fetchpriority="high">
         <canvas id="library-scene-canvas" class="scene-canvas" aria-hidden="true"></canvas>
         <h2 class="library-heading">藏书</h2>
         <div id="library-grid" class="library-grid" role="region" aria-label="藏书" tabindex="0"></div>
@@ -46,6 +46,18 @@
             <span id="import-detail" class="import-detail">也可以把书拖到这里</span>
           </span>
         </button>
+        <section class="import-sync" aria-label="书库保存">
+          <p id="sync-message" class="sync-message" role="status" aria-live="polite"></p>
+          <form id="sync-connect" class="sync-connect" hidden>
+            <label for="sync-key">书库钥印</label>
+            <input id="sync-key" type="password" autocomplete="off" aria-describedby="sync-message" spellcheck="false">
+            <button type="submit">盖印入藏</button>
+          </form>
+          <div class="sync-actions">
+            <button type="button" data-action="sync-retry" hidden>继续入藏</button>
+            <button type="button" data-action="read-import" hidden>先读这本</button>
+          </div>
+        </section>
       </div>
     </section>
 
